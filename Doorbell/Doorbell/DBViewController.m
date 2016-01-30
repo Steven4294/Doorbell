@@ -6,13 +6,13 @@
 //  Copyright © 2016 Doorbell LLC. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "DBViewController.h"
 
-@interface ViewController ()
+@interface DBViewController ()
 
 @end
 
-@implementation ViewController
+@implementation DBViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
