@@ -2,4 +2,9 @@ platform :ios, ‘9.0’
 
 xcodeproj ‘Doorbell’  
 
-pod 'AFNetworking', '~> 2.0' 
+pod 'AFNetworking', '~> 2.0'
+
+pod 'EstimoteSDK'
+pod 'Parse', '~> 1.4'
+pod 'ParseFacebookUtils', '~> 1.4'
+pod 'Facebook-iOS-SDK', '~> 3.19'

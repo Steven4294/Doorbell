@@ -20,11 +20,35 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Bolts (1.6.0):
+    - Bolts/AppLinks (= 1.6.0)
+    - Bolts/Tasks (= 1.6.0)
+  - Bolts/AppLinks (1.6.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.6.0)
+  - EstimoteSDK (3.8.2)
+  - Facebook-iOS-SDK (3.24.2):
+    - Bolts (~> 1.2)
+  - Parse (1.12.0):
+    - Bolts/Tasks (~> 1.5)
+  - ParseFacebookUtils (1.10.0):
+    - Bolts/Tasks (~> 1.5)
+    - Facebook-iOS-SDK (~> 3.24)
+    - Parse (~> 1.9)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - EstimoteSDK
+  - Facebook-iOS-SDK (~> 3.19)
+  - Parse (~> 1.4)
+  - ParseFacebookUtils (~> 1.4)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  Bolts: f52a250053bb517ca874523c3913776359ab3def
+  EstimoteSDK: 5e36b596f9f28161bff35b086d9f70282be5f513
+  Facebook-iOS-SDK: 2b76db4e29be113e211b464f7cc8c6a4b5a5a7d9
+  Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
+  ParseFacebookUtils: 7030f53c989fda36ad50029d90edec1327424317
 
 COCOAPODS: 0.39.0
