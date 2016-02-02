@@ -8,6 +8,9 @@
 
 #import "DBViewController.h"
 #import <Parse/Parse.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+
 
 @interface DBViewController ()
 
@@ -21,6 +24,11 @@
     PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
     testObject[@"footba"] = @"barasdf";
     [testObject saveInBackground];
+    
+    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
+    // Optional: Place the button in the center of your view.
+    loginButton.center = self.view.center;
+    [self.view addSubview:loginButton];
 }
 
 - (void)didReceiveMemoryWarning {
