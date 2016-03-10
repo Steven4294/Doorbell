@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DRCellSlideGestureRecognizer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -39,7 +44,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ParseFacebookUtilsV4.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RKSwipeBetweenViewControllers.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,7 +62,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1050B3DC8F92D4FF90FCEE0EB75A2F20</key>
+		<key>2344348539B951A9D8D2DB4B916DC05D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,7 +92,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8909F5B7C8CF37BFB536D9C5602B9B20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>952D3EF0884F36E4FB68AFEBD70B08C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9B916844F33E8D3CF7BC18CE424E9721</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

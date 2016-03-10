@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBViewController : UIViewController
+@interface DBLoginViewController : UIViewController
 
 
 @end

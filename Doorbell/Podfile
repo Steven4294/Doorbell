@@ -10,3 +10,7 @@ pod "FBSDKCoreKit"
 pod "FBSDKLoginKit"
 pod "FBSDKShareKit"
 pod "FBSDKMessengerShareKit"
+pod 'ParseFacebookUtilsV4'
+
+pod 'RKSwipeBetweenViewControllers'
+pod 'DRCellSlideGestureRecognizer'

@@ -8,14 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
+		D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */; };
+		D4422A241C8E8D46006D08E9 /* DBFeedCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */; };
+		D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
-		D458A7F21C5C36B200F47581 /* DBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBViewController.m */; };
+		D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBLoginViewController.m */; };
 		D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D458A7F31C5C36B200F47581 /* Main.storyboard */; };
 		D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D458A7F61C5C36B200F47581 /* Assets.xcassets */; };
 		D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D458A7F81C5C36B200F47581 /* LaunchScreen.storyboard */; };
 		D458A8051C5C36B200F47581 /* DoorbellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8041C5C36B200F47581 /* DoorbellTests.m */; };
 		D458A8101C5C36B200F47581 /* DoorbellUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A80F1C5C36B200F47581 /* DoorbellUITests.m */; };
+		D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8341C6189F200F47581 /* DBProfileViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,12 +43,18 @@
 		22A6800498CE19204F21989A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		425AE4D4813603768CF5BA6C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSwipeBetweenVCViewController.h; sourceTree = "<group>"; };
+		D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSwipeBetweenVCViewController.m; sourceTree = "<group>"; };
+		D4422A221C8E8D46006D08E9 /* DBFeedCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedCollectionViewController.h; sourceTree = "<group>"; };
+		D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedCollectionViewController.m; sourceTree = "<group>"; };
+		D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedTableViewController.h; sourceTree = "<group>"; };
+		D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedTableViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A7EB1C5C36B200F47581 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D458A7ED1C5C36B200F47581 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D458A7EE1C5C36B200F47581 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D458A7F01C5C36B200F47581 /* DBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBViewController.h; sourceTree = "<group>"; };
-		D458A7F11C5C36B200F47581 /* DBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBViewController.m; sourceTree = "<group>"; };
+		D458A7F01C5C36B200F47581 /* DBLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBLoginViewController.h; sourceTree = "<group>"; };
+		D458A7F11C5C36B200F47581 /* DBLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBLoginViewController.m; sourceTree = "<group>"; };
 		D458A7F41C5C36B200F47581 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D458A7F61C5C36B200F47581 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D458A7F91C5C36B200F47581 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,6 +65,8 @@
 		D458A80B1C5C36B200F47581 /* DoorbellUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoorbellUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A80F1C5C36B200F47581 /* DoorbellUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoorbellUITests.m; sourceTree = "<group>"; };
 		D458A8111C5C36B200F47581 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D458A8331C6189F200F47581 /* DBProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProfileViewController.h; sourceTree = "<group>"; };
+		D458A8341C6189F200F47581 /* DBProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProfileViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,8 +130,16 @@
 			children = (
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
-				D458A7F01C5C36B200F47581 /* DBViewController.h */,
-				D458A7F11C5C36B200F47581 /* DBViewController.m */,
+				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
+				D458A7F11C5C36B200F47581 /* DBLoginViewController.m */,
+				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
+				D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */,
+				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
+				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
+				D4422A221C8E8D46006D08E9 /* DBFeedCollectionViewController.h */,
+				D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */,
+				D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */,
+				D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D458A7F61C5C36B200F47581 /* Assets.xcassets */,
 				D458A7F81C5C36B200F47581 /* LaunchScreen.storyboard */,
@@ -346,8 +366,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D458A7F21C5C36B200F47581 /* DBViewController.m in Sources */,
+				D4422A241C8E8D46006D08E9 /* DBFeedCollectionViewController.m in Sources */,
+				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
+				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
+				D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */,
+				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

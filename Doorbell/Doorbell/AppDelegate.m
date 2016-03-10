@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
+#import "RKSwipeBetweenViewControllers.h"
 
 @interface AppDelegate ()
 
@@ -29,7 +32,28 @@
     // [Optional] Track statistics around application opens.
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
+    [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
     
+   /* self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    
+    UIPageViewController *pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    
+    RKSwipeBetweenViewControllers *navigationController = [[RKSwipeBetweenViewControllers alloc]initWithRootViewController:pageController];
+    
+    //%%% DEMO CONTROLLERS
+    UIViewController *demo = [[UIViewController alloc]init];
+    UIViewController *demo2 = [[UIViewController alloc]init];
+    UIViewController *demo3 = [[UIViewController alloc]init];
+    UIViewController *demo4 = [[UIViewController alloc]init];
+    demo.view.backgroundColor = [UIColor redColor];
+    demo2.view.backgroundColor = [UIColor whiteColor];
+    demo3.view.backgroundColor = [UIColor grayColor];
+    demo4.view.backgroundColor = [UIColor orangeColor];
+    [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4]];
+    
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
+    */
     
     return YES;
 }
@@ -50,10 +74,20 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    [FBSDKAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
 }
 
 @end
