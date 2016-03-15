@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB541C98B799007A9C3D /* DBTableViewCell.m */; };
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
 		D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */; };
 		D4422A241C8E8D46006D08E9 /* DBFeedCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */; };
@@ -42,6 +43,8 @@
 /* Begin PBXFileReference section */
 		22A6800498CE19204F21989A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		425AE4D4813603768CF5BA6C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		433AFB531C98B799007A9C3D /* DBTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBTableViewCell.h; sourceTree = "<group>"; };
+		433AFB541C98B799007A9C3D /* DBTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBTableViewCell.m; sourceTree = "<group>"; };
 		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSwipeBetweenVCViewController.h; sourceTree = "<group>"; };
 		D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSwipeBetweenVCViewController.m; sourceTree = "<group>"; };
@@ -133,14 +136,16 @@
 				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
 				D458A7F11C5C36B200F47581 /* DBLoginViewController.m */,
 				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
+				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
 				D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */,
 				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
-				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
 				D4422A221C8E8D46006D08E9 /* DBFeedCollectionViewController.h */,
 				D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */,
 				D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */,
 				D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
+				433AFB531C98B799007A9C3D /* DBTableViewCell.h */,
+				433AFB541C98B799007A9C3D /* DBTableViewCell.m */,
 				D458A7F61C5C36B200F47581 /* Assets.xcassets */,
 				D458A7F81C5C36B200F47581 /* LaunchScreen.storyboard */,
 				D458A7FB1C5C36B200F47581 /* Info.plist */,
@@ -371,6 +376,7 @@
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
 				D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */,
+				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
 			);

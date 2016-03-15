@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0791A3C6820D9DCA327452F73A2C62836D77C8D0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0791A3C6820D9DCA327452F73A2C62836D77C8D0" : 0,
+    "97E249BB45CDDF8915C23222B7AB778EA07677CE" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F4AFA3E1-5E69-4430-BE79-8AAEC784708D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0791A3C6820D9DCA327452F73A2C62836D77C8D0" : "Doorbell\/",
+    "97E249BB45CDDF8915C23222B7AB778EA07677CE" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Doorbell",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Doorbell\/Doorbell.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven4294\/Doorbell.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0791A3C6820D9DCA327452F73A2C62836D77C8D0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven4294\/LikedOrNope.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "97E249BB45CDDF8915C23222B7AB778EA07677CE"
+    }
+  ]
+}

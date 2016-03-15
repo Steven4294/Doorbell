@@ -9,12 +9,16 @@
 #import "DBFeedTableViewController.h"
 #import "DRCellSlideGestureRecognizer.h"
 #import "Parse.h"
+#import "DBTableViewCell.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 
 @interface DBFeedTableViewController ()
 {
     NSMutableArray *requests;
 }
+
+@property (nonatomic, strong) DBTableViewCell *prototypeCell;
 
 @end
 
@@ -50,6 +54,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -65,15 +70,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    //cell.backgroundColor = [UIColor grayColor];
+    DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     
     if ([requests count] > indexPath.row)
     {
         PFObject *object = [requests objectAtIndex:indexPath.row];
         cell.textLabel.text = [object objectForKey:@"message"];
-        NSLog(@"text: %@", cell.textLabel.text);
+        cell.textLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        cell.textLabel.layer.borderWidth = 1.0f;
     }
+    
+    [cell.profileImageView setProfileID:@"1951974478361180"];
    
     
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
@@ -88,6 +95,12 @@
     [cell addGestureRecognizer:slideGestureRecognizer];
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    return 150;
 }
 
 
