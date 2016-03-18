@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBFeedTableViewController : UITableViewController
+@interface DBFeedTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @end

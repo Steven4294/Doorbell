@@ -14,3 +14,11 @@ pod 'ParseFacebookUtilsV4'
 
 pod 'RKSwipeBetweenViewControllers'
 pod 'DRCellSlideGestureRecognizer'
+
+pod 'SVPullToRefresh'
+pod 'CNPPopupController'
+pod 'LRTextField'
+
+pod 'FormatterKit'
+
+pod 'SDWebImage', '~>3.7'

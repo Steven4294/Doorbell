@@ -11,6 +11,11 @@
 #import "Parse.h"
 #import "DBTableViewCell.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "SVPullToRefresh.h"
+
+#import "DBRequestFormViewController.h"
+#import "TTTTimeIntervalFormatter.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface DBFeedTableViewController ()
@@ -20,6 +25,8 @@
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
 
+
+
 @end
 
 @implementation DBFeedTableViewController
@@ -27,13 +34,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+    [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
         if (!error) {
@@ -47,6 +59,56 @@
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    
+    [self.tableView addPullToRefreshWithActionHandler:^{
+        // prepend data to dataSource, insert cells at top of table view
+        // call [tableView.pullToRefreshView stopAnimating] when done
+        PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+        [query orderByDescending:@"createdAt"];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            
+            if (!error) {
+                // The find succeeded.
+                NSLog(@"Successfully retrieved %d scores.", objects.count);
+                // Do something with the found objects
+                requests = [objects mutableCopy];
+                [self.tableView reloadData];
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            
+            [self.tableView.pullToRefreshView stopAnimating];
+        }];
+        
+    }];
+    
+    CGFloat padding_x = 0;
+    CGFloat padding_y = 0;
+    UIButton *requestButton = [[UIButton alloc] initWithFrame:CGRectMake(0 + padding_x, self.view.frame.size.height - 65 - padding_y, self.view.frame.size.width - 2*padding_x, 65 - padding_y)];
+    requestButton.backgroundColor = [UIColor colorWithRed:34.0/255.0 green:167.0/255.0 blue:240.0/255.0 alpha:1.0f];
+    [requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [requestButton setTitle:@"request" forState:UIControlStateNormal];
+    [self.view addSubview:requestButton];
+    [self.view bringSubviewToFront:requestButton];
+    [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+-(void)requestButtonPressed{
+    NSLog(@"submit button pressed");
+    DBRequestFormViewController *requestViewController = [[DBRequestFormViewController alloc] init];
+    [self presentViewController:requestViewController animated:YES completion:^{
+        
+        
+    }];
+    
+}
+
+-(void)sunnyControlDidStartAnimation{
+    
+    // start loading something
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,7 +126,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [requests count];
 }
 
 
@@ -75,12 +137,26 @@
     if ([requests count] > indexPath.row)
     {
         PFObject *object = [requests objectAtIndex:indexPath.row];
-        cell.textLabel.text = [object objectForKey:@"message"];
-        cell.textLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        cell.textLabel.layer.borderWidth = 1.0f;
+        cell.messageLabel.text = [object objectForKey:@"message"];
+        
+        PFObject *sender = [object objectForKey:@"sender"];
+        cell.nameLabel.text = sender[@"facebookName"];
+        
+        
+        
+        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+        
+        NSDate *createdDate = [object createdAt];
+
+        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
+        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", sender[@"facebookId"]];
+        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
+                          placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+        
+        [cell.messageLabel sizeToFit];
+        
+
     }
-    
-    [cell.profileImageView setProfileID:@"1951974478361180"];
    
     
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
@@ -90,9 +166,9 @@
     squareAction.elasticity = 40;
     squareAction.didTriggerBlock = [self pushTriggerBlock];
     
-    [slideGestureRecognizer addActions:squareAction];
+   // [slideGestureRecognizer addActions:squareAction];
     
-    [cell addGestureRecognizer:slideGestureRecognizer];
+  //  [cell addGestureRecognizer:slideGestureRecognizer];
     
     return cell;
 }
@@ -103,6 +179,10 @@
     return 150;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 150;
+}
 
 - (DRCellSlideActionBlock)pushTriggerBlock
 {
@@ -128,49 +208,10 @@
     };
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(CGFloat)paddingForString:(NSString *)string
+{
+    CGFloat padding;
+    return padding;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

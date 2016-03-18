@@ -23,9 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-    testObject[@"footba"] = @"barasdf";
-    [testObject saveInBackground];
+
     
     UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 100, 50, 50)];
     loginButton.backgroundColor = [UIColor blueColor];
@@ -44,21 +42,36 @@
     
     // Login PFUser using Facebook
     [PFFacebookUtils logInInBackgroundWithReadPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
-        if (!user) {
+        if (!user)
+        {
             NSLog(@"Uh oh. The user cancelled the Facebook login.");
-        } else if (user.isNew) {
-            NSLog(@"User signed up and logged in through Facebook!");
-        } else {
+        } else if (user.isNew)
+        {
+            
+        } else
+        {
             NSLog(@"login button did complete");
             
             
+            NSLog(@"User signed up and logged in through Facebook!");
             
+            if ([FBSDKAccessToken currentAccessToken]) {
+                [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
+                 startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                     if (!error) {
+                         PFUser *currentUser = [PFUser currentUser];
+                         currentUser[@"facebookId"] = result[@"id"];
+                         currentUser[@"facebookName"] = result[@"name"];
+                         [currentUser saveInBackground];
+                     }
+                 }];
+            }
             
             
         }
-    }
-        ];
         
+        NSLog(@"user %@", user);
+    }];
 }
 
 

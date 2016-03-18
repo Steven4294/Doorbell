@@ -12,7 +12,11 @@
 
 @interface DBTableViewCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *textLabel;
-@property (nonatomic, weak) IBOutlet FBSDKProfilePictureView *profileImageView;
+@property (nonatomic, strong) IBOutlet UILabel *messageLabel;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+
+@property (nonatomic, strong) IBOutlet UILabel *timeLabel;
+
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 
 @end
