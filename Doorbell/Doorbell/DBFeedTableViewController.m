@@ -93,13 +93,26 @@
     [self.view bringSubviewToFront:requestButton];
     [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
+    NSString *testString1 = @"This is a string of length 123klj"    ;
+    NSString *testString2 = @"This is a string of lengtsfasdfasdfasfh 123klj"    ;
+    
+    NSLog(@"length: %f     padding: %f", [testString1 length], [self paddingForString:testString1]);
+    NSLog(@"length: %f     padding: %f", [testString2 length], [self paddingForString:testString2]);
+
+
+    
     
 }
 
 -(void)requestButtonPressed{
     NSLog(@"submit button pressed");
-    DBRequestFormViewController *requestViewController = [[DBRequestFormViewController alloc] init];
-    [self presentViewController:requestViewController animated:YES completion:^{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    
+
+    
+    [self presentViewController:vc animated:YES completion:^{
         
         
     }];
@@ -142,8 +155,6 @@
         PFObject *sender = [object objectForKey:@"sender"];
         cell.nameLabel.text = sender[@"facebookName"];
         
-        
-        
         TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
         
         NSDate *createdDate = [object createdAt];
@@ -154,8 +165,6 @@
                           placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
         
         [cell.messageLabel sizeToFit];
-        
-
     }
    
     
@@ -181,7 +190,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    // dynamically resizes cells
+    PFObject *object = [requests objectAtIndex:indexPath.row];
+    NSString *messageString = [object objectForKey:@"message"];
+    CGFloat labelHeight = [self paddingForString:messageString];
+    CGFloat staticHeight = 85.0f;
+    
+    return labelHeight + staticHeight;
 }
 
 - (DRCellSlideActionBlock)pushTriggerBlock
@@ -210,7 +225,9 @@
 
 -(CGFloat)paddingForString:(NSString *)string
 {
-    CGFloat padding;
+    CGFloat kNumberOfCharsPerLine = 30.0f;
+    CGFloat padding = round([string length] / kNumberOfCharsPerLine);
+    padding = padding * 15.0f;
     return padding;
 }
 

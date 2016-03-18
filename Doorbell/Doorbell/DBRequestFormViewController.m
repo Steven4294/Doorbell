@@ -11,7 +11,10 @@
 #import "Parse.h"
 
 
+
 @interface DBRequestFormViewController ()
+
+@property (nonatomic) NSArray *contacts;
 
 @end
 
@@ -22,11 +25,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController setToolbarHidden:NO];
 
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 50)];
-    [cancelButton setTitle:@"cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.view addSubview:cancelButton];
-    [cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, 80, 50)];
     [submitButton setTitle:@"submit" forState:UIControlStateNormal];
@@ -65,6 +64,9 @@
     }];
     [self.view addSubview:textFieldValidation];
     
+    
+       
+    
 }
 
 - (void)cancelButtonPressed{
@@ -74,6 +76,7 @@
     }];
     
 }
+
 
 - (void)submitButtonPressed{
     [self.view endEditing:YES];

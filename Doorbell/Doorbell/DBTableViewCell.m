@@ -12,6 +12,9 @@
 
 - (void)awakeFromNib {
     // Initialization code
+
+    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width/2.0f;
+    self.profileImageView.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
