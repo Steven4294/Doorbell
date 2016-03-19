@@ -16,7 +16,7 @@
 #import "DBRequestFormViewController.h"
 #import "TTTTimeIntervalFormatter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import "TLYShyNavBarManager.h"
 
 @interface DBFeedTableViewController ()
 {
@@ -24,7 +24,6 @@
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
-
 
 
 @end
@@ -36,14 +35,12 @@
     
 
     // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    
+   
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
@@ -101,10 +98,13 @@
      NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
     
+    self.shyNavBarManager.scrollView = self.tableView;
+    
+    
 }
 
 -(void)requestButtonPressed{
-    NSLog(@"submit button pressed");
+    NSLog(@"request button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
@@ -118,10 +118,6 @@
     
 }
 
--(void)sunnyControlDidStartAnimation{
-    
-    // start loading something
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -138,7 +134,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [requests count];
+   return [requests count];
 }
 
 
