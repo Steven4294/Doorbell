@@ -70,6 +70,7 @@ PODS:
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SVPullToRefresh (0.4.1)
+  - TLYShyNavBar (1.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -88,6 +89,7 @@ DEPENDENCIES:
   - RKSwipeBetweenViewControllers
   - SDWebImage (~> 3.7)
   - SVPullToRefresh
+  - TLYShyNavBar
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -107,5 +109,6 @@ SPEC CHECKSUMS:
   RKSwipeBetweenViewControllers: 2236038119d6f7eb64ff589eb423fcda80cbe962
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
 
 COCOAPODS: 0.39.0
