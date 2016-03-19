@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MLPAutoCompleteTextField/MLPAutoCompletionObject.h"
+#import "MLPAutoCompletionObject.h"
 
 @interface DBCustomAcObject : NSObject <MLPAutoCompletionObject>
 

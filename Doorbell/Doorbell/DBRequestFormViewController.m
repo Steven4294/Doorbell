@@ -7,14 +7,16 @@
 //
 
 #import "DBRequestFormViewController.h"
-#import "LRTextField.h"
 #import "Parse.h"
+
+BOOL responderOverride;
 
 
 
 @interface DBRequestFormViewController ()
 
 @property (nonatomic) NSArray *contacts;
+@property (nonatomic) UIColor *blueColor;
 
 @end
 
@@ -27,49 +29,28 @@
 
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 260, 80, 50)];
-    [submitButton setTitle:@"submit" forState:UIControlStateNormal];
-    [submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.view addSubview:submitButton];
-    [submitButton addTarget:self action:@selector(submitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.acTextField setBorderStyle:UITextBorderStyleNone];
+    [self.acTextField setAutoCompleteTableCornerRadius:0.0f];
+    self.acTextField.autoCompleteDelegate = self;
+    self.acTextField.delegate = self;
+    self.acTextField.autoCompleteFontSize = 16.0f;
+    self.acTextField.autoCompleteBoldFontName = @"Avenir"  ;
+    self.acTextField.applyBoldEffectToAutoCompleteSuggestions = NO;
+    self.acTextField.maximumNumberOfAutoCompleteRows = 12;
+    self.acTextField.autoCompleteTableCellTextColor = [UIColor darkGrayColor];
     
-    LRTextField *textFieldValidation = [[LRTextField alloc] initWithFrame:CGRectMake(20, 120, 320, 60) labelHeight:15];
-    textFieldValidation.placeholder = @"Item Description";
-    textFieldValidation.hintText = @"Enter \"abc\"";
-    [textFieldValidation setValidationBlock:^NSDictionary *(LRTextField *textField, NSString *text) {
-        [NSThread sleepForTimeInterval:.5];
-        if ([text length] >= 100) {
-            return @{ VALIDATION_INDICATOR_NO : @"100+ characters" };
-        }
-        else{
-            
-            PFObject *requestObject = [PFObject objectWithClassName:@"Request"];
-            requestObject[@"sender"] = [PFUser currentUser];
-            requestObject[@"message"] = text;
-            
-            [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                
-                if (succeeded) {
-                    
-                }
-                else{
-                    NSLog(@"couldn't save object: %@", error);
-                }
-            }];
-            
-            return @{ VALIDATION_INDICATOR_YES : @"sumbitting" };
+    
+    self.blueColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
+}
 
-            
-        }
-    }];
-    [self.view addSubview:textFieldValidation];
-    
-    
-       
-    
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    responderOverride = YES;
 }
 
 - (void)cancelButtonPressed{
+    
     [self dismissViewControllerAnimated:YES completion:^{
         
         
@@ -81,6 +62,24 @@
 - (void)submitButtonPressed{
     [self.view endEditing:YES];
     
+    
+    PFObject *requestObject = [PFObject objectWithClassName:@"Request"];
+    requestObject[@"sender"] = [PFUser currentUser];
+    requestObject[@"message"] = self.acTextField.text;
+    
+    [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        
+        if (succeeded) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+                
+            }];
+            
+        }
+        else{
+            NSLog(@"couldn't save object: %@", error);
+        }
+    }];
     NSLog(@"submit button pressed");
 }
 /*
@@ -92,5 +91,78 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    responderOverride = NO;
+    [self resignFirstResponder];
+    
+}
+
+#pragma mark - MLPAutoCompleteTextField Delegate
+
+
+- (BOOL)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+          shouldConfigureCell:(UITableViewCell *)cell
+       withAutoCompleteString:(NSString *)autocompleteString
+         withAttributedString:(NSAttributedString *)boldedString
+        forAutoCompleteObject:(id<MLPAutoCompletionObject>)autocompleteObject
+            forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    //This is your chance to customize an autocomplete tableview cell before it appears in the autocomplete tableview
+    // NSString *filename = [autocompleteString stringByAppendingString:@".png"];
+    // filename = [filename stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    // filename = [filename stringByReplacingOccurrencesOfString:@"&" withString:@"and"];
+    // [cell.imageView setImage:[UIImage imageNamed:filename]];
+    
+    return YES;
+}
+
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField
+  didSelectAutoCompleteString:(NSString *)selectedString
+       withAutoCompleteObject:(id<MLPAutoCompletionObject>)selectedObject
+            forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(selectedObject){
+        NSLog(@"selected object from autocomplete menu %@ with string %@", selectedObject, [selectedObject autocompleteString]);
+    } else {
+        NSLog(@"selected string '%@' from autocomplete menu", selectedString);
+    }
+}
+
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField willHideAutoCompleteTableView:(UITableView *)autoCompleteTableView {
+    NSLog(@"Autocomplete table view will be removed from the view hierarchy");
+}
+
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField willShowAutoCompleteTableView:(UITableView *)autoCompleteTableView {
+    NSLog(@"Autocomplete table view will be added to the view hierarchy");
+}
+
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField didHideAutoCompleteTableView:(UITableView *)autoCompleteTableView {
+    NSLog(@"Autocomplete table view ws removed from the view hierarchy");
+}
+
+- (void)autoCompleteTextField:(MLPAutoCompleteTextField *)textField didShowAutoCompleteTableView:(UITableView *)autoCompleteTableView {
+    NSLog(@"Autocomplete table view was added to the view hierarchy");
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50.0)];
+
+    submitButton.backgroundColor = self.blueColor;
+    [submitButton setTitle:@"request" forState:UIControlStateNormal];
+    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [submitButton addTarget:self action:@selector(submitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    textField.inputAccessoryView = submitButton;
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    return !responderOverride;
+}
 
 @end

@@ -50,7 +50,6 @@
         
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %d scores.", objects.count);
             // Do something with the found objects
             requests = [objects mutableCopy];
             [self.tableView reloadData];
@@ -69,7 +68,6 @@
             
             if (!error) {
                 // The find succeeded.
-                NSLog(@"Successfully retrieved %d scores.", objects.count);
                 // Do something with the found objects
                 requests = [objects mutableCopy];
                 [self.tableView reloadData];
@@ -86,20 +84,21 @@
     CGFloat padding_x = 0;
     CGFloat padding_y = 0;
     UIButton *requestButton = [[UIButton alloc] initWithFrame:CGRectMake(0 + padding_x, self.view.frame.size.height - 65 - padding_y, self.view.frame.size.width - 2*padding_x, 65 - padding_y)];
-    requestButton.backgroundColor = [UIColor colorWithRed:34.0/255.0 green:167.0/255.0 blue:240.0/255.0 alpha:1.0f];
+    requestButton.backgroundColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
     [requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [requestButton setTitle:@"request" forState:UIControlStateNormal];
+    [requestButton.titleLabel setFont:[UIFont fontWithName:@"Avenir" size:20.0]];
     [self.view addSubview:requestButton];
     [self.view bringSubviewToFront:requestButton];
     [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-    NSString *testString1 = @"This is a string of length 123klj"    ;
-    NSString *testString2 = @"This is a string of lengtsfasdfasdfasfh 123klj"    ;
+   /* [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor colorWithRed:242/255.0 green:120/255.0 blue:75/255.0 alpha:1.0],
+       NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];*/
     
-    NSLog(@"length: %f     padding: %f", [testString1 length], [self paddingForString:testString1]);
-    NSLog(@"length: %f     padding: %f", [testString2 length], [self paddingForString:testString2]);
-
-
+     [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor whiteColor],
+     NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
     
 }
@@ -170,15 +169,17 @@
     
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
     DRCellSlideAction *squareAction = [DRCellSlideAction actionForFraction:0.25];
-    squareAction.activeBackgroundColor = [UIColor greenColor];
+    squareAction.activeBackgroundColor = [UIColor clearColor];
+    squareAction.inactiveBackgroundColor = [UIColor clearColor];
     squareAction.behavior = DRCellSlideActionPushBehavior;
     squareAction.elasticity = 40;
     squareAction.didTriggerBlock = [self pushTriggerBlock];
     
-   // [slideGestureRecognizer addActions:squareAction];
+    [slideGestureRecognizer addActions:squareAction];
     
-  //  [cell addGestureRecognizer:slideGestureRecognizer];
-    
+    [cell addGestureRecognizer:slideGestureRecognizer];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
     return cell;
 }
 
@@ -187,6 +188,7 @@
     
     return 150;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

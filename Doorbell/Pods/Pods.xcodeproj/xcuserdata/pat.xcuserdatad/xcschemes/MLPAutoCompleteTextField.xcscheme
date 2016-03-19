@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '92829E5883F73FE2E4EAFFC0'
-               BlueprintName = 'ParseFacebookUtilsV4'
+               BlueprintIdentifier = 'B6E730DD25D23CCF4DA9E7B9'
+               BlueprintName = 'MLPAutoCompleteTextField'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libParseFacebookUtilsV4.a'>
+               BuildableName = 'libMLPAutoCompleteTextField.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -87,7 +87,7 @@
 
 - (NSArray *)allCountries
 {
-    NSArray *countries =
+    /*NSArray *countries =
     @[
       @"Abkhazia",
       @"Afghanistan",
@@ -341,7 +341,16 @@
       @"Zimbabwe"
       ];
     
-    return countries;
+    return countries;*/
+    
+    NSArray *items = @[
+                       @"vacuum",
+                       @"sleeping bag",
+                       @"calculator",
+                       @"printer",
+                       @"pencil"
+                       ];
+    return items;
 }
 
 

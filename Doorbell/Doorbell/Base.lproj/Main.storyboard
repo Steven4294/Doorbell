@@ -6,7 +6,8 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="BLACKR~1.TTF">
+        <mutableArray key="black-rose.ttf">
+            <string>BlackRose</string>
             <string>BlackRose</string>
         </mutableArray>
     </customFonts>
@@ -36,6 +37,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="k9h-aD-HtB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.41960784313725491" green="0.72549019607843135" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="D55-rn-reo" kind="relationship" relationship="rootViewController" id="hGh-4y-GRy"/>
@@ -45,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="162" y="781"/>
         </scene>
-        <!--Feed Table View Controller-->
+        <!--doorbell-->
         <scene sceneID="a7b-nW-LZi">
             <objects>
                 <viewController id="D55-rn-reo" customClass="DBFeedTableViewController" sceneMemberID="viewController">
@@ -110,7 +112,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="LoQ-Gl-xPn"/>
+                    <navigationItem key="navigationItem" title="doorbell" id="LoQ-Gl-xPn"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="tableView" destination="rDl-z5-AyZ" id="wBQ-Xt-pSE"/>
@@ -136,38 +138,76 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dpc-ny-7OE">
-                                        <rect key="frame" x="8" y="26" width="63" height="30"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                        <state key="normal" title="Cancel">
-                                            <color key="titleColor" red="0.41960784313725491" green="0.72549019607843135" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                                        <rect key="frame" x="8" y="25" width="63" height="30"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="16"/>
+                                        <state key="normal" title="cancel">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="doorbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uxj-h6-bBT">
                                         <rect key="frame" x="120" y="29" width="134" height="21"/>
-                                        <fontDescription key="fontDescription" name="BlackRose" family="Black Rose" pointSize="26"/>
-                                        <color key="textColor" red="0.98823529409999999" green="0.35294117650000001" blue="0.41568627450000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="BlackRose" family="Black Rose" pointSize="25"/>
+                                        <color key="textColor" red="0.29117153755339809" green="0.60752873538659458" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.92918393186003678" green="0.92918393186003678" blue="0.92918393186003678" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="laC-Aj-GzX" customClass="MLPAutoCompleteTextField">
-                                <rect key="frame" x="12" y="253" width="343" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="item" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d2z-ce-bLB" customClass="MLPAutoCompleteTextField">
+                                <rect key="frame" x="0.0" y="63" width="375" height="50"/>
+                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="autoCompleteDataSource" destination="zWd-qc-Nj7" id="Pe5-C4-eCL"/>
+                                </connections>
                             </textField>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJw-hL-PFX">
+                                <rect key="frame" x="0.0" y="63" width="375" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KvS-iY-GUe">
+                                <rect key="frame" x="0.0" y="111" width="375" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="acTextField" destination="laC-Aj-GzX" id="h8A-S9-JAP"/>
+                        <outlet property="acTextField" destination="d2z-ce-bLB" id="g1H-0W-2ss"/>
                         <outlet property="cancelButton" destination="Dpc-ny-7OE" id="Hox-0K-fKa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KuC-jC-WML" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="zWd-qc-Nj7" customClass="DBAcDataSource"/>
             </objects>
             <point key="canvasLocation" x="1321.5" y="853.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="pmg-Eb-I0V">
+            <objects>
+                <viewController id="BuX-Kq-TC8" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sh7-3X-eUK"/>
+                        <viewControllerLayoutGuide type="bottom" id="iIy-pO-eD3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9cF-k2-ubF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="doorbell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JmR-uh-72n">
+                                <rect key="frame" x="227" y="145" width="206" height="131"/>
+                                <fontDescription key="fontDescription" name="BlackRose" family="Black Rose" pointSize="54"/>
+                                <color key="textColor" red="0.93725490196078431" green="0.28235294117647058" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1YB-Eh-zrr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1820" y="854"/>
         </scene>
     </scenes>
 </document>

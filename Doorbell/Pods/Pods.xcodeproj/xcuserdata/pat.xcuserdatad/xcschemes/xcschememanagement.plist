@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MLPAutoCompleteTextField.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,11 +92,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>020F7073902A062E77E40D0ED6C0E166</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>06F7B1887596B89DE7A1C45E05737694</key>
 		<dict>
 			<key>primary</key>
@@ -112,17 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4EFE469ADD3460657EE07E27C2444CDE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>57C086F0BC86D966E07C60FB1D983BF9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5DC5A0D2AFD705251BA62226BB116807</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,12 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>612A065CCCDFE96C4242F22B5A5F0D91</key>
+		<key>81D7FE2A0FD9258247B1232874B837DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>81D7FE2A0FD9258247B1232874B837DA</key>
+		<key>8816573C36DAEDEC45EB8753A0E63183</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,12 +142,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9B9E0D061D24C4028FBC28497712576F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>C191722EC906AECF64B0E6CAD8D40834</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D692624CE562FBC8BCEE15C9C5B17685</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE3FB355861E3B66EFDFE9706AD122E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E3747ADA0087CA5EEC1E99D367CA1648</key>
 		<dict>
 			<key>primary</key>
 			<true/>

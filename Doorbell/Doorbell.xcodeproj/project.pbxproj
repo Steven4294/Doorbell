@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB541C98B799007A9C3D /* DBTableViewCell.m */; };
 		433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */; };
-		433AFB5E1C9CBEFD007A9C3D /* BLACKR~1.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 433AFB5D1C9CBEFD007A9C3D /* BLACKR~1.TTF */; };
-		433AFB601C9CC611007A9C3D /* MLPAutoCompleteTextField in Resources */ = {isa = PBXBuildFile; fileRef = 433AFB5F1C9CC611007A9C3D /* MLPAutoCompleteTextField */; };
+		433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */; };
 		433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */; };
 		433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */; };
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
@@ -52,8 +51,7 @@
 		433AFB541C98B799007A9C3D /* DBTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBTableViewCell.m; sourceTree = "<group>"; };
 		433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRequestFormViewController.h; sourceTree = "<group>"; };
 		433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBRequestFormViewController.m; sourceTree = "<group>"; };
-		433AFB5D1C9CBEFD007A9C3D /* BLACKR~1.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BLACKR~1.TTF"; sourceTree = "<group>"; };
-		433AFB5F1C9CC611007A9C3D /* MLPAutoCompleteTextField */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MLPAutoCompleteTextField; sourceTree = "<group>"; };
+		433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "black-rose.ttf"; sourceTree = "<group>"; };
 		433AFB611C9CC6A0007A9C3D /* DBAcDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAcDataSource.h; sourceTree = "<group>"; };
 		433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBAcDataSource.m; sourceTree = "<group>"; };
 		433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCustomAcObject.h; sourceTree = "<group>"; };
@@ -144,8 +142,7 @@
 		D458A7E91C5C36B200F47581 /* Doorbell */ = {
 			isa = PBXGroup;
 			children = (
-				433AFB5F1C9CC611007A9C3D /* MLPAutoCompleteTextField */,
-				433AFB5D1C9CBEFD007A9C3D /* BLACKR~1.TTF */,
+				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
@@ -319,8 +316,7 @@
 			files = (
 				D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
-				433AFB5E1C9CBEFD007A9C3D /* BLACKR~1.TTF in Resources */,
-				433AFB601C9CC611007A9C3D /* MLPAutoCompleteTextField in Resources */,
+				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

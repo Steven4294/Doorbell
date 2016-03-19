@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MLPAutoCompleteTextField/MLPAutoCompleteTextField.h"
+#import "MLPAutoCompleteTextField.h"
 
-@interface DBRequestFormViewController : UIViewController <MLPAutoCompleteTextFieldDataSource, MLPAutoCompleteTextFieldDelegate>
+@interface DBRequestFormViewController : UIViewController <UITextFieldDelegate, MLPAutoCompleteTextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *cancelButton;
 @property (nonatomic, strong) IBOutlet MLPAutoCompleteTextField *acTextField;
