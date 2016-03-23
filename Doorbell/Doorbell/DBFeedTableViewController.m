@@ -89,6 +89,17 @@
     [self.view bringSubviewToFront:requestButton];
     [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton *profileButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 80, 50, 50)];
+    profileButton.backgroundColor = [UIColor greenColor];
+    [profileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [profileButton setTitle:@"profile" forState:UIControlStateNormal];
+    [profileButton.titleLabel setFont:[UIFont fontWithName:@"Avenir" size:20.0]];
+    [self.view addSubview:profileButton];
+    [self.view bringSubviewToFront:profileButton];
+    [profileButton addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
    /* [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor colorWithRed:242/255.0 green:120/255.0 blue:75/255.0 alpha:1.0],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];*/
@@ -97,10 +108,7 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
      NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
-    
     self.shyNavBarManager.scrollView = self.tableView;
-    
-    
 }
 
 -(void)requestButtonPressed{
@@ -109,13 +117,20 @@
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     
-
-    
     [self presentViewController:vc animated:YES completion:^{
-        
-        
     }];
     
+}
+
+-(void)profileButtonPressed{
+    
+    NSLog(@"request button pressed");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBProfileViewController"];
+    [vc setModalPresentationStyle:UIModalPresentationPopover];
+    
+    [self presentViewController:vc animated:YES completion:^{
+    }];
 }
 
 

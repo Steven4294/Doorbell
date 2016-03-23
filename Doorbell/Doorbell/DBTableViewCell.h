@@ -13,9 +13,13 @@
 @interface DBTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *messageLabel;
+@property (nonatomic, strong) IBOutlet UILabel *profileLabel;
+
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
+@property (nonatomic, strong) IBOutlet UIView *borderView;
+
 
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 

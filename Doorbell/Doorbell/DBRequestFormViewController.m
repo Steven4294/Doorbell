@@ -49,13 +49,9 @@ BOOL responderOverride;
     responderOverride = YES;
 }
 
-- (void)cancelButtonPressed{
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-        
-    }];
-    
+- (void)cancelButtonPressed
+{
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 

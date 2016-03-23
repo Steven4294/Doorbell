@@ -25,6 +25,7 @@
 		D458A8051C5C36B200F47581 /* DoorbellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8041C5C36B200F47581 /* DoorbellTests.m */; };
 		D458A8101C5C36B200F47581 /* DoorbellUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A80F1C5C36B200F47581 /* DoorbellUITests.m */; };
 		D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8341C6189F200F47581 /* DBProfileViewController.m */; };
+		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		D458A8111C5C36B200F47581 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D458A8331C6189F200F47581 /* DBProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProfileViewController.h; sourceTree = "<group>"; };
 		D458A8341C6189F200F47581 /* DBProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProfileViewController.m; sourceTree = "<group>"; };
+		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
+				D4EE0BE81CA21BE6004A5A9F /* boston.png */,
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
@@ -318,6 +321,7 @@
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
+				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
