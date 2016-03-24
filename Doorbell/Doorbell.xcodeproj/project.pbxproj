@@ -13,8 +13,6 @@
 		433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */; };
 		433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */; };
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
-		D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */; };
-		D4422A241C8E8D46006D08E9 /* DBFeedCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */; };
 		D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
@@ -26,6 +24,8 @@
 		D458A8101C5C36B200F47581 /* DoorbellUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A80F1C5C36B200F47581 /* DoorbellUITests.m */; };
 		D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8341C6189F200F47581 /* DBProfileViewController.m */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
+		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
+		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,10 +58,6 @@
 		433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCustomAcObject.h; sourceTree = "<group>"; };
 		433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCustomAcObject.m; sourceTree = "<group>"; };
 		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSwipeBetweenVCViewController.h; sourceTree = "<group>"; };
-		D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSwipeBetweenVCViewController.m; sourceTree = "<group>"; };
-		D4422A221C8E8D46006D08E9 /* DBFeedCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedCollectionViewController.h; sourceTree = "<group>"; };
-		D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedCollectionViewController.m; sourceTree = "<group>"; };
 		D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedTableViewController.h; sourceTree = "<group>"; };
 		D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedTableViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +79,9 @@
 		D458A8331C6189F200F47581 /* DBProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProfileViewController.h; sourceTree = "<group>"; };
 		D458A8341C6189F200F47581 /* DBProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProfileViewController.m; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
+		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
+		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
+		D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
+				D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */,
 				D4EE0BE81CA21BE6004A5A9F /* boston.png */,
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
@@ -156,11 +156,9 @@
 				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
 				433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */,
 				433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */,
-				D4422A221C8E8D46006D08E9 /* DBFeedCollectionViewController.h */,
-				D4422A231C8E8D46006D08E9 /* DBFeedCollectionViewController.m */,
-				D4422A1F1C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.h */,
-				D4422A201C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
+				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
+				D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */,
 				433AFB531C98B799007A9C3D /* DBTableViewCell.h */,
 				433AFB541C98B799007A9C3D /* DBTableViewCell.m */,
 				433AFB611C9CC6A0007A9C3D /* DBAcDataSource.h */,
@@ -321,6 +319,7 @@
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
+				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,17 +393,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4422A241C8E8D46006D08E9 /* DBFeedCollectionViewController.m in Sources */,
 				433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */,
 				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
 				433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
 				433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */,
-				D4422A211C86A2F1006D08E9 /* DBSwipeBetweenVCViewController.m in Sources */,
 				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
+				D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

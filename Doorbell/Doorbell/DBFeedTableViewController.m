@@ -17,8 +17,10 @@
 #import "TTTTimeIntervalFormatter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "TLYShyNavBarManager.h"
+#import "CEBaseInteractionController.h"
+#import "DBNavigationController.h"
 
-@interface DBFeedTableViewController ()
+@interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
     NSMutableArray *requests;
 }
@@ -30,17 +32,16 @@
 
 @implementation DBFeedTableViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 
     // Uncomment the following line to preserve selection between presentations.
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+
     
-    
-   
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
@@ -63,16 +64,18 @@
         [query orderByDescending:@"createdAt"];
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             
-            if (!error) {
+            if (!error)
+            {
                 // The find succeeded.
                 // Do something with the found objects
                 requests = [objects mutableCopy];
                 [self.tableView reloadData];
-            } else {
+            }
+            else
+            {
                 // Log details of the failure
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
-            
             [self.tableView.pullToRefreshView stopAnimating];
         }];
         
@@ -89,17 +92,6 @@
     [self.view bringSubviewToFront:requestButton];
     [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *profileButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 80, 50, 50)];
-    profileButton.backgroundColor = [UIColor greenColor];
-    [profileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [profileButton setTitle:@"profile" forState:UIControlStateNormal];
-    [profileButton.titleLabel setFont:[UIFont fontWithName:@"Avenir" size:20.0]];
-    [self.view addSubview:profileButton];
-    [self.view bringSubviewToFront:profileButton];
-    [profileButton addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
    /* [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor colorWithRed:242/255.0 green:120/255.0 blue:75/255.0 alpha:1.0],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];*/
@@ -109,28 +101,40 @@
      NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
     self.shyNavBarManager.scrollView = self.tableView;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 32, 32);
+    [button setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
+    [barButton setCustomView:button];
+    self.navigationItem.leftBarButtonItem = barButton;
 }
 
 -(void)requestButtonPressed{
     NSLog(@"request button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
+    vc.transitioningDelegate = self;
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     
     [self presentViewController:vc animated:YES completion:^{
     }];
     
+    
 }
 
 -(void)profileButtonPressed{
     
-    NSLog(@"request button pressed");
+    NSLog(@"profile button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBProfileViewController"];
-    [vc setModalPresentationStyle:UIModalPresentationPopover];
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     
-    [self presentViewController:vc animated:YES completion:^{
-    }];
+    [self performSegueWithIdentifier:@"panSegue" sender:self];
+
 }
 
 
@@ -151,7 +155,6 @@
 {
    return [requests count];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -219,8 +222,7 @@
         [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:nil];
         }]];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
+       [self presentViewController:alertController animated:YES completion:nil];
     };
 }
 
@@ -243,5 +245,65 @@
     padding = padding * 15.0f;
     return padding;
 }
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source
+{
+    
+    NSLog(@"1 called");
+    DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
+    
+    if (navigationController.navigationInteractionController)
+    {
+        [navigationController.navigationInteractionController wireToViewController:presented forOperation:CEInteractionOperationDismiss];
+        
+        NSLog(@"wiriting stuff");
+    }
+    
+    navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
+    navigationController.navigationAnimationController.reverse = YES;
+    //navigationController.navigationAnimationController.duration = 3.9f;
+
+    
+
+    
+    
+    return navigationController.navigationAnimationController;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    NSLog(@"2 called");
+    DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
+
+    navigationController.navigationAnimationController.reverse = NO;
+    
+    return navigationController.navigationAnimationController;
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    NSLog(@"3 called");
+    
+    DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
+
+    return navigationController.navigationInteractionController && navigationController.navigationInteractionController.interactionInProgress ? navigationController.navigationInteractionController : nil;
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"panSegue"])
+    {
+        UIViewController *toVC = segue.destinationViewController;
+        toVC.transitioningDelegate = self;
+    }
+    
+    [super prepareForSegue:segue sender:sender];
+}
+
+
 
 @end

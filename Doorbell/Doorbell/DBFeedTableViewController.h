@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CEReversibleAnimationController.h"
+
 
 @interface DBFeedTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

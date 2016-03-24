@@ -13,7 +13,6 @@
 #import <ParseFacebookUtilsV4.h>
 
 #import "DBProfileViewController.h"
-#import "DBSwipeBetweenVCViewController.h"
 @interface DBLoginViewController () <FBSDKLoginButtonDelegate>
 
 @end
