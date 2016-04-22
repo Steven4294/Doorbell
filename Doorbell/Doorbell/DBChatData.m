@@ -104,13 +104,13 @@
                                 {
                                     JSQMessagesAvatarImage *fromImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
                                                                                                                    diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+                                    NSDictionary *avatarDict = @{kJSQDemoAvatarIdFrom: fromImage};
+                                    [self.avatars addEntriesFromDictionary:avatarDict];
                                     
                                 }
                             }];
-    
-    }
-    
 
+    }
 }
 
 - (void)loadFakeMessages
