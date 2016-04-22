@@ -263,7 +263,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CHL-5e-UKF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="651.5" y="1400.5"/>
+            <point key="canvasLocation" x="697.5" y="1342.5"/>
         </scene>
         <!--Message View Controller-->
         <scene sceneID="LUI-3t-o9H">
@@ -282,7 +282,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIo-45-eXy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1195" y="1489"/>
+            <point key="canvasLocation" x="1166.5" y="1342.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="65G-9p-ShZ">
@@ -435,7 +435,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UQg-6W-23Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-22.5" y="-126.5"/>
+            <point key="canvasLocation" x="-159.5" y="-114.5"/>
         </scene>
         <!--Chat Navigation Controller-->
         <scene sceneID="1fn-M4-c6Z">
@@ -453,7 +453,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="1290.5" y="572.5"/>
+            <point key="canvasLocation" x="1166.5" y="605.5"/>
         </scene>
         <!--doorbell-->
         <scene sceneID="EWf-89-mBH">

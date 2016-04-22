@@ -7,6 +7,8 @@
 //
 
 #import "DBChatData.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @implementation DBChatData
 
@@ -36,17 +38,19 @@
                                                                                       diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
         
         
-        self.avatars = @{ kJSQDemoAvatarIdSquires : cookImage,
+       NSDictionary *avatars = @{ kJSQDemoAvatarIdSquires : cookImage,
                           kJSQDemoAvatarIdCook : cookImage,
                           kJSQDemoAvatarIdJobs : jobsImage,
                           kJSQDemoAvatarIdWoz : wozImage };
         
         
-        self.users = @{ kJSQDemoAvatarIdJobs : kJSQDemoAvatarDisplayNameJobs,
+        NSDictionary *users = @{ kJSQDemoAvatarIdJobs : kJSQDemoAvatarDisplayNameJobs,
                         kJSQDemoAvatarIdCook : kJSQDemoAvatarDisplayNameCook,
                         kJSQDemoAvatarIdWoz : kJSQDemoAvatarDisplayNameWoz,
                         kJSQDemoAvatarIdSquires : kJSQDemoAvatarDisplayNameSquires };
         
+        self.avatars = [[NSMutableDictionary alloc] initWithDictionary:avatars];
+        self.users = [[NSMutableDictionary alloc] initWithDictionary:users];
         
         /**
          *  Create message bubble images objects.
@@ -69,19 +73,44 @@
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *messagesRelation = currentUser[@"messages"];
     PFQuery *messageQuery = [messagesRelation query];
-   [messageQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-
-        for (PFObject *message in objects)
-        {
-            JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
+    [messageQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         
+         for (PFObject *message in objects)
+         {
+             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
                                                            displayName:kJSQDemoAvatarDisplayNameSquires
-                                                                 text:message[@"message"]];
-            [self.messages addObject:jsqMessage];
-        }
-       
-       [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
-       
-    }];
+                                                                  text:message[@"message"]];
+             [self.messages addObject:jsqMessage];
+         }
+         
+         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
+         
+     }];
+    
+    if (userReciever[@"facebookId"] != nil)
+    {
+        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", userReciever[@"facebookId"]];
+        NSURL *imageURL = [NSURL URLWithString:URLString];
+
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        [manager downloadImageWithURL:imageURL
+                              options:0
+                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                 // progression tracking code
+                             }
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                if (image)
+                                {
+                                    JSQMessagesAvatarImage *fromImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
+                                                                                                                   diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+                                    
+                                }
+                            }];
+    
+    }
+    
+
 }
 
 - (void)loadFakeMessages
