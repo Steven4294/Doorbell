@@ -119,7 +119,6 @@
                      
                      [self.chatData.messages addObject:message];
                      [self finishSendingMessageAnimated:YES];
-                     
                  }
                  
              }];

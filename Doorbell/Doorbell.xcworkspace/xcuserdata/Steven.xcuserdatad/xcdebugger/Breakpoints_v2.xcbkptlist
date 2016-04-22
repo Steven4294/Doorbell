@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Doorbell/DBMessageViewController.m"
-            timestampString = "483043971.464045"
+            timestampString = "483045392.730749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "-recievedNewMessages"
             landmarkType = "5">
          </BreakpointContent>

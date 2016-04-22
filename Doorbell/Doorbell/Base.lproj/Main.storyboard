@@ -253,6 +253,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="cancelButton" destination="D1f-RY-O6j" id="01K-Xa-bwf"/>
@@ -263,6 +264,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CHL-5e-UKF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="651.5" y="1400.5"/>
+        </scene>
+        <!--Message View Controller-->
+        <scene sceneID="LUI-3t-o9H">
+            <objects>
+                <viewController storyboardIdentifier="DBMessageViewController" id="g4x-sb-5P2" customClass="DBMessageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3Ku-lm-bKz"/>
+                        <viewControllerLayoutGuide type="bottom" id="0lR-aa-ewF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uDU-tq-lDT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wIo-45-eXy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1195" y="1489"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="65G-9p-ShZ">
@@ -420,6 +440,7 @@
         <!--Chat Navigation Controller-->
         <scene sceneID="1fn-M4-c6Z">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3xa-hJ-fGd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="DBChatNavigationController" id="vO2-Y5-Xlf" customClass="DBChatNavigationController" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="6wB-xz-glZ">
@@ -431,7 +452,6 @@
                         <segue destination="NKU-q6-wmW" kind="relationship" relationship="rootViewController" id="V5k-h0-vz7"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3xa-hJ-fGd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1290.5" y="572.5"/>
         </scene>

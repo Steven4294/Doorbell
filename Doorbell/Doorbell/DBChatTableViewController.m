@@ -12,12 +12,11 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DBMessageViewController.h"
 #import "DBLoginViewController.h"
-
+#import "DBChatNavigationController.h"
 
 @interface DBChatTableViewController ()
 {
     NSMutableArray *usersArray;
-    
 }
 
 @end
@@ -34,7 +33,6 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
 
-    
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     usersArray = [[NSMutableArray alloc] init];
@@ -112,7 +110,9 @@
 {
     NSLog(@"selected row");
     DBChatViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    DBMessageViewController *messageVC = [[DBMessageViewController alloc] init];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+    
     messageVC.userReciever = cell.user;
     messageVC.senderId = @"bob";
     messageVC.senderDisplayName = @"bob displayname";

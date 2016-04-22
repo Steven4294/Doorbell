@@ -25,8 +25,6 @@
          *
          *  If you are not using avatars, ignore this.
          */
-        
-        
 
         JSQMessagesAvatarImage *cookImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:[UIImage imageNamed:@"kanye.jpg"]
                                                                                        diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
@@ -76,12 +74,10 @@
         for (PFObject *message in objects)
         {
             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
-                                                          displayName:kJSQDemoAvatarDisplayNameSquires
+                                                           displayName:kJSQDemoAvatarDisplayNameSquires
                                                                  text:message[@"message"]];
-
             [self.messages addObject:jsqMessage];
         }
-
        
        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
        
@@ -131,11 +127,7 @@
     
     [self.messages addObject:reallyLongMessage];
     */
-    
-
 }
-
-
 
 - (void)addPhotoMediaMessage
 {
@@ -170,6 +162,5 @@
                                                          media:videoItem];
     [self.messages addObject:videoMessage];
 }
-
 
 @end
