@@ -19,6 +19,7 @@
 #import "TLYShyNavBarManager.h"
 #import "CEBaseInteractionController.h"
 #import "DBNavigationController.h"
+#import "DBChatNavigationController.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -40,6 +41,10 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    NSLog(@"view did load");
+    
+    [[PFUser currentUser] fetchIfNeeded];
 
     
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
@@ -107,12 +112,26 @@
     [button setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button2.frame = CGRectMake(0, 0, 32, 32);
+    [button2 setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    [button2 addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
     UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
     [barButton setCustomView:button];
     self.navigationItem.leftBarButtonItem = barButton;
+    
+    UIBarButtonItem *barButton2=[[UIBarButtonItem alloc] init];
+    [barButton2 setCustomView:button2];
+    self.navigationItem.rightBarButtonItem = barButton2;
+    
+    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
+    
+    
 }
 
--(void)requestButtonPressed{
+-(void)requestButtonPressed
+{
     NSLog(@"request button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
@@ -125,7 +144,8 @@
     
 }
 
--(void)profileButtonPressed{
+-(void)profileButtonPressed
+{
     
     NSLog(@"profile button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -135,6 +155,19 @@
     
     [self performSegueWithIdentifier:@"panSegue" sender:self];
 
+}
+
+-(void)chatButtonPressed
+{
+    
+    NSLog(@"profile button pressed");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBChatNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBChatNavigationController"];
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    
+    [self performSegueWithIdentifier:@"chatSegue" sender:self];
+    
 }
 
 
@@ -162,22 +195,42 @@
     
     if ([requests count] > indexPath.row)
     {
+
         PFObject *object = [requests objectAtIndex:indexPath.row];
+
         cell.messageLabel.text = [object objectForKey:@"message"];
         
-        PFObject *sender = [object objectForKey:@"sender"];
-        cell.nameLabel.text = sender[@"facebookName"];
-        
-        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-        
-        NSDate *createdDate = [object createdAt];
+        PFUser *sender = [object objectForKey:@"sender"];
+        NSLog(@"sender : %@", sender.objectId);
 
-        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", sender[@"facebookId"]];
-        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                          placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+        PFQuery *query = [PFQuery queryWithClassName:@"User"];
+        [query whereKey:@"objectId" equalTo:sender.objectId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            
+            NSLog(@"objects: %d", objects.count);
+            PFObject *poster = [objects firstObject];
+            if (sender[@"facebookName"] != nil)
+            {
+                cell.nameLabel.text = sender[@"facebookName"];
+                
+            }
+            
+            
+            TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+            
+            NSDate *createdDate = [object createdAt];
+            
+            cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
+            NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", sender[@"facebookId"]];
+            [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
+                                     placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+            
+            [cell.messageLabel sizeToFit];
+
+        }];
         
-        [cell.messageLabel sizeToFit];
+        
+     
     }
    
     
@@ -252,20 +305,28 @@
                                                                   presentingController:(UIViewController *)presenting
                                                                       sourceController:(UIViewController *)source
 {
-    
-    NSLog(@"1 called");
     DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
     
     if (navigationController.navigationInteractionController)
     {
         [navigationController.navigationInteractionController wireToViewController:presented forOperation:CEInteractionOperationDismiss];
-        
-        NSLog(@"wiriting stuff");
     }
     
-    navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
-    navigationController.navigationAnimationController.reverse = YES;
-    //navigationController.navigationAnimationController.duration = 3.9f;
+    navigationController.navigationAnimationController = nil;
+    if ([presented isKindOfClass:NSClassFromString(@"DBProfileViewController")])
+    {
+        navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
+        navigationController.navigationAnimationController.reverse = YES;
+
+    }
+    if ([presented isKindOfClass:NSClassFromString(@"DBChatTableViewController")])
+    {
+        navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
+        navigationController.navigationAnimationController.reverse = NO;
+
+    }
+    
+    
 
     
 
@@ -276,18 +337,29 @@
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    NSLog(@"2 called");
     DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
 
     navigationController.navigationAnimationController.reverse = NO;
+    
+    navigationController.navigationAnimationController = nil;
+    if ([dismissed isKindOfClass:NSClassFromString(@"DBProfileViewController")])
+    {
+        navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
+        navigationController.navigationAnimationController.reverse = NO;
+        
+    }
+    if ([dismissed isKindOfClass:NSClassFromString(@"DBChatTableViewController")])
+    {
+        navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
+        navigationController.navigationAnimationController.reverse = YES;
+        
+    }
     
     return navigationController.navigationAnimationController;
 }
 
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {
-    NSLog(@"3 called");
-    
     DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
 
     return navigationController.navigationInteractionController && navigationController.navigationInteractionController.interactionInProgress ? navigationController.navigationInteractionController : nil;
@@ -295,7 +367,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"panSegue"])
+    if ([segue.identifier isEqualToString:@"panSegue"] || [segue.identifier isEqualToString:@"chatSegue"])
     {
         UIViewController *toVC = segue.destinationViewController;
         toVC.transitioningDelegate = self;

@@ -20,5 +20,6 @@
 
 
 -(IBAction)cancelButton:(id)sender;
+-(IBAction)logoutButton:(id)sender;
 
 @end

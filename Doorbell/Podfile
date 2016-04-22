@@ -11,7 +11,6 @@ pod "FBSDKLoginKit"
 pod "FBSDKShareKit"
 pod "FBSDKMessengerShareKit"
 pod 'ParseFacebookUtilsV4'
-
 pod 'RKSwipeBetweenViewControllers'
 pod 'DRCellSlideGestureRecognizer'
 pod 'SVPullToRefresh'
@@ -22,5 +21,6 @@ pod 'SDWebImage', '~>3.7'
 pod 'MLPAutoCompleteTextField', '~> 1.5'
 pod 'TLYShyNavBar'
 pod 'VCTransitionsLibrary'
+pod 'JSQMessagesViewController'
 
 

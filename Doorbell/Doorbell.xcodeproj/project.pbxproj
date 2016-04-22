@@ -13,6 +13,7 @@
 		433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */; };
 		433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */; };
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
+		D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */; };
 		D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
@@ -26,6 +27,16 @@
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
+		D4EE0BF01CA4C762004A5A9F /* login-with-fb.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEF1CA4C762004A5A9F /* login-with-fb.png */; };
+		D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BF11CA4CA00004A5A9F /* loginBackgroundImage.png */; };
+		D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BF31CA4CD6B004A5A9F /* DBhigh_white.png */; };
+		D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BF51CA4CEB0004A5A9F /* mountainLake.png */; };
+		D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BF71CA4CF89004A5A9F /* DBhigh_white2.png */; };
+		D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BFA1CAED004004A5A9F /* DBChatTableViewController.m */; };
+		D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */; };
+		D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */ = {isa = PBXBuildFile; fileRef = D4F951D91CB5B5F5009B6057 /* DBChatData.m */; };
+		D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D4F951DD1CB726C4009B6057 /* kanye.jpg */; };
+		D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4F951E11CC07161009B6057 /* DBChatNavigationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +69,8 @@
 		433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCustomAcObject.h; sourceTree = "<group>"; };
 		433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCustomAcObject.m; sourceTree = "<group>"; };
 		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D4053F9B1CB4CE0300EDBA02 /* DBMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessageViewController.h; sourceTree = "<group>"; };
+		D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageViewController.m; sourceTree = "<group>"; };
 		D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedTableViewController.h; sourceTree = "<group>"; };
 		D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedTableViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +95,21 @@
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
 		D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBNavigationController.m; sourceTree = "<group>"; };
+		D4EE0BEF1CA4C762004A5A9F /* login-with-fb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-with-fb.png"; sourceTree = "<group>"; };
+		D4EE0BF11CA4CA00004A5A9F /* loginBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBackgroundImage.png; sourceTree = "<group>"; };
+		D4EE0BF31CA4CD6B004A5A9F /* DBhigh_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DBhigh_white.png; sourceTree = "<group>"; };
+		D4EE0BF51CA4CEB0004A5A9F /* mountainLake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mountainLake.png; sourceTree = "<group>"; };
+		D4EE0BF71CA4CF89004A5A9F /* DBhigh_white2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DBhigh_white2.png; sourceTree = "<group>"; };
+		D4EE0BF91CAED004004A5A9F /* DBChatTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBChatTableViewController.h; sourceTree = "<group>"; };
+		D4EE0BFA1CAED004004A5A9F /* DBChatTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBChatTableViewController.m; sourceTree = "<group>"; };
+		D4EE0BFC1CAED26E004A5A9F /* DBChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBChatViewCell.h; sourceTree = "<group>"; };
+		D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBChatViewCell.m; sourceTree = "<group>"; };
+		D4F951D81CB5B5F5009B6057 /* DBChatData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBChatData.h; sourceTree = "<group>"; };
+		D4F951D91CB5B5F5009B6057 /* DBChatData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBChatData.m; sourceTree = "<group>"; };
+		D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = jsq_messages_sample.m4a; sourceTree = "<group>"; };
+		D4F951DD1CB726C4009B6057 /* kanye.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kanye.jpg; sourceTree = "<group>"; };
+		D4F951E01CC07161009B6057 /* DBChatNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBChatNavigationController.h; sourceTree = "<group>"; };
+		D4F951E11CC07161009B6057 /* DBChatNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBChatNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,9 +171,16 @@
 		D458A7E91C5C36B200F47581 /* Doorbell */ = {
 			isa = PBXGroup;
 			children = (
+				D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */,
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
+				D4F951DD1CB726C4009B6057 /* kanye.jpg */,
+				D4EE0BF31CA4CD6B004A5A9F /* DBhigh_white.png */,
+				D4EE0BF71CA4CF89004A5A9F /* DBhigh_white2.png */,
 				D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */,
+				D4EE0BEF1CA4C762004A5A9F /* login-with-fb.png */,
+				D4EE0BF11CA4CA00004A5A9F /* loginBackgroundImage.png */,
 				D4EE0BE81CA21BE6004A5A9F /* boston.png */,
+				D4EE0BF51CA4CEB0004A5A9F /* mountainLake.png */,
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
@@ -157,12 +192,14 @@
 				433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */,
 				433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
+				D4F951E01CC07161009B6057 /* DBChatNavigationController.h */,
+				D4F951E11CC07161009B6057 /* DBChatNavigationController.m */,
 				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
 				D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */,
 				433AFB531C98B799007A9C3D /* DBTableViewCell.h */,
 				433AFB541C98B799007A9C3D /* DBTableViewCell.m */,
-				433AFB611C9CC6A0007A9C3D /* DBAcDataSource.h */,
-				433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */,
+				D4F951DF1CB72AAF009B6057 /* Chat */,
+				D4F951DC1CB72352009B6057 /* Model */,
 				433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */,
 				433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */,
 				D458A7F61C5C36B200F47581 /* Assets.xcassets */,
@@ -197,6 +234,30 @@
 				D458A8111C5C36B200F47581 /* Info.plist */,
 			);
 			path = DoorbellUITests;
+			sourceTree = "<group>";
+		};
+		D4F951DC1CB72352009B6057 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				433AFB611C9CC6A0007A9C3D /* DBAcDataSource.h */,
+				433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */,
+				D4F951D81CB5B5F5009B6057 /* DBChatData.h */,
+				D4F951D91CB5B5F5009B6057 /* DBChatData.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		D4F951DF1CB72AAF009B6057 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				D4EE0BFC1CAED26E004A5A9F /* DBChatViewCell.h */,
+				D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */,
+				D4EE0BF91CAED004004A5A9F /* DBChatTableViewController.h */,
+				D4EE0BFA1CAED004004A5A9F /* DBChatTableViewController.m */,
+				D4053F9B1CB4CE0300EDBA02 /* DBMessageViewController.h */,
+				D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */,
+			);
+			name = Chat;
 			sourceTree = "<group>";
 		};
 		F384E352FA55E3424BB2293C /* Pods */ = {
@@ -315,12 +376,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4EE0BF01CA4C762004A5A9F /* login-with-fb.png in Resources */,
 				D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
+				D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
+				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
+				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
+				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
+				D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,12 +463,17 @@
 				433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */,
 				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
+				D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */,
 				433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
 				433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */,
 				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
+				D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
+				D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
+				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,
+				D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */,
 				D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

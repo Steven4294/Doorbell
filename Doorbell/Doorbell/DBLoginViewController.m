@@ -13,29 +13,65 @@
 #import <ParseFacebookUtilsV4.h>
 
 #import "DBProfileViewController.h"
-@interface DBLoginViewController () <FBSDKLoginButtonDelegate>
+
+#import "DBNavigationController.h"
+
+@interface DBLoginViewController ()
 
 @end
 
 @implementation DBLoginViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-
     
-    UIButton *loginButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 100, 50, 50)];
-    loginButton.backgroundColor = [UIColor blueColor];
-    [loginButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:loginButton];
+    [self.loginButton addTarget:self action:@selector(loginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.loginButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.loginButton.layer.borderWidth = 1.0f;
+    self.loginButton.layer.cornerRadius = self.loginButton.frame.size.height/2;
     
+    PFUser *currentUser = [PFUser currentUser];
+    if (currentUser.isNew == NO) {
+        NSLog(@"old user has been shown loginflow");
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
+        [self presentViewController:vc animated:YES completion:^{}];
+        
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (void)loginButtonClicked
+{
+    [self loginUser];
+}
+
+- (void)presentFeed
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
+    [self presentViewController:vc animated:YES completion:^{}];
+}
+
+- (void)loginTestUser
+{
+    NSDictionary *params = @{
+                             @"password": @"newpassword",
+                             @"name": @"Newname Smith",
+                             };
+    /* make the API call */
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
+                                  initWithGraphPath:@"/{test-user-id}"
+                                  parameters:params
+                                  HTTPMethod:@"POST"];
+    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
+                                          id result,
+                                          NSError *error) {
+        NSLog(@"login test user");
+    }];
+}
+
+- (void)loginUser
 {
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     
@@ -43,36 +79,40 @@
     [PFFacebookUtils logInInBackgroundWithReadPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user)
         {
-            NSLog(@"Uh oh. The user cancelled the Facebook login.");
-        } else if (user.isNew)
+            NSLog(@"Uh oh. The user cancelled the Facebook login: %@", [PFUser currentUser].username);
+        }
+        else
         {
-            
-        } else
-        {
-            NSLog(@"login button did complete");
-            
-            
-            NSLog(@"User signed up and logged in through Facebook!");
-            
             if ([FBSDKAccessToken currentAccessToken]) {
                 [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
                  startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                      if (!error) {
                          PFUser *currentUser = [PFUser currentUser];
-                         currentUser[@"facebookId"] = result[@"id"];
-                         currentUser[@"facebookName"] = result[@"name"];
+                         if (currentUser[@"facebookName"] != nil) {
+                             currentUser[@"facebookId"] = result[@"id"];
+                             currentUser[@"facebookName"] = result[@"name"];
+                         }
+                    
                          [currentUser saveInBackground];
                      }
                  }];
             }
             
+            [self presentFeed];
             
+            if (user.isNew)
+            {
+                // the user is new!
+            }
+            else
+            {
+                // an old user has logged back in
+            }
         }
         
         NSLog(@"user %@", user);
     }];
+
 }
-
-
 
 @end

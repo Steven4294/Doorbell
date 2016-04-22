@@ -12,6 +12,10 @@
 #import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
 #import "RKSwipeBetweenViewControllers.h"
 
+
+#import "DBNavigationController.h"
+#import "DBLoginViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -23,6 +27,7 @@
     // Override point for customization after application launch.
     // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios/guide#local-datastore
+    NSLog(@"app delegated called");
     [Parse enableLocalDatastore];
     
     // Initialize Parse.
@@ -34,26 +39,22 @@
     
     [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
     
-   /* self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
-    UIPageViewController *pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    if ([PFUser currentUser] != nil)
+    {
+        DBNavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
+        self.window.rootViewController = navigationController;
+    }
+    else
+    {
+        DBNavigationController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
+        self.window.rootViewController = loginController;
+    }
     
-    RKSwipeBetweenViewControllers *navigationController = [[RKSwipeBetweenViewControllers alloc]initWithRootViewController:pageController];
-    
-    //%%% DEMO CONTROLLERS
-    UIViewController *demo = [[UIViewController alloc]init];
-    UIViewController *demo2 = [[UIViewController alloc]init];
-    UIViewController *demo3 = [[UIViewController alloc]init];
-    UIViewController *demo4 = [[UIViewController alloc]init];
-    demo.view.backgroundColor = [UIColor redColor];
-    demo2.view.backgroundColor = [UIColor whiteColor];
-    demo3.view.backgroundColor = [UIColor grayColor];
-    demo4.view.backgroundColor = [UIColor orangeColor];
-    [navigationController.viewControllerArray addObjectsFromArray:@[demo,demo2,demo3,demo4]];
-    
-    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
-    */
     
     return YES;
 }

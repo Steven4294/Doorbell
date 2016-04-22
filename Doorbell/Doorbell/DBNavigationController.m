@@ -44,7 +44,6 @@
     
     // reverse the animation for 'pop' transitions
     _navigationAnimationController.reverse = operation == UINavigationControllerOperationPop;
-    NSLog(@"this shit is called");
     return _navigationAnimationController;
 }
 

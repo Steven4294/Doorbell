@@ -10,6 +10,7 @@
 
 @interface DBLoginViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UIButton *loginButton;
 
 @end
 

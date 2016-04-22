@@ -10,8 +10,10 @@
 #import "Parse.h"
 #import "DBTableViewCell.h"
 #import "TTTTimeIntervalFormatter.h"
+#import "DBLoginViewController.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -42,23 +44,26 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    self.nameLabel.text = currentUser[@"facebookName"];
-    
+    if (currentUser[@"facebookName"] != nil)
+    {
+        self.nameLabel.text = currentUser[@"facebookName"];
+    }
     
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"sender" equalTo:[PFUser currentUser]];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
-        if (!error) {
+        if (!error)
+        {
             // The find succeeded.
             // Do something with the found objects
             userRequests = [objects mutableCopy];
-            NSLog(@"found: %d", userRequests.count);
             [self.tableView reloadData];
-        } else {
+        }
+        else
+        {
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
 }
@@ -73,6 +78,23 @@
     [self dismissViewControllerAnimated:YES completion:^{}]; 
 }
 
+-(void)logoutButton:(id)sender
+{
+    NSLog(@"logging out");
+    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        if (error == nil) {
+            [FBSDKAccessToken setCurrentAccessToken:nil];
+            
+            NSLog(@"logged out!");
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DBLoginViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
+            [self presentViewController:vc animated:NO completion:nil];
+            
+        }
+        
+    }];
+    
+}
 
 /*
 #pragma mark - Navigation
@@ -136,7 +158,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     return 150;
 }
 

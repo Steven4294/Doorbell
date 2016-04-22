@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C1F294E917EEB6C18935B900'
+               BlueprintIdentifier = '3D2E6BD553D9A21B69516B13'
                BlueprintName = 'DRCellSlideGestureRecognizer'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libDRCellSlideGestureRecognizer.a'>
