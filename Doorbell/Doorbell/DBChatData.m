@@ -38,16 +38,17 @@
                                                                                       diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
         
         
-       NSDictionary *avatars = @{ kJSQDemoAvatarIdSquires : cookImage,
-                          kJSQDemoAvatarIdCook : cookImage,
-                          kJSQDemoAvatarIdJobs : jobsImage,
-                          kJSQDemoAvatarIdWoz : wozImage };
+        NSDictionary *avatars = @{ kJSQDemoAvatarIdSquires : cookImage,
+                                   kJSQDemoAvatarIdCook : cookImage,
+                                   kJSQDemoAvatarIdJobs : jobsImage,
+                                   kJSQDemoAvatarIdWoz : wozImage };
         
         
         NSDictionary *users = @{ kJSQDemoAvatarIdJobs : kJSQDemoAvatarDisplayNameJobs,
-                        kJSQDemoAvatarIdCook : kJSQDemoAvatarDisplayNameCook,
-                        kJSQDemoAvatarIdWoz : kJSQDemoAvatarDisplayNameWoz,
-                        kJSQDemoAvatarIdSquires : kJSQDemoAvatarDisplayNameSquires };
+                                 kJSQDemoAvatarIdCook : kJSQDemoAvatarDisplayNameCook,
+                                 kJSQDemoAvatarIdWoz : kJSQDemoAvatarDisplayNameWoz,
+                                 kJSQDemoAvatarIdSquires : kJSQDemoAvatarDisplayNameSquires,
+                                 kJSQDemoAvatarIdFrom: kJSQDemoAvatarDisplayNameFrom};
         
         self.avatars = [[NSMutableDictionary alloc] initWithDictionary:avatars];
         self.users = [[NSMutableDictionary alloc] initWithDictionary:users];
@@ -78,8 +79,8 @@
          
          for (PFObject *message in objects)
          {
-             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
-                                                           displayName:kJSQDemoAvatarDisplayNameSquires
+             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdFrom
+                                                           displayName:kJSQDemoAvatarDisplayNameFrom
                                                                   text:message[@"message"]];
              [self.messages addObject:jsqMessage];
          }

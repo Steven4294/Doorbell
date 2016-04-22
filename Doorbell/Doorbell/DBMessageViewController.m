@@ -243,7 +243,7 @@
         }
     }*/
     
-    
+   
     return [self.chatData.avatars objectForKey:message.senderId];
 }
 
