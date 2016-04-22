@@ -174,7 +174,7 @@
 
 - (void)recievedNewMessages
 {
-    NSLog(@"recieved new messages called");
+    NSLog(@"recieved new messages called: %lu", (unsigned long)self.chatData.messages.count);
     [self.collectionView reloadData];
 }
 

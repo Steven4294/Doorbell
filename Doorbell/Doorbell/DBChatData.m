@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         
-        
+        self.messages = [[NSMutableArray alloc] init];
         [self loadFakeMessages];
         
         /**
@@ -72,15 +72,18 @@
     PFRelation *messagesRelation = currentUser[@"messages"];
     PFQuery *messageQuery = [messagesRelation query];
    [messageQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        NSLog(@"found %d objects", objects.count);
+
         for (PFObject *message in objects)
         {
             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
                                                           displayName:kJSQDemoAvatarDisplayNameSquires
                                                                  text:message[@"message"]];
+
             [self.messages addObject:jsqMessage];
         }
-       [[NSNotificationCenter defaultCenter] postNotification:@"messagesLoaded"];
+
+       
+       [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
        
     }];
 }
