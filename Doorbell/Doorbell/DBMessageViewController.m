@@ -44,9 +44,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"message view controller will appear");
-    [super viewWillAppear:animated]; //<--- CRASHES HERE!!!!
-    NSLog(@"message view super will appear called");
+    [super viewWillAppear:animated];
 
     if (self.delegateModal)
     {
