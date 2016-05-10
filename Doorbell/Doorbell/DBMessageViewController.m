@@ -5,6 +5,7 @@
 //  Created by Steven Petteruti on 4/6/16.
 //  Copyright © 2016 Doorbell LLC. All rights reserved.
 //
+// Displays
 
 #import "DBMessageViewController.h"
 
@@ -19,6 +20,13 @@
     // Do any additional setup after loading the view.
     self.chatData = [[DBChatData alloc] init];
     self.chatData.userReciever = self.userReciever;
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
+    
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
+    self.inputToolbar.contentView.textView.layer.borderWidth = 0;
+    self.inputToolbar.contentView.backgroundColor = [UIColor whiteColor];
+    self.inputToolbar.contentView.textView.placeHolder = @"Type a message...";
+    //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -44,6 +52,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"view will appear");
     [super viewWillAppear:animated];
 
     if (self.delegateModal)
@@ -52,11 +61,16 @@
                                                                                               target:self
                                                                                               action:@selector(closePressed:)];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(recievedNewMessages)
+                                                 name:@"messagesLoaded"
+                                               object:nil];
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"view did appear");
     [super viewDidAppear:animated];
     
     /**
@@ -67,10 +81,7 @@
     self.collectionView.collectionViewLayout.springinessEnabled =  NO;
     
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(recievedNewMessages)
-                                                 name:@"messagesLoaded"
-                                               object:nil];
+ 
 }
 
 
@@ -90,6 +101,8 @@
      *  3. Call `finishSendingMessage`
      */
     
+    // iOS, OS X, tvOS, watchOS SDK: Objective-C
+
     
     // TODO.. add object to parse
     PFUser *currentUser = [PFUser currentUser];
@@ -97,17 +110,18 @@
     messageObject[@"message"] = text;
     messageObject[@"from"] = currentUser;
     messageObject[@"to"] = _userReciever;
+    
     [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         
         if (succeeded == YES)
         {
             PFRelation *relation = [currentUser relationForKey:@"messages"];
             [relation addObject:messageObject];
+            
             [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
              {
                  if (succeeded == YES)
                  {
-                     NSLog(@"saving message to database");
                      [JSQSystemSoundPlayer jsq_playMessageSentSound];
                      
                      JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
@@ -115,27 +129,33 @@
                                                                            date:date
                                                                            text:text];
                      
+                     
                      [self.chatData.messages addObject:message];
                      [self finishSendingMessageAnimated:YES];
                  }
                  
+                 // adds the inverse relationship via the cloud!
+                 [PFCloud callFunctionInBackground:@"addRelationForMessage"
+                                    withParameters:@{@"messageID": messageObject.objectId,
+                                                     @"recieverID": _userReciever.objectId}
+                                             block:^(NSString *result, NSError *error)
+                  {
+
+                  }];
+                 
              }];
+            
+            
         }
     }];
+    
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
     [self.inputToolbar.contentView.textView resignFirstResponder];
-    
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Media messages"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Send photo", @"Send location", @"Send video", nil];
-    
-    [sheet showFromToolbar:self.inputToolbar];
-}
+   
+    }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -171,8 +191,8 @@
 
 - (void)recievedNewMessages
 {
-    NSLog(@"recieved new messages called: %lu", (unsigned long)self.chatData.messages.count);
     [self.collectionView reloadData];
+    [self scrollToBottomAnimated:NO];
 }
 
 
@@ -344,6 +364,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
+    return NO;
     if (action == @selector(customAction:)) {
         return YES;
     }
@@ -353,6 +374,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
+    return;
     if (action == @selector(customAction:)) {
         [self customAction:sender];
         return;

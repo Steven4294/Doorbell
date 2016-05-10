@@ -56,11 +56,13 @@ BOOL responderOverride;
 
 
 - (void)submitButtonPressed{
+    
+    //[self createFakeRequest];
+    
     [self.view endEditing:YES];
-    
-    
+
     PFObject *requestObject = [PFObject objectWithClassName:@"Request"];
-    requestObject[@"sender"] = [PFUser currentUser];
+    requestObject[@"poster"] = [PFUser currentUser];
     requestObject[@"message"] = self.acTextField.text;
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
@@ -76,8 +78,38 @@ BOOL responderOverride;
             NSLog(@"couldn't save object: %@", error);
         }
     }];
-    NSLog(@"submit button pressed");
+    
 }
+
+- (void)createFakeRequest
+{
+    [self.view endEditing:YES];
+    
+    PFObject *requestObject = [PFObject objectWithClassName:@"Request"];
+    requestObject[@"message"] = self.acTextField.text;
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+    [query whereKey:@"objectId" equalTo:@"Frqr0qPZ7H"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        NSLog(@"fin %lu", objects.count);
+        PFUser *bennyp = [objects firstObject];
+        requestObject[@"poster"] = bennyp;
+        [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            
+            if (succeeded) {
+                [self dismissViewControllerAnimated:YES completion:^{
+                    
+                    
+                }];
+                
+            }
+            else{
+            }
+        }];
+    }];
+ }
+
+
 /*
 #pragma mark - Navigation
 

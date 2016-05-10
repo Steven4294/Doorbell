@@ -20,10 +20,13 @@
 #import "CEBaseInteractionController.h"
 #import "DBNavigationController.h"
 #import "DBChatNavigationController.h"
+#import "DBChatTableViewController.h"
+#import "DBMessageViewController.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
     NSMutableArray *requests;
+    NSMutableDictionary *userDict;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -42,6 +45,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    userDict = [[NSMutableDictionary alloc] init];
     NSLog(@"view did load");
     
     [[PFUser currentUser] fetchIfNeeded];
@@ -49,17 +53,19 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
+    [query includeKey:@"poster"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
         if (!error) {
-            // The find succeeded.
-            // Do something with the found objects
+            // TODO: Create the dictionary to map stuff
             requests = [objects mutableCopy];
             [self.tableView reloadData];
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
+        [self.tableView.pullToRefreshView stopAnimating];
+
     }];
     
     [self.tableView addPullToRefreshWithActionHandler:^{
@@ -67,12 +73,12 @@
         // call [tableView.pullToRefreshView stopAnimating] when done
         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
         [query orderByDescending:@"createdAt"];
+        [query includeKey:@"poster"];
+
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             
             if (!error)
             {
-                // The find succeeded.
-                // Do something with the found objects
                 requests = [objects mutableCopy];
                 [self.tableView reloadData];
             }
@@ -160,13 +166,17 @@
 -(void)chatButtonPressed
 {
     
-    NSLog(@"profile button pressed");
+    NSLog(@"chat button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBChatNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBChatNavigationController"];
+    DBChatTableViewController *vc2 = [storyboard instantiateViewControllerWithIdentifier:@"DBChatTableViewController"];
+
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     
-    [self performSegueWithIdentifier:@"chatSegue" sender:self];
+    //[self performSegueWithIdentifier:@"chatSegue" sender:self];
+    
+    [self.navigationController pushViewController:vc2 animated:YES];
     
 }
 
@@ -200,39 +210,31 @@
 
         cell.messageLabel.text = [object objectForKey:@"message"];
         
-        PFUser *sender = [object objectForKey:@"sender"];
-        NSLog(@"sender : %@", sender.objectId);
-
-        PFQuery *query = [PFQuery queryWithClassName:@"User"];
-        [query whereKey:@"objectId" equalTo:sender.objectId];
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+        NSDate *createdDate = [object createdAt];
+        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
+        
+        PFUser *poster = object[@"poster"];
+        cell.user = poster;
+        
+        if (poster != nil)
+        {
+            cell.nameLabel.text = poster[@"facebookName"];
+            NSLog(@"name: %@   id: %@", poster[@"facebookName"], poster[@"facebookId"]);
+    
+            NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", poster[@"facebookId"]];
             
-            NSLog(@"objects: %d", objects.count);
-            PFObject *poster = [objects firstObject];
-            if (sender[@"facebookName"] != nil)
-            {
-                cell.nameLabel.text = sender[@"facebookName"];
-                
-            }
-            
-            
-            TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-            
-            NSDate *createdDate = [object createdAt];
-            
-            cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
-            NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", sender[@"facebookId"]];
+            NSLog(@"url: %@", URLString);
             [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                                     placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+                                     placeholderImage:nil];
             
             [cell.messageLabel sizeToFit];
-
-        }];
+            
+            
+        }
         
         
-     
     }
-   
     
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
     DRCellSlideAction *squareAction = [DRCellSlideAction actionForFraction:0.25];
@@ -250,6 +252,11 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+   // DBTableViewCell *DBCell = (DBTableViewCell *) cell;
+   // DBCell.profileImageView = nil;
+}
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -270,12 +277,18 @@
 
 - (DRCellSlideActionBlock)pushTriggerBlock
 {
-    return ^(UITableView *tableView, NSIndexPath *indexPath) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hooray!" message:@"You just pulled a cell." preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:nil];
-        }]];
-       [self presentViewController:alertController animated:YES completion:nil];
+    return ^(UITableView *tableView, NSIndexPath *indexPath)
+    {
+        DBTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+        
+        messageVC.userReciever = cell.user;
+        messageVC.senderId = [PFUser currentUser].objectId;
+        messageVC.senderDisplayName = @"display name";
+        messageVC.automaticallyScrollsToMostRecentMessage = YES;
+
+        [self.navigationController pushViewController:messageVC animated:YES];
     };
 }
 

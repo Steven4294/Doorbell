@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class FBSDKProfilePictureView;
+@class FBSDKProfilePictureView, PFUser;
 
 @interface DBTableViewCell : UITableViewCell
 
@@ -20,7 +20,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
 @property (nonatomic, strong) IBOutlet UIView *borderView;
 
-
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+
+@property (nonatomic, strong) PFUser *user;
+
 
 @end

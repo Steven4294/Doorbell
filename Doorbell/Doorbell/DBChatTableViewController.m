@@ -17,6 +17,7 @@
 @interface DBChatTableViewController ()
 {
     NSMutableArray *usersArray;
+    NSMutableArray *usersWithMessages;
 }
 
 @end
@@ -28,6 +29,8 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    usersWithMessages = [[NSMutableArray alloc] init];
     
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
@@ -55,6 +58,23 @@
             // Log details of the failure
         }
     }];
+    
+}
+
+- (void)findUsersWithMessages
+{
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *relation = currentUser[@"messages"];
+    PFQuery *query = [relation query];
+    [query includeKey:@"poster"];
+
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+        NSLog(@"found in query %lu", objects.count);
+     }]
+    
+    ;
+    
     
 }
 
@@ -108,18 +128,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"selected row");
     DBChatViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
     
     messageVC.userReciever = cell.user;
-    messageVC.senderId = @"bob";
-    messageVC.senderDisplayName = @"bob displayname";
-    NSLog(@"about to push vc");
-    [self presentViewController:messageVC animated:NO completion:^{
+    messageVC.senderId = [PFUser currentUser].objectId;
+    messageVC.senderDisplayName = @"display name";
+    messageVC.automaticallyScrollsToMostRecentMessage = YES;
+   /* [self presentViewController:messageVC animated:NO completion:^{
         NSLog(@"presented message vc");
     }];
+    */
+    
+    [self.navigationController pushViewController:messageVC animated:YES];
+    
 }
 
 @end

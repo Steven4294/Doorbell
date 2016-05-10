@@ -71,24 +71,46 @@
 - (void)setUserReciever:(PFUser *)userReciever
 {
     _userReciever = userReciever;
+    
     PFUser *currentUser = [PFUser currentUser];
+    
     PFRelation *messagesRelation = currentUser[@"messages"];
-    PFQuery *messageQuery = [messagesRelation query];
-    [messageQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+    
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Message"];
+    PFQuery *query2 = [messagesRelation query];
+    [query2 whereKey:@"to" equalTo:userReciever];
+    [query1 whereKey:@"to" matchesKey:@"to" inQuery:query2];
+    
+    // get the messages
+    [query1 orderByAscending:@"createdAt"];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
-         
          for (PFObject *message in objects)
          {
-             JSQMessage *jsqMessage =  [JSQMessage messageWithSenderId:kJSQDemoAvatarIdFrom
-                                                           displayName:kJSQDemoAvatarDisplayNameFrom
-                                                                  text:message[@"message"]];
-             [self.messages addObject:jsqMessage];
+             PFUser *from = message[@"from"];
+             if ([from.objectId isEqualToString:currentUser.objectId])
+             {
+                 // the message was sent by the current user
+       
+                 
+                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:currentUser.objectId senderDisplayName:currentUser.objectId date:[message createdAt] text:message[@"message"]];
+                 [self.messages addObject:Message];
+                 
+             }
+             else
+             {
+              
+                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:kJSQDemoAvatarDisplayNameFrom date:[message createdAt] text:message[@"message"]];
+                 [self.messages addObject:Message];
+             }
+
          }
          
          [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
          
      }];
     
+    // get the FB image of the reciever
     if (userReciever[@"facebookId"] != nil)
     {
         NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", userReciever[@"facebookId"]];
@@ -112,6 +134,37 @@
                             }];
 
     }
+    
+    // get the FB image of the current User
+    if (currentUser[@"facebookId"] != nil)
+    {
+        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
+        NSURL *imageURL = [NSURL URLWithString:URLString];
+        
+        NSString *avatarIdSender = currentUser.objectId;
+        
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        [manager downloadImageWithURL:imageURL
+                              options:0
+                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                 // progression tracking code
+                             }
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                if (image)
+                                {
+                                    JSQMessagesAvatarImage *toImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
+                                                                                                                   diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+                                    NSDictionary *avatarDict = @{avatarIdSender: toImage};
+                                    [self.avatars addEntriesFromDictionary:avatarDict];
+                                    
+                                }
+                            }];
+        
+    }
+    
+    
+    
+    
 }
 
 - (void)loadFakeMessages
