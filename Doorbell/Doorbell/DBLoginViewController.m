@@ -108,6 +108,8 @@
             {
                 // an old user has logged back in
             }
+            
+        
         }
         
         NSLog(@"user %@", user);

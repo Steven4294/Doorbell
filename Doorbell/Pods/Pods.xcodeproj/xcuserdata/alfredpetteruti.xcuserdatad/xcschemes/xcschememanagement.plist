@@ -69,6 +69,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MOOMaskedIconView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -117,12 +122,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0C981610F5258E18E0221775A6C20CFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2EFEDBB649146422B0A076290AB959DE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>320B2E5333EEA1F7DAA9935802956783</key>
+		<key>397D57827881F5E6E869B94A0D3B4EAC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,12 +147,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4DF9F699E7A6BF2DA8254243A83D6E77</key>
+		<key>4E286D373D75563CE26E479A68203892</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4E286D373D75563CE26E479A68203892</key>
+		<key>56832E8BD404D6B9A4778FDBE7F8AC0B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -157,22 +167,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>65DE98854302083414B09089658A5D67</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>763E5FE532D4292499BFBAE5EF355E5C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>81D7FE2A0FD9258247B1232874B837DA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86DE76BBFD5D8F2E0002DCC8DC0AA172</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,7 +177,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>945396194C1747A7AE1E2802AF7E1A5F</key>
+		<key>8EE7F0C43E2A5E39C544D4C3F0831C2D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -197,7 +192,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>A70149D554AD1ACC5F47981E10A5F1AC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AF9255CDD4CE1DCFE2B8B0E2F2985939</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -208,6 +213,11 @@
 			<true/>
 		</dict>
 		<key>D692624CE562FBC8BCEE15C9C5B17685</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ED01CD8ED948946BF426D289C6559E14</key>
 		<dict>
 			<key>primary</key>
 			<true/>

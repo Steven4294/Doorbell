@@ -24,6 +24,10 @@
 		D458A8051C5C36B200F47581 /* DoorbellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8041C5C36B200F47581 /* DoorbellTests.m */; };
 		D458A8101C5C36B200F47581 /* DoorbellUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A80F1C5C36B200F47581 /* DoorbellUITests.m */; };
 		D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A8341C6189F200F47581 /* DBProfileViewController.m */; };
+		D45BFC6D1CE2950A007EEF66 /* DBBulletinFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45BFC6C1CE2950A007EEF66 /* DBBulletinFormViewController.m */; };
+		D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */; };
+		D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */; };
+		D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
@@ -91,6 +95,11 @@
 		D458A8111C5C36B200F47581 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D458A8331C6189F200F47581 /* DBProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProfileViewController.h; sourceTree = "<group>"; };
 		D458A8341C6189F200F47581 /* DBProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProfileViewController.m; sourceTree = "<group>"; };
+		D45BFC6B1CE2950A007EEF66 /* DBBulletinFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBulletinFormViewController.h; sourceTree = "<group>"; };
+		D45BFC6C1CE2950A007EEF66 /* DBBulletinFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBulletinFormViewController.m; sourceTree = "<group>"; };
+		D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chat_white.png; sourceTree = "<group>"; };
+		D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close_blue.png; sourceTree = "<group>"; };
+		D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = User_Profile_white.png; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
@@ -158,6 +167,9 @@
 				D4EE0BF11CA4CA00004A5A9F /* loginBackgroundImage.png */,
 				D4EE0BE81CA21BE6004A5A9F /* boston.png */,
 				D4EE0BF51CA4CEB0004A5A9F /* mountainLake.png */,
+				D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */,
+				D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */,
+				D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -173,6 +185,8 @@
 				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
 				433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */,
 				433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */,
+				D45BFC6B1CE2950A007EEF66 /* DBBulletinFormViewController.h */,
+				D45BFC6C1CE2950A007EEF66 /* DBBulletinFormViewController.m */,
 				D4F951E01CC07161009B6057 /* DBChatNavigationController.h */,
 				D4F951E11CC07161009B6057 /* DBChatNavigationController.m */,
 				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
@@ -406,8 +420,11 @@
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
 				D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
+				D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */,
+				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
+				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
@@ -485,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */,
+				D45BFC6D1CE2950A007EEF66 /* DBBulletinFormViewController.m in Sources */,
 				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
 				D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */,

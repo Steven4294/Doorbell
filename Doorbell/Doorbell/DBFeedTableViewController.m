@@ -14,6 +14,7 @@
 #import "SVPullToRefresh.h"
 
 #import "DBRequestFormViewController.h"
+#import "DBBulletinFormViewController.h"
 #import "TTTTimeIntervalFormatter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "TLYShyNavBarManager.h"
@@ -114,13 +115,13 @@
     self.shyNavBarManager.scrollView = self.tableView;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 32, 32);
-    [button setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(0, 0, 20, 20);
+    [button setImage:[UIImage imageNamed:@"User_Profile_white.png"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    button2.frame = CGRectMake(0, 0, 32, 32);
-    [button2 setImage:[UIImage imageNamed:@"profile_icon.png"] forState:UIControlStateNormal];
+    button2.frame = CGRectMake(0, 0, 22, 22);
+    [button2 setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
     [button2 addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
@@ -141,13 +142,16 @@
     NSLog(@"request button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
+    UIViewController *vc2 = [storyboard instantiateViewControllerWithIdentifier:@"DBBulletinFormViewController"];
+
     vc.transitioningDelegate = self;
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     
-    [self presentViewController:vc animated:YES completion:^{
+    vc2.transitioningDelegate = self;
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    
+    [self presentViewController:vc2 animated:YES completion:^{
     }];
-    
-    
 }
 
 -(void)profileButtonPressed

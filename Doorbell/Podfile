@@ -22,5 +22,6 @@ pod 'MLPAutoCompleteTextField', '~> 1.5'
 pod 'TLYShyNavBar'
 pod 'VCTransitionsLibrary'
 pod 'JSQMessagesViewController'
+pod 'MOOMaskedIconView', '~> 0.1'
 
 

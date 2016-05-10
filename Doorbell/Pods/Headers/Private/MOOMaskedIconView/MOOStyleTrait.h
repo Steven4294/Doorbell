@@ -1,0 +1,1 @@
+../../../MOOMaskedIconView/MOOMaskedIconView/MOOStyleTrait.h

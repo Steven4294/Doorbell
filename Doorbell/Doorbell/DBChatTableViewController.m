@@ -27,10 +27,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    usersWithMessages = [[NSMutableArray alloc] init];
+
+    [self findUsersWithMessages];
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    usersWithMessages = [[NSMutableArray alloc] init];
     
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
@@ -66,14 +69,33 @@
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *relation = currentUser[@"messages"];
     PFQuery *query = [relation query];
+    query.limit = 1000;
+    [query orderByDescending:@"createdAt"];
     [query includeKey:@"poster"];
 
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
         NSLog(@"found in query %lu", objects.count);
-     }]
-    
-    ;
+         for (PFObject *message in objects)
+         {
+             PFUser *userTo = message[@"to"];
+             PFUser *userFrom = message[@"to"];
+             
+             if (![usersWithMessages containsObject:userTo] && userTo != currentUser)
+             {
+                 [usersWithMessages addObject:userTo];
+             }
+             else if (![usersWithMessages containsObject:userFrom] && userFrom != currentUser)
+             {
+                 [usersWithMessages addObject:userFrom];
+             }
+         }
+         [self.tableView reloadData];
+
+         NSLog(@"unique users: %lu", usersWithMessages.count);
+         
+         // this gets all of the messages. Now we must filter down to the
+     }];
     
     
 }
@@ -97,7 +119,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [usersArray count];
+    return [usersWithMessages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -105,9 +127,9 @@
     DBChatViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     
-    if ([usersArray count] > indexPath.row)
+    if ([usersWithMessages count] > indexPath.row)
     {
-        PFObject *user = [usersArray objectAtIndex:indexPath.row];
+        PFObject *user = [usersWithMessages objectAtIndex:indexPath.row];
         if (user[@"facebookName"] != nil)
         {
             cell.nameLabel.text = user[@"facebookName"];
