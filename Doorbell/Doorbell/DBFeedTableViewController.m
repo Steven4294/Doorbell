@@ -98,7 +98,7 @@
     UIButton *requestButton = [[UIButton alloc] initWithFrame:CGRectMake(0 + padding_x, self.view.frame.size.height - 65 - padding_y, self.view.frame.size.width - 2*padding_x, 65 - padding_y)];
     requestButton.backgroundColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
     [requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [requestButton setTitle:@"request" forState:UIControlStateNormal];
+    [requestButton setTitle:@"post" forState:UIControlStateNormal];
     [requestButton.titleLabel setFont:[UIFont fontWithName:@"Avenir" size:20.0]];
     [self.view addSubview:requestButton];
     [self.view bringSubviewToFront:requestButton];
@@ -233,11 +233,7 @@
                                      placeholderImage:nil];
             
             [cell.messageLabel sizeToFit];
-            
-            
         }
-        
-        
     }
     
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
@@ -258,8 +254,8 @@
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   // DBTableViewCell *DBCell = (DBTableViewCell *) cell;
-   // DBCell.profileImageView = nil;
+   DBTableViewCell *DBCell = (DBTableViewCell *) cell;
+   DBCell.profileImageView = nil;
 }
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -342,12 +338,6 @@
         navigationController.navigationAnimationController.reverse = NO;
 
     }
-    
-    
-
-    
-
-    
     
     return navigationController.navigationAnimationController;
 }

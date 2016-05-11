@@ -27,6 +27,7 @@
     self.inputToolbar.contentView.backgroundColor = [UIColor whiteColor];
     self.inputToolbar.contentView.textView.placeHolder = @"Type a message...";
     //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -108,6 +109,7 @@
     PFUser *currentUser = [PFUser currentUser];
     PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
     messageObject[@"message"] = text;
+  
     messageObject[@"from"] = currentUser;
     messageObject[@"to"] = _userReciever;
     

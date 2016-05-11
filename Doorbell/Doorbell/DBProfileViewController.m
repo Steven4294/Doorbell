@@ -51,7 +51,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
-    [query whereKey:@"sender" equalTo:[PFUser currentUser]];
+    [query whereKey:@"poster" equalTo:[PFUser currentUser]];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
         if (!error)
@@ -59,7 +59,32 @@
             // The find succeeded.
             // Do something with the found objects
             userRequests = [objects mutableCopy];
-            [self.tableView reloadData];
+            self.numberOfRequests.text = [NSString stringWithFormat:@"%lu", userRequests.count];
+            if (userRequests.count > 100) {
+                self.numberOfRequests.text = @"100+";
+            }
+            
+        }
+        else
+        {
+            // Log details of the failure
+        }
+    }];
+    
+    PFRelation *relation = [currentUser relationForKey:@"messages"];
+    PFQuery *queryChat = [relation query];
+    queryChat.limit = 1000;
+    [queryChat findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        
+        if (!error)
+        {
+            // The find succeeded.
+            // Do something with the found objects
+            self.numberOfMessages.text = [NSString stringWithFormat:@"%lu", objects.count];
+            if (objects.count > 1000) {
+                self.numberOfMessages.text = @"1000+";
+            }
+            
         }
         else
         {

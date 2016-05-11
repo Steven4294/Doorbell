@@ -9,17 +9,20 @@
 #import "DBCustomAcObject.h"
 
 @interface DBCustomAcObject ()
-@property (strong) NSString *countryName;
+@property (strong) NSString *userName;
+
 @end
 
 @implementation DBCustomAcObject
 
 
-- (id)initWithCountry:(NSString *)name
+- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId
 {
     self = [super init];
     if (self) {
-        [self setCountryName:name];
+        [self setUserName:name];
+        [self setObjectId:objectId];
+
     }
     return self;
 }
@@ -28,7 +31,7 @@
 
 - (NSString *)autocompleteString
 {
-    return self.countryName;
+    return self.userName;
 }
 
 @end

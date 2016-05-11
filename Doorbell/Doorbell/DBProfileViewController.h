@@ -14,7 +14,9 @@
 @property (nonatomic, strong) IBOutlet UIImageView *profileImage;
 @property (nonatomic, strong) IBOutlet UIImageView *coverImage;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *locationLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfRequests;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfMessages;
+
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 

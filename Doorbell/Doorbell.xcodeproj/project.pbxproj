@@ -28,6 +28,11 @@
 		D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */; };
 		D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */; };
 		D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */; };
+		D45BFC791CE2B111007EEF66 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC781CE2B111007EEF66 /* bell.png */; };
+		D45BFC7B1CE2B1B6007EEF66 /* envelope2.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7A1CE2B1B6007EEF66 /* envelope2.png */; };
+		D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */; };
+		D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7E1CE2BFEC007EEF66 /* Logout.png */; };
+		D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
@@ -100,6 +105,12 @@
 		D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chat_white.png; sourceTree = "<group>"; };
 		D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close_blue.png; sourceTree = "<group>"; };
 		D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = User_Profile_white.png; sourceTree = "<group>"; };
+		D45BFC781CE2B111007EEF66 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
+		D45BFC7A1CE2B1B6007EEF66 /* envelope2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = envelope2.png; sourceTree = "<group>"; };
+		D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Arrowhead-Right.png"; sourceTree = "<group>"; };
+		D45BFC7E1CE2BFEC007EEF66 /* Logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logout.png; sourceTree = "<group>"; };
+		D45BFC801CE2CF37007EEF66 /* DBSearchUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSearchUserViewController.h; sourceTree = "<group>"; };
+		D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSearchUserViewController.m; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
@@ -170,6 +181,10 @@
 				D45BFC6E1CE2A59A007EEF66 /* Chat_white.png */,
 				D45BFC6F1CE2A59A007EEF66 /* Close_blue.png */,
 				D45BFC701CE2A59A007EEF66 /* User_Profile_white.png */,
+				D45BFC781CE2B111007EEF66 /* bell.png */,
+				D45BFC7A1CE2B1B6007EEF66 /* envelope2.png */,
+				D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */,
+				D45BFC7E1CE2BFEC007EEF66 /* Logout.png */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -290,6 +305,8 @@
 			children = (
 				D4EE0BFC1CAED26E004A5A9F /* DBChatViewCell.h */,
 				D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */,
+				D45BFC801CE2CF37007EEF66 /* DBSearchUserViewController.h */,
+				D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */,
 				D4EE0BF91CAED004004A5A9F /* DBChatTableViewController.h */,
 				D4EE0BFA1CAED004004A5A9F /* DBChatTableViewController.m */,
 				D4053F9B1CB4CE0300EDBA02 /* DBMessageViewController.h */,
@@ -416,14 +433,18 @@
 			files = (
 				D4EE0BF01CA4C762004A5A9F /* login-with-fb.png in Resources */,
 				D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */,
+				D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */,
+				D45BFC7B1CE2B1B6007EEF66 /* envelope2.png in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
+				D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */,
 				D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
 				D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */,
 				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
+				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
@@ -512,6 +533,7 @@
 				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
 				D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
+				D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */,
 				D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
 				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,

@@ -16,14 +16,10 @@
 
 @implementation DBNavigationController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 /*
@@ -40,7 +36,8 @@
 (UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC {
+                                                 toViewController:(UIViewController *)toVC
+{
     
     // reverse the animation for 'pop' transitions
     _navigationAnimationController.reverse = operation == UINavigationControllerOperationPop;

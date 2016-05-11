@@ -13,11 +13,16 @@
 #import "DBMessageViewController.h"
 #import "DBLoginViewController.h"
 #import "DBChatNavigationController.h"
+#import "TTTTimeIntervalFormatter.h"
+#import "DBSearchUserViewController.h"
+
 
 @interface DBChatTableViewController ()
 {
     NSMutableArray *usersArray;
     NSMutableArray *usersWithMessages;
+    NSMutableArray *recentMessagesArray;
+
 }
 
 @end
@@ -28,7 +33,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     usersWithMessages = [[NSMutableArray alloc] init];
-
+    recentMessagesArray = [[NSMutableArray alloc] init];
     [self findUsersWithMessages];
 
     self.tableView.delegate = self;
@@ -40,6 +45,7 @@
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
 
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.messageButton addTarget:self action:@selector(newMessageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     usersArray = [[NSMutableArray alloc] init];
     PFQuery *query = [PFUser query];
@@ -64,6 +70,21 @@
     
 }
 
+- (void)newMessageButtonPressed
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBSearchUserViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBSearchUserViewController"];
+    
+    
+    /* [self presentViewController:messageVC animated:NO completion:^{
+     NSLog(@"presented message vc");
+     }];
+     */
+    
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
 - (void)findUsersWithMessages
 {
     PFUser *currentUser = [PFUser currentUser];
@@ -79,7 +100,7 @@
          for (PFObject *message in objects)
          {
              PFUser *userTo = message[@"to"];
-             PFUser *userFrom = message[@"to"];
+             PFUser *userFrom = message[@"from"];
              
              if (![usersWithMessages containsObject:userTo] && userTo != currentUser)
              {
@@ -90,6 +111,29 @@
                  [usersWithMessages addObject:userFrom];
              }
          }
+         
+         for (PFUser *user in usersWithMessages)
+         {
+             PFUser *currentUser = [PFUser currentUser];
+             PFRelation *relation =  currentUser[@"messages"];
+             PFQuery *query = [relation query];
+             [query whereKey:@"from" containedIn:@[user, currentUser ]];
+             [query whereKey:@"to" containedIn:@[user, currentUser ]];
+             query.limit = 1;
+             [query orderByDescending:@"createdAt"];
+             
+             [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+             {
+                 
+                 PFObject *object = [objects firstObject];
+                 NSString *messageRecent = object[@"message"];
+                 [recentMessagesArray addObject:object];
+                 [self.tableView reloadData];
+
+             }];
+             
+         }
+         
          [self.tableView reloadData];
 
          NSLog(@"unique users: %lu", usersWithMessages.count);
@@ -99,6 +143,7 @@
     
     
 }
+
 
 - (void)cancelButtonPressed
 {
@@ -130,10 +175,24 @@
     if ([usersWithMessages count] > indexPath.row)
     {
         PFObject *user = [usersWithMessages objectAtIndex:indexPath.row];
+        cell.messageLabel.text = @"";
+
         if (user[@"facebookName"] != nil)
         {
             cell.nameLabel.text = user[@"facebookName"];
 
+        }
+        
+        if ([recentMessagesArray count] > indexPath.row)
+        {
+            cell.messageLabel.text = [recentMessagesArray objectAtIndex:indexPath.row][@"message"];
+            NSDate *date = [recentMessagesArray objectAtIndex:indexPath.row][@"createdAt"];
+            
+            TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+        
+            cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
+
+            
         }
         cell.user = (PFUser *) user;
       

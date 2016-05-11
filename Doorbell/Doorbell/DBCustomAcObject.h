@@ -10,7 +10,8 @@
 #import "MLPAutoCompletionObject.h"
 
 @interface DBCustomAcObject : NSObject <MLPAutoCompletionObject>
+@property (strong) NSString *objectId;
 
-- (id)initWithCountry:(NSString *)name;
+- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId;
 
 @end

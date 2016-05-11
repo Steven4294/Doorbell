@@ -78,21 +78,22 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Message"];
     PFQuery *query2 = [messagesRelation query];
-    [query2 whereKey:@"to" equalTo:userReciever];
+   // [query2 whereKey:@"to" equalTo:userReciever];
+    [query2 whereKey:@"to" containedIn:@[userReciever, currentUser]];
     [query1 whereKey:@"to" matchesKey:@"to" inQuery:query2];
-    
+    query1.limit = 200;
+    query2.limit = 5000;// keep this limit large
     // get the messages
-    [query1 orderByAscending:@"createdAt"];
+    [query1 orderByDescending:@"createdAt"];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
+         NSLog(@"Found: %lu", objects.count);
          for (PFObject *message in objects)
          {
              PFUser *from = message[@"from"];
              if ([from.objectId isEqualToString:currentUser.objectId])
              {
                  // the message was sent by the current user
-       
-                 
                  JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:currentUser.objectId senderDisplayName:currentUser.objectId date:[message createdAt] text:message[@"message"]];
                  [self.messages addObject:Message];
                  
@@ -100,12 +101,13 @@
              else
              {
               
-                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:kJSQDemoAvatarDisplayNameFrom date:[message createdAt] text:message[@"message"]];
+                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:userReciever[@"facebookName"] date:[message createdAt] text:message[@"message"]];
                  [self.messages addObject:Message];
              }
 
          }
-         
+         self.messages = [[self.messages reverseObjectEnumerator] allObjects];
+
          [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
          
      }];
