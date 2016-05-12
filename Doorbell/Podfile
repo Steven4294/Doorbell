@@ -23,5 +23,7 @@ pod 'TLYShyNavBar'
 pod 'VCTransitionsLibrary'
 pod 'JSQMessagesViewController'
 pod 'MOOMaskedIconView', '~> 0.1'
+pod 'MMPopupView'
+
 
 

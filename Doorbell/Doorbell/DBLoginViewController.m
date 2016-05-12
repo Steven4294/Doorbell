@@ -16,6 +16,11 @@
 
 #import "DBNavigationController.h"
 
+#import "MMPopupItem.h"
+#import "MMAlertView.h"
+#import "MMSheetView.h"
+#import "MMPopupWindow.h"
+
 @interface DBLoginViewController ()
 
 @end
@@ -31,26 +36,25 @@
     self.loginButton.layer.borderWidth = 1.0f;
     self.loginButton.layer.cornerRadius = self.loginButton.frame.size.height/2;
     
+    MMAlertViewConfig *alertConfig = [MMAlertViewConfig globalConfig];
+    alertConfig.defaultTextOK = @"OK";
+    alertConfig.defaultTextCancel = @"Cancel";
+    alertConfig.defaultTextConfirm = @"OK";
+    
     PFUser *currentUser = [PFUser currentUser];
-    if (currentUser.isNew == NO) {
+    /*if (currentUser.isNew == NO)
+    {
         NSLog(@"old user has been shown loginflow");
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
         [self presentViewController:vc animated:YES completion:^{}];
         
-    }
+    }*/
 }
 
 - (void)loginButtonClicked
 {
     [self loginUser];
-}
-
-- (void)presentFeed
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
-    [self presentViewController:vc animated:YES completion:^{}];
 }
 
 - (void)loginTestUser
@@ -73,6 +77,7 @@
 
 - (void)loginUser
 {
+    NSLog(@"attempting to login user...");
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     
     // Login PFUser using Facebook
@@ -98,7 +103,7 @@
                  }];
             }
             
-            [self presentFeed];
+           // [self presentFeed];
             
             if (user.isNew)
             {
@@ -108,13 +113,90 @@
             {
                 // an old user has logged back in
             }
-            
-        
+            NSLog(@"%@", user[@"verifiedCode"]);
+            BOOL isVerified = [user[@"verifiedCode"] boolValue];
+          
+            if (isVerified == NO)
+            {
+                [self promptUserForCode];
+            }
+            else
+            {
+                [self presentFeed];
+                NSLog(@"user already verified");
+            }
         }
         
-        NSLog(@"user %@", user);
     }];
 
+}
+
+- (void)presentFeed
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
+    [self presentViewController:vc animated:YES completion:^{}];
+}
+
+- (void)promptUserForCode
+{
+ 
+    MMAlertView *alertView = [[MMAlertView alloc] initWithInputTitle:@"Building Code" detail:@"Input Dialog" placeholder:@"enter building code" handler:^(NSString *text)
+                              {
+                                  PFQuery *query = [PFQuery queryWithClassName:@"BuildingCode"];
+                                  query.limit = 1000;
+                                  [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+                                   {
+                                       BOOL correctCode = NO;
+                                       for (PFObject *codeObject in objects)
+                                       {
+                                           NSString *codeString = codeObject[@"codeString"];
+                                           
+                                           if ([text caseInsensitiveCompare:codeString] == NSOrderedSame) {
+                                               correctCode = YES;
+
+                                               PFUser *currentUser = [PFUser currentUser];
+                                               currentUser[@"verifiedCode"] = [NSNumber numberWithBool:YES];
+                                               [currentUser saveInBackground];
+                                               [self presentFeed];
+                                           }
+                                         
+                                           
+                                       }
+                                       if (correctCode == NO) {
+                                           [self showIncorrectCodeAlert];
+                                       }
+                                   }];
+                              }];
+    alertView.attachedView = self.view;
+    alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleExtraLight;
+    [alertView showWithBlock:nil];
+}
+
+-(void)showIncorrectCodeAlert
+{
+    MMPopupItemHandler block = ^(NSInteger index)
+    {
+        if (index == 1) {
+            // retry
+            [self promptUserForCode];
+        
+        }
+    };
+    
+    NSArray *items =
+    @[
+      MMItemMake(@"Cancel", MMItemTypeHighlight, block),
+      MMItemMake(@"Retry", MMItemTypeNormal, block)];
+    
+    MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"invalid code"
+                                                         detail:@"sorry that is incorrect!"
+                                                          items:items];
+    //            alertView.attachedView = self.view;
+    alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
+    [alertView show];
 }
 
 @end

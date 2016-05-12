@@ -192,8 +192,7 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
-				D458A7F11C5C36B200F47581 /* DBLoginViewController.m */,
+				D45BFC831CE3F70C007EEF66 /* Login */,
 				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
 				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
 				D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */,
@@ -287,6 +286,15 @@
 				D458A8111C5C36B200F47581 /* Info.plist */,
 			);
 			path = DoorbellUITests;
+			sourceTree = "<group>";
+		};
+		D45BFC831CE3F70C007EEF66 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D458A7F01C5C36B200F47581 /* DBLoginViewController.h */,
+				D458A7F11C5C36B200F47581 /* DBLoginViewController.m */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		D4F951DC1CB72352009B6057 /* Model */ = {
