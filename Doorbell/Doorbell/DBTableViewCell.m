@@ -23,4 +23,9 @@
     // Configure the view for the selected state
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];    
+}
+
 @end

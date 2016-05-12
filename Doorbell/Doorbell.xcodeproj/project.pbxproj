@@ -192,19 +192,11 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D4F951DF1CB72AAF009B6057 /* Chat */,
 				D45BFC831CE3F70C007EEF66 /* Login */,
-				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
-				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
-				D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */,
-				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
-				433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */,
-				433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */,
-				D45BFC6B1CE2950A007EEF66 /* DBBulletinFormViewController.h */,
-				D45BFC6C1CE2950A007EEF66 /* DBBulletinFormViewController.m */,
-				D4F951E01CC07161009B6057 /* DBChatNavigationController.h */,
-				D4F951E11CC07161009B6057 /* DBChatNavigationController.m */,
-				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
-				D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */,
+				D45BFC851CE4117F007EEF66 /* Profile */,
+				D45BFC861CE4118D007EEF66 /* Feed */,
+				D45BFC871CE41197007EEF66 /* Request */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -213,11 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				D42A04451CD9524300E141C1 /* View Controllers */,
-				D4F951DF1CB72AAF009B6057 /* Chat */,
-				433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */,
-				433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */,
-				433AFB531C98B799007A9C3D /* DBTableViewCell.h */,
-				433AFB541C98B799007A9C3D /* DBTableViewCell.m */,
+				D45BFC841CE41167007EEF66 /* Cells */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -226,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				D458A7E91C5C36B200F47581 /* Doorbell */,
+				D45BFC881CE411EB007EEF66 /* Root */,
 				D458A8031C5C36B200F47581 /* DoorbellTests */,
 				D458A80E1C5C36B200F47581 /* DoorbellUITests */,
 				D458A7E81C5C36B200F47581 /* Products */,
@@ -249,8 +238,6 @@
 			children = (
 				D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */,
 				D42A04441CD9522D00E141C1 /* icons */,
-				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
-				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D4F951DC1CB72352009B6057 /* Model */,
 				D42A04461CD9526100E141C1 /* Views */,
@@ -297,6 +284,58 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
+		D45BFC841CE41167007EEF66 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D4EE0BFC1CAED26E004A5A9F /* DBChatViewCell.h */,
+				D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */,
+				433AFB531C98B799007A9C3D /* DBTableViewCell.h */,
+				433AFB541C98B799007A9C3D /* DBTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		D45BFC851CE4117F007EEF66 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
+				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		D45BFC861CE4118D007EEF66 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */,
+				D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */,
+			);
+			name = Feed;
+			sourceTree = "<group>";
+		};
+		D45BFC871CE41197007EEF66 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */,
+				433AFB5B1C9A07CC007A9C3D /* DBRequestFormViewController.m */,
+				D45BFC6B1CE2950A007EEF66 /* DBBulletinFormViewController.h */,
+				D45BFC6C1CE2950A007EEF66 /* DBBulletinFormViewController.m */,
+			);
+			name = Request;
+			sourceTree = "<group>";
+		};
+		D45BFC881CE411EB007EEF66 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
+				D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */,
+				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
+				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
+			);
+			name = Root;
+			path = Doorbell;
+			sourceTree = "<group>";
+		};
 		D4F951DC1CB72352009B6057 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +343,8 @@
 				433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */,
 				D4F951D81CB5B5F5009B6057 /* DBChatData.h */,
 				D4F951D91CB5B5F5009B6057 /* DBChatData.m */,
+				433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */,
+				433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -311,8 +352,8 @@
 		D4F951DF1CB72AAF009B6057 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				D4EE0BFC1CAED26E004A5A9F /* DBChatViewCell.h */,
-				D4EE0BFD1CAED26E004A5A9F /* DBChatViewCell.m */,
+				D4F951E01CC07161009B6057 /* DBChatNavigationController.h */,
+				D4F951E11CC07161009B6057 /* DBChatNavigationController.m */,
 				D45BFC801CE2CF37007EEF66 /* DBSearchUserViewController.h */,
 				D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */,
 				D4EE0BF91CAED004004A5A9F /* DBChatTableViewController.h */,

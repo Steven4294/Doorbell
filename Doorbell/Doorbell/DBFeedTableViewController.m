@@ -12,7 +12,7 @@
 #import "DBTableViewCell.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SVPullToRefresh.h"
-
+#import "SDWebImageManager.h"
 #import "DBRequestFormViewController.h"
 #import "DBBulletinFormViewController.h"
 #import "TTTTimeIntervalFormatter.h"
@@ -206,7 +206,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    
+    //cell.profileImageView.image = nil;
     if ([requests count] > indexPath.row)
     {
 
@@ -224,14 +224,20 @@
         if (poster != nil)
         {
             cell.nameLabel.text = poster[@"facebookName"];
-            NSLog(@"name: %@   id: %@", poster[@"facebookName"], poster[@"facebookId"]);
+           // NSLog(@"name: %@", poster[@"facebookName"]);
     
             NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", poster[@"facebookId"]];
+           
+           // NSLog(@"url: %@", URLString);
             
-            NSLog(@"url: %@", URLString);
+            
             [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                                     placeholderImage:nil];
-            
+                                     placeholderImage: nil
+    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        //code
+        NSLog(@"finished downloading: %@", poster[@"facebookName"]);
+    }];
             [cell.messageLabel sizeToFit];
         }
     }
@@ -252,11 +258,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-   DBTableViewCell *DBCell = (DBTableViewCell *) cell;
-   DBCell.profileImageView = nil;
-}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
