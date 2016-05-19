@@ -69,13 +69,13 @@
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             
             PFUser *user = [objects firstObject];
-            
+            PFUser *currentUser = [PFUser currentUser];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             DBMessageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
             
             vc.userReciever = user;
-            vc.senderId = [PFUser currentUser].objectId;
-            vc.senderDisplayName = @"display name";
+            vc.senderId = currentUser.objectId;
+            vc.senderDisplayName = currentUser[@"facebookName"];
             vc.automaticallyScrollsToMostRecentMessage = YES;
             
             [self.navigationController pushViewController:vc animated:YES];

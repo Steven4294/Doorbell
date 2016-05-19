@@ -91,12 +91,12 @@
             if ([FBSDKAccessToken currentAccessToken]) {
                 [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
                  startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                     if (!error) {
+                     if (!error)
+                     {
                          PFUser *currentUser = [PFUser currentUser];
-                         if (currentUser[@"facebookName"] != nil) {
-                             currentUser[@"facebookId"] = result[@"id"];
-                             currentUser[@"facebookName"] = result[@"name"];
-                         }
+                         
+                          currentUser[@"facebookId"] = result[@"id"];
+                          currentUser[@"facebookName"] = result[@"name"];
                     
                          [currentUser saveInBackground];
                      }

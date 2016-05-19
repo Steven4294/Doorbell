@@ -735,7 +735,7 @@
 				);
 				INFOPLIST_FILE = Doorbell/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DoorbellLLC.Doorbell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DoorbellLLC.Doorbell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -754,7 +754,7 @@
 				);
 				INFOPLIST_FILE = Doorbell/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DoorbellLLC.Doorbell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DoorbellLLC.Doorbell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
