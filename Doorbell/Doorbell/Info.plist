@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>1034171709958408</string>
 	<key>FacebookDisplayName</key>
@@ -50,6 +50,9 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>black-rose.ttf</string>
+		<string>GothamRoundedBook.ttf</string>
+		<string>GothamRoundedLight.ttf</string>
+		<string>GothamRoundedMedium.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

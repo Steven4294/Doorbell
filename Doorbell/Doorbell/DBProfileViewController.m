@@ -36,10 +36,9 @@
     NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
     [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
                              placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
-    self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
     self.profileImage.clipsToBounds = YES;
     self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor ;
-    self.profileImage.layer.borderWidth = 1.0f;
+    self.profileImage.layer.borderWidth = 0.0f;
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -59,7 +58,7 @@
             // The find succeeded.
             // Do something with the found objects
             userRequests = [objects mutableCopy];
-            self.numberOfRequests.text = [NSString stringWithFormat:@"%lu", userRequests.count];
+            self.numberOfRequests.text = [NSString stringWithFormat:@"%lu", (unsigned long)userRequests.count];
             if (userRequests.count > 100) {
                 self.numberOfRequests.text = @"100+";
             }
@@ -84,13 +83,18 @@
             if (objects.count > 1000) {
                 self.numberOfMessages.text = @"1000+";
             }
-            
         }
         else
         {
             // Log details of the failure
         }
     }];
+}
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
+
 }
 
 - (void)didReceiveMemoryWarning {

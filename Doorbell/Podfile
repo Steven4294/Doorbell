@@ -24,6 +24,6 @@ pod 'VCTransitionsLibrary'
 pod 'JSQMessagesViewController'
 pod 'MOOMaskedIconView', '~> 0.1'
 pod 'MMPopupView'
-
+pod 'JTSImageViewController', '~> 1.5'
 
 

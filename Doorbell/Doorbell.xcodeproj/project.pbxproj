@@ -14,7 +14,12 @@
 		433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */; };
 		B868DE6A5DF9A6BA50AF4173 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425AE4D4813603768CF5BA6C /* libPods.a */; };
 		D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */; };
+		D43B16DD1CEFF66100E32348 /* message_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D43B16DC1CEFF66100E32348 /* message_icon.png */; };
+		D43B16DF1CEFF6ED00E32348 /* warning_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D43B16DE1CEFF6ED00E32348 /* warning_icon.png */; };
 		D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */; };
+		D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417351CF269230044CBFD /* GothamRoundedBook.ttf */; };
+		D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */; };
+		D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
 		D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBLoginViewController.m */; };
@@ -80,8 +85,13 @@
 		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D4053F9B1CB4CE0300EDBA02 /* DBMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessageViewController.h; sourceTree = "<group>"; };
 		D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageViewController.m; sourceTree = "<group>"; };
+		D43B16DC1CEFF66100E32348 /* message_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_icon.png; sourceTree = "<group>"; };
+		D43B16DE1CEFF6ED00E32348 /* warning_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warning_icon.png; sourceTree = "<group>"; };
 		D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedTableViewController.h; sourceTree = "<group>"; };
 		D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedTableViewController.m; sourceTree = "<group>"; };
+		D44417351CF269230044CBFD /* GothamRoundedBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedBook.ttf; sourceTree = "<group>"; };
+		D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedLight.ttf; sourceTree = "<group>"; };
+		D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedMedium.ttf; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A7EB1C5C36B200F47581 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D458A7ED1C5C36B200F47581 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -170,10 +180,15 @@
 			isa = PBXGroup;
 			children = (
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
+				D44417351CF269230044CBFD /* GothamRoundedBook.ttf */,
+				D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */,
+				D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */,
 				D4F951DD1CB726C4009B6057 /* kanye.jpg */,
+				D43B16DC1CEFF66100E32348 /* message_icon.png */,
 				D4EE0BF31CA4CD6B004A5A9F /* DBhigh_white.png */,
 				D4EE0BF71CA4CF89004A5A9F /* DBhigh_white2.png */,
 				D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */,
+				D43B16DE1CEFF6ED00E32348 /* warning_icon.png */,
 				D4EE0BEF1CA4C762004A5A9F /* login-with-fb.png */,
 				D4EE0BF11CA4CA00004A5A9F /* loginBackgroundImage.png */,
 				D4EE0BE81CA21BE6004A5A9F /* boston.png */,
@@ -486,17 +501,22 @@
 				D45BFC7B1CE2B1B6007EEF66 /* envelope2.png in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
+				D43B16DF1CEFF6ED00E32348 /* warning_icon.png in Resources */,
 				D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */,
 				D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */,
+				D43B16DD1CEFF66100E32348 /* message_icon.png in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
 				D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */,
 				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
+				D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */,
 				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
+				D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
+				D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
 				D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */,
 			);

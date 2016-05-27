@@ -87,63 +87,66 @@
 
 - (void)findUsersWithMessages
 {
+    
     PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+    PFQuery *flagQuery = [flaggedUserRelation query];
+    
     PFRelation *relation = currentUser[@"messages"];
     PFQuery *query = [relation query];
     query.limit = 1000;
     [query orderByDescending:@"createdAt"];
     [query includeKey:@"poster"];
 
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-        NSLog(@"found in query %lu", objects.count);
-         for (PFObject *message in objects)
+    [flagQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        
+        NSMutableArray *flaggedUsers = [objects mutableCopy];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
          {
-             PFUser *userTo = message[@"to"];
-             PFUser *userFrom = message[@"from"];
-             
-             if (![usersWithMessages containsObject:userTo] && userTo != currentUser)
+             for (PFObject *message in objects)
              {
-                 [usersWithMessages addObject:userTo];
-             }
-             else if (![usersWithMessages containsObject:userFrom] && userFrom != currentUser)
-             {
-                 [usersWithMessages addObject:userFrom];
-             }
-         }
-         
-         for (PFUser *user in usersWithMessages)
-         {
-             PFUser *currentUser = [PFUser currentUser];
-             PFRelation *relation =  currentUser[@"messages"];
-             PFQuery *query = [relation query];
-             [query whereKey:@"from" containedIn:@[user, currentUser ]];
-             [query whereKey:@"to" containedIn:@[user, currentUser ]];
-             query.limit = 1;
-             [query orderByDescending:@"createdAt"];
-             
-             [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-             {
+                 PFUser *userTo = message[@"to"];
+                 PFUser *userFrom = message[@"from"];
                  
-                 PFObject *object = [objects firstObject];
-                 NSString *messageRecent = object[@"message"];
-                 [recentMessagesArray addObject:object];
-                 [self.tableView reloadData];
-
-             }];
+                 if (![usersWithMessages containsObject:userTo] && userTo != currentUser && (![flaggedUsers containsObject:userTo]))
+                 {
+                     [usersWithMessages addObject:userTo];
+                 }
+                 else if (![usersWithMessages containsObject:userFrom] && userFrom != currentUser && (![flaggedUsers containsObject:userFrom]))
+                 {
+                     [usersWithMessages addObject:userFrom];
+                 }
+             }
              
-         }
-         
-         [self.tableView reloadData];
-
-         NSLog(@"unique users: %lu", usersWithMessages.count);
-         
-         // this gets all of the messages. Now we must filter down to the
-     }];
+             [self.tableView reloadData];
+             
+         }];
+        
+        // this gets all of the messages. Now we must filter down to the
+    }];
     
     
 }
+- (void)findMostRecentMessageForUser:(PFUser *)user withBlock:(void (^)(PFObject *message, BOOL success))completionBlock
+{
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *relation =  currentUser[@"messages"];
+    PFQuery *query = [relation query];
+    [query whereKey:@"from" containedIn:@[user, currentUser ]];
+    [query whereKey:@"to" containedIn:@[user, currentUser ]];
+    query.limit = 1;
+    [query orderByDescending:@"createdAt"];
+    [query includeKey:@"createdAt"];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         
+         PFObject *object = [objects firstObject];
+         completionBlock(object, YES);
+     }];
 
+}
 
 - (void)cancelButtonPressed
 {
@@ -174,28 +177,26 @@
     
     if ([usersWithMessages count] > indexPath.row)
     {
-        PFObject *user = [usersWithMessages objectAtIndex:indexPath.row];
+        PFUser *user = [usersWithMessages objectAtIndex:indexPath.row];
         cell.messageLabel.text = @"";
-
+        
         if (user[@"facebookName"] != nil)
         {
             cell.nameLabel.text = user[@"facebookName"];
-
+            
         }
         
-        if ([recentMessagesArray count] > indexPath.row)
-        {
-            cell.messageLabel.text = [recentMessagesArray objectAtIndex:indexPath.row][@"message"];
-            NSDate *date = [recentMessagesArray objectAtIndex:indexPath.row][@"createdAt"];
-            
+        [self findMostRecentMessageForUser:user withBlock:^(PFObject *message, BOOL success) {
+            NSLog(@"message: %@", message);
+            cell.messageLabel.text = message[@"message"];
+            NSDate *date = [message createdAt];
             TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-        
             cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
-
-            
-        }
+        }];
+        
+    
         cell.user = (PFUser *) user;
-      
+        
         NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
         [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
                                  placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];

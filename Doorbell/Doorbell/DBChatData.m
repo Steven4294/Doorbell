@@ -80,7 +80,12 @@
     PFQuery *query2 = [messagesRelation query];
    // [query2 whereKey:@"to" equalTo:userReciever];
     [query2 whereKey:@"to" containedIn:@[userReciever, currentUser]];
+    [query2 whereKey:@"from" containedIn:@[userReciever, currentUser]];
+
     [query1 whereKey:@"to" matchesKey:@"to" inQuery:query2];
+    [query1 whereKey:@"from" matchesKey:@"from" inQuery:query2];
+
+    
     query1.limit = 200;
     query2.limit = 5000;// keep this limit large
     // get the messages

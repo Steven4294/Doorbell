@@ -23,11 +23,13 @@
 #import "DBChatNavigationController.h"
 #import "DBChatTableViewController.h"
 #import "DBMessageViewController.h"
+#import "MOOMaskedIconView.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
     NSMutableArray *requests;
     NSMutableDictionary *userDict;
+    NSMutableArray *flaggedUsers;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -51,45 +53,12 @@
     
     [[PFUser currentUser] fetchIfNeeded];
 
+    [self refreshTableView];
     
-    PFQuery *query = [PFQuery queryWithClassName:@"Request"];
-    [query orderByDescending:@"createdAt"];
-    [query includeKey:@"poster"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-        if (!error) {
-            // TODO: Create the dictionary to map stuff
-            requests = [objects mutableCopy];
-            [self.tableView reloadData];
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-        [self.tableView.pullToRefreshView stopAnimating];
-
-    }];
-    
-    [self.tableView addPullToRefreshWithActionHandler:^{
+    [self.tableView addPullToRefreshWithActionHandler:^
+    {
         // prepend data to dataSource, insert cells at top of table view
-        // call [tableView.pullToRefreshView stopAnimating] when done
-        PFQuery *query = [PFQuery queryWithClassName:@"Request"];
-        [query orderByDescending:@"createdAt"];
-        [query includeKey:@"poster"];
-
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-            
-            if (!error)
-            {
-                requests = [objects mutableCopy];
-                [self.tableView reloadData];
-            }
-            else
-            {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-            [self.tableView.pullToRefreshView stopAnimating];
-        }];
+        [self refreshTableView];
         
     }];
     
@@ -133,8 +102,35 @@
     self.navigationItem.rightBarButtonItem = barButton2;
     
     self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
-    
-    
+}
+
+- (void)refreshTableView
+{
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+    PFQuery *relationQuery = [flaggedUserRelation query];
+    [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+    {
+        flaggedUsers = [objects mutableCopy];
+        PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+        [query orderByDescending:@"createdAt"];
+        [query includeKey:@"poster"];
+        [query whereKey:@"poster" notContainedIn:flaggedUsers   ];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            
+            if (!error)
+            {
+                requests = [objects mutableCopy];
+                [self.tableView reloadData];
+            }
+            else
+            {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            [self.tableView.pullToRefreshView stopAnimating];
+        }];
+    }];
 }
 
 -(void)requestButtonPressed
@@ -224,35 +220,52 @@
         if (poster != nil)
         {
             cell.nameLabel.text = poster[@"facebookName"];
-           // NSLog(@"name: %@", poster[@"facebookName"]);
-    
+            
             NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", poster[@"facebookId"]];
-           
-           // NSLog(@"url: %@", URLString);
+            
             
             
             [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
                                      placeholderImage: nil
-    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-        //code
-        NSLog(@"finished downloading: %@", poster[@"facebookName"]);
-    }];
+                                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                                
+                                            }];
             [cell.messageLabel sizeToFit];
+            
+            if (poster != [PFUser currentUser])
+            {
+                
+                DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
+                DRCellSlideAction *commentAction = [DRCellSlideAction actionForFraction:0.25];
+                commentAction.activeBackgroundColor = [UIColor colorWithRed:34/255.0 green:167/255.0 blue:240/255.0 alpha:1.0f];
+                commentAction.inactiveBackgroundColor = [UIColor clearColor];
+                commentAction.behavior = DRCellSlideActionPullBehavior;
+                commentAction.elasticity = 40;
+                commentAction.didTriggerBlock = [self commentTriggerBlock];
+                commentAction.icon = [UIImage imageNamed:@"Chat_white.png"];
+                
+                
+                DRCellSlideAction *flagAction = [DRCellSlideAction actionForFraction:.60];
+                flagAction.activeBackgroundColor = [UIColor colorWithRed:239/255.0 green:72/255.0 blue:54/255.0 alpha:1.0f];
+                flagAction.inactiveBackgroundColor = [UIColor clearColor];
+                flagAction.behavior = DRCellSlideActionPullBehavior;
+                flagAction.elasticity = 40;
+                flagAction.didTriggerBlock = [self flagTriggerBlock];
+                flagAction.icon = [UIImage imageNamed:@"warning_icon.png"];
+
+                
+                
+                [slideGestureRecognizer addActions:commentAction];
+                [slideGestureRecognizer addActions:flagAction];
+                
+                
+                [cell addGestureRecognizer:slideGestureRecognizer];
+            }
         }
     }
     
-    DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
-    DRCellSlideAction *squareAction = [DRCellSlideAction actionForFraction:0.25];
-    squareAction.activeBackgroundColor = [UIColor clearColor];
-    squareAction.inactiveBackgroundColor = [UIColor clearColor];
-    squareAction.behavior = DRCellSlideActionPushBehavior;
-    squareAction.elasticity = 40;
-    squareAction.didTriggerBlock = [self pushTriggerBlock];
     
-    [slideGestureRecognizer addActions:squareAction];
-    
-    [cell addGestureRecognizer:slideGestureRecognizer];
+
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     return cell;
@@ -277,7 +290,7 @@
     return labelHeight + staticHeight;
 }
 
-- (DRCellSlideActionBlock)pushTriggerBlock
+- (DRCellSlideActionBlock)commentTriggerBlock
 {
     return ^(UITableView *tableView, NSIndexPath *indexPath)
     {
@@ -294,15 +307,19 @@
     };
 }
 
-- (DRCellSlideActionBlock)pullTriggerBlock
+- (DRCellSlideActionBlock)flagTriggerBlock
 {
-    return ^(UITableView *tableView, NSIndexPath *indexPath) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Hooray!" message:@"You just pushed a cell." preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [alertController dismissViewControllerAnimated:YES completion:nil];
-        }]];
+    return ^(UITableView *tableView, NSIndexPath *indexPath)
+    {
+        DBTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        PFUser *userToFlag = cell.user;
+        NSLog(@"userToFlag: %@", userToFlag[@"facebookName"]);
         
-        [self presentViewController:alertController animated:YES completion:nil];
+        PFUser *currentUser = [PFUser currentUser];
+        
+        PFRelation *flagRelation =  [currentUser relationForKey:@"flaggedUsers"];
+        [flagRelation addObject:userToFlag];
+        [currentUser saveInBackground];
     };
 }
 
