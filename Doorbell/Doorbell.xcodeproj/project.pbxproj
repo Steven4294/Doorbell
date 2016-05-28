@@ -20,6 +20,7 @@
 		D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417351CF269230044CBFD /* GothamRoundedBook.ttf */; };
 		D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */; };
 		D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */; };
+		D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
 		D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBLoginViewController.m */; };
@@ -92,6 +93,8 @@
 		D44417351CF269230044CBFD /* GothamRoundedBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedBook.ttf; sourceTree = "<group>"; };
 		D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedLight.ttf; sourceTree = "<group>"; };
 		D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedMedium.ttf; sourceTree = "<group>"; };
+		D44D02061CF95B4B0039A187 /* DBGenericProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBGenericProfileViewController.h; sourceTree = "<group>"; };
+		D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBGenericProfileViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A7EB1C5C36B200F47581 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D458A7ED1C5C36B200F47581 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 			children = (
 				D458A8331C6189F200F47581 /* DBProfileViewController.h */,
 				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
+				D44D02061CF95B4B0039A187 /* DBGenericProfileViewController.h */,
+				D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -605,6 +610,7 @@
 				D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */,
 				D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
+				D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */,
 				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,
 				D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */,
 				D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */,

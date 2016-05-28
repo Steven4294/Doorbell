@@ -17,6 +17,10 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "JTSImageViewController.h"
+#import "JTSImageInfo.h"
+
+
 @interface DBProfileViewController ()
 {
     NSMutableArray *userRequests;
@@ -33,13 +37,8 @@
     
     PFUser *currentUser = [PFUser currentUser];
     
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
-                             placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
-    self.profileImage.clipsToBounds = YES;
-    self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor ;
-    self.profileImage.layer.borderWidth = 0.0f;
-
+    [self setupProfilePicture];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -59,7 +58,8 @@
             // Do something with the found objects
             userRequests = [objects mutableCopy];
             self.numberOfRequests.text = [NSString stringWithFormat:@"%lu", (unsigned long)userRequests.count];
-            if (userRequests.count > 100) {
+            if (userRequests.count > 100)
+            {
                 self.numberOfRequests.text = @"100+";
             }
             
@@ -80,7 +80,8 @@
             // The find succeeded.
             // Do something with the found objects
             self.numberOfMessages.text = [NSString stringWithFormat:@"%lu", objects.count];
-            if (objects.count > 1000) {
+            if (objects.count > 1000)
+            {
                 self.numberOfMessages.text = @"1000+";
             }
         }
@@ -90,11 +91,27 @@
         }
     }];
 }
+
+- (void)setupProfilePicture
+{
+    PFUser *currentUser = [PFUser currentUser];
+    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
+    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
+                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+ 
+    self.profileImage.clipsToBounds = YES;
+    self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor ;
+    self.profileImage.layer.borderWidth = 0.0f;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+    [tapRecognizer addTarget:self action:@selector(profileImageTapped:)];
+    [self.profileImage addGestureRecognizer:tapRecognizer];
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,12 +119,12 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)cancelButton:(id)sender
+- (void)cancelButton:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{}]; 
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
--(void)logoutButton:(id)sender
+-( void)logoutButton:(id)sender
 {
     NSLog(@"logging out");
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
@@ -125,15 +142,36 @@
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)profileImageTapped:(id)sender
+{
+    
+    // Light Box the profile image
+    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
+    imageInfo.image = self.profileImage.image;
+    imageInfo.referenceRect = self.profileImage.frame;
+    imageInfo.referenceView = self.profileImage.superview;
+    imageInfo.referenceContentMode = self.profileImage.contentMode;
+    imageInfo.referenceCornerRadius = self.profileImage.layer.cornerRadius;
+    
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
+                                           initWithImageInfo:imageInfo
+                                           mode:JTSImageViewControllerMode_Image
+                                           backgroundStyle:JTSImageViewControllerBackgroundOption_Scaled];
+    
+    [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
-*/
+
+
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -158,7 +196,7 @@
         NSDate *createdDate = [object createdAt];
         
         cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
-    
+        
         [cell.messageLabel sizeToFit];
         
         UIColor *normalColor = [UIColor blackColor];
@@ -176,7 +214,7 @@
             cell.profileLabel.attributedText = finalAttributedString;
         }
     }
-  
+    
     cell.borderView.layer.borderWidth = 1.0f;
     cell.borderView.layer.borderColor = [UIColor colorWithWhite:0 alpha:.06].CGColor;
     

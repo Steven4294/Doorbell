@@ -24,6 +24,7 @@
 #import "DBChatTableViewController.h"
 #import "DBMessageViewController.h"
 #import "MOOMaskedIconView.h"
+#import "DBGenericProfileViewController.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -229,6 +230,9 @@
                                      placeholderImage: nil
                                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                                 
+                                                UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+                                                [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
+                                                [cell.profileImageView addGestureRecognizer:tapRecognizer];
                                             }];
             [cell.messageLabel sizeToFit];
             
@@ -259,7 +263,8 @@
                 [slideGestureRecognizer addActions:flagAction];
                 
                 
-                [cell addGestureRecognizer:slideGestureRecognizer];
+                //[cell addGestureRecognizer:slideGestureRecognizer];
+ 
             }
         }
     }
@@ -402,6 +407,24 @@
     [super prepareForSegue:segue sender:sender];
 }
 
+- (void)cellImageViewTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+        DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
 
+        PFUser *user = tappedCell.user;
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+        vc.user = user;
+        
+        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+        [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
+}
 
 @end

@@ -59,6 +59,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JTSImageViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>LRTextField.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -127,22 +132,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>06B18F692F381E19B6069E17455076A7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>06F7B1887596B89DE7A1C45E05737694</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1F814B12F5BD140038055EB1DFAE834C</key>
+		<key>274C8787C374EB6A9350544A61ECF2B6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>24FCB947526EC318E5247E97C49F6699</key>
+		<key>2BB65874C2C09F0FC8F2BAD4F3200C4A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -192,7 +192,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7E9DB769FF82021F91A8D574BE5C96BB</key>
+		<key>7BAB2135994E7B114AE6F9271B374544</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7EDBC06B3D447B9192D12E139BD4ACFE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -222,12 +227,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C9198DF9BEC01D7942FD487E6E43F80B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D0EDF35E8DEAFAC72CA343B82D778DBB</key>
+		<key>C6BD925403DDE9D15B67263EB45A1F20</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -242,7 +242,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>DAFF7800BE05846A0E77BEA9B65E5024</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>F21523DE0EE1E35B265242490D97EE4C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F6459E789C588165F5DCD65B06F8A706</key>
 		<dict>
 			<key>primary</key>
 			<true/>
