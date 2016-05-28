@@ -10,8 +10,16 @@
 
 @class PFUser;
 
-@interface DBGenericProfileViewController : UIViewController
+@interface DBGenericProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) PFUser *user;
+
+@property (nonatomic, strong) IBOutlet UIImageView *profileImage;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfPosts;
+@property (nonatomic, strong) IBOutlet UIButton *chatButton;
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+
 
 @end

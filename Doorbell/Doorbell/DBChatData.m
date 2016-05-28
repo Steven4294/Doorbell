@@ -96,22 +96,28 @@
          for (PFObject *message in objects)
          {
              PFUser *from = message[@"from"];
-             if ([from.objectId isEqualToString:currentUser.objectId])
+             PFUser *to = message[@"to"];
+            
+             
+             if (from != to)
              {
-                 // the message was sent by the current user
-                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:currentUser.objectId senderDisplayName:currentUser.objectId date:[message createdAt] text:message[@"message"]];
-                 [self.messages addObject:Message];
-                 
-             }
-             else
-             {
-              
-                 JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:userReciever[@"facebookName"] date:[message createdAt] text:message[@"message"]];
-                 [self.messages addObject:Message];
+                 if ([from.objectId isEqualToString:currentUser.objectId])
+                 {
+                     // the message was sent by the current user
+                     JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:currentUser.objectId senderDisplayName:currentUser.objectId date:[message createdAt] text:message[@"message"]];
+                     [self.messages addObject:Message];
+                     
+                 }
+                 else
+                 {
+                     
+                     JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:userReciever[@"facebookName"] date:[message createdAt] text:message[@"message"]];
+                     [self.messages addObject:Message];
+                 }
              }
 
          }
-         self.messages = [[self.messages reverseObjectEnumerator] allObjects];
+         self.messages = [[[self.messages reverseObjectEnumerator] allObjects] mutableCopy];
 
          [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
          

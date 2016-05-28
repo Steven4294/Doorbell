@@ -68,8 +68,10 @@ BOOL responderOverride;
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         
-        if (succeeded) {
-            [self dismissViewControllerAnimated:YES completion:^{
+        if (succeeded)
+        {
+            [self dismissViewControllerAnimated:YES completion:^
+            {
                 
                 
             }];
@@ -79,7 +81,12 @@ BOOL responderOverride;
             NSLog(@"couldn't save object: %@", error);
         }
     }];
-    
+
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *requestRelation = [currentUser relationForKey:@"requests"];
+    [requestRelation addObject:requestObject];
+    NSLog(@"%@", requestRelation);
+    [currentUser saveInBackground];
 }
 
 - (void)createFakeRequest

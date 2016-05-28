@@ -233,6 +233,10 @@
                                                 UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
                                                 [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
                                                 [cell.profileImageView addGestureRecognizer:tapRecognizer];
+                                                
+                                                UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
+                                                [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
+                                                [cell.nameLabel addGestureRecognizer:tapRecognizer2];
                                             }];
             [cell.messageLabel sizeToFit];
             
@@ -245,7 +249,7 @@
                 commentAction.inactiveBackgroundColor = [UIColor clearColor];
                 commentAction.behavior = DRCellSlideActionPullBehavior;
                 commentAction.elasticity = 40;
-                commentAction.didTriggerBlock = [self commentTriggerBlock];
+                commentAction.didTriggerBlock = [self chatTriggerBlock];
                 commentAction.icon = [UIImage imageNamed:@"Chat_white.png"];
                 
                 
@@ -295,7 +299,7 @@
     return labelHeight + staticHeight;
 }
 
-- (DRCellSlideActionBlock)commentTriggerBlock
+- (DRCellSlideActionBlock)chatTriggerBlock
 {
     return ^(UITableView *tableView, NSIndexPath *indexPath)
     {

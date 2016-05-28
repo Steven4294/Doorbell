@@ -47,6 +47,32 @@
         self.nameLabel.text = currentUser[@"facebookName"];
     }
     
+    [self retrieveUsersRequests];
+    
+    PFRelation *relation = [currentUser relationForKey:@"messages"];
+    PFQuery *queryChat = [relation query];
+    queryChat.limit = 1000;
+    [queryChat findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        
+        if (!error)
+        {
+            // The find succeeded.
+            // Do something with the found objects
+            self.numberOfMessages.text = [NSString stringWithFormat:@"%lu", objects.count];
+            if (objects.count > 1000)
+            {
+                self.numberOfMessages.text = @"1000+";
+            }
+        }
+        else
+        {
+            // Log details of the failure
+        }
+    }];
+}
+
+- (void)retrieveUsersRequests
+{
     PFQuery *query = [PFQuery queryWithClassName:@"Request"];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"poster" equalTo:[PFUser currentUser]];
@@ -63,27 +89,6 @@
                 self.numberOfRequests.text = @"100+";
             }
             
-        }
-        else
-        {
-            // Log details of the failure
-        }
-    }];
-    
-    PFRelation *relation = [currentUser relationForKey:@"messages"];
-    PFQuery *queryChat = [relation query];
-    queryChat.limit = 1000;
-    [queryChat findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-        if (!error)
-        {
-            // The find succeeded.
-            // Do something with the found objects
-            self.numberOfMessages.text = [NSString stringWithFormat:@"%lu", objects.count];
-            if (objects.count > 1000)
-            {
-                self.numberOfMessages.text = @"1000+";
-            }
         }
         else
         {

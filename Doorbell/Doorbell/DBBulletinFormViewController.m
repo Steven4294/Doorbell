@@ -41,18 +41,20 @@
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         
-        if (succeeded) {
-            [self dismissViewControllerAnimated:YES completion:^{
-        
-                
-            }];
+        if (succeeded)
+        {
+            PFUser *currentUser = [PFUser currentUser];
+            PFRelation *requestRelation = [currentUser relationForKey:@"requests"];
+            [requestRelation addObject:requestObject];
+            [currentUser saveInBackground];
             
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
-        else{
+        else
+        {
             NSLog(@"couldn't save object: %@", error);
         }
     }];
-    
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
