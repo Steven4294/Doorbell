@@ -323,7 +323,6 @@
                 commentAction.behavior = DRCellSlideActionPullBehavior;
                 commentAction.elasticity = 40;
                 commentAction.didTriggerBlock = [self chatTriggerBlock];
-                commentAction.icon = [UIImage imageNamed:@"Chat_white.png"];
                 
                 
                 DRCellSlideAction *flagAction = [DRCellSlideAction actionForFraction:.60];
@@ -332,7 +331,6 @@
                 flagAction.behavior = DRCellSlideActionPullBehavior;
                 flagAction.elasticity = 40;
                 flagAction.didTriggerBlock = [self flagTriggerBlock];
-                flagAction.icon = [UIImage imageNamed:@"warning_icon.png"];
 
                 
                 
@@ -340,7 +338,7 @@
                 [slideGestureRecognizer addActions:flagAction];
                 
                 
-                //[cell addGestureRecognizer:slideGestureRecognizer];
+                [cell addGestureRecognizer:slideGestureRecognizer];
  
             }
         }

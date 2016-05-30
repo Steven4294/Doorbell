@@ -19,4 +19,6 @@
 /// The footer title when the toggle switch is off.
 @property (nonatomic) NSString *offFooterTitle;
 
+@property (nonatomic, copy) void (^actionBlock)(void);
+
 @end
