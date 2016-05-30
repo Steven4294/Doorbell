@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "CEReversibleAnimationController.h"
 
+@class DBSideMenuController;
 
 @interface DBFeedTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) DBSideMenuController *sideMenuController;
 
 @end

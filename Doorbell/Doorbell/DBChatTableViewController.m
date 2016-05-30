@@ -22,28 +22,27 @@
     NSMutableArray *usersArray;
     NSMutableArray *usersWithMessages;
     NSMutableArray *recentMessagesArray;
-
+    
 }
 
 @end
 
 @implementation DBChatTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     usersWithMessages = [[NSMutableArray alloc] init];
     recentMessagesArray = [[NSMutableArray alloc] init];
-    [self findUsersWithMessages];
-
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
     
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
-
+    
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.messageButton addTarget:self action:@selector(newMessageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
@@ -58,7 +57,6 @@
         {
             // The find succeeded.
             // Do something with the found objects
-            NSLog(@"found %lu", objects.count);
             usersArray = [objects mutableCopy];
             [self.tableView reloadData];
         }
@@ -70,24 +68,31 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self findUsersWithMessages];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+}
+
+- (void)messageWasSent
+{
+    NSLog(@"message was sent");
+}
+
 - (void)newMessageButtonPressed
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBSearchUserViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBSearchUserViewController"];
     
-    
-    /* [self presentViewController:messageVC animated:NO completion:^{
-     NSLog(@"presented message vc");
-     }];
-     */
-    
     [self.navigationController pushViewController:vc animated:YES];
-
 }
 
 - (void)findUsersWithMessages
 {
-    
+    NSLog(@"making call");
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
     PFQuery *flagQuery = [flaggedUserRelation query];
@@ -97,7 +102,7 @@
     query.limit = 1000;
     [query orderByDescending:@"createdAt"];
     [query includeKey:@"poster"];
-
+    
     [flagQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
         NSMutableArray *flaggedUsers = [objects mutableCopy];
@@ -123,7 +128,6 @@
              
          }];
         
-        // this gets all of the messages. Now we must filter down to the
     }];
     
     
@@ -145,7 +149,7 @@
          PFObject *object = [objects firstObject];
          completionBlock(object, YES);
      }];
-
+    
 }
 
 - (void)cancelButtonPressed
@@ -154,10 +158,6 @@
                              completion:nil];
     
     
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -187,14 +187,14 @@
         }
         
         [self findMostRecentMessageForUser:user withBlock:^(PFObject *message, BOOL success) {
-            NSLog(@"message: %@", message);
+
             cell.messageLabel.text = message[@"message"];
             NSDate *date = [message createdAt];
             TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
             cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
         }];
         
-    
+        
         cell.user = (PFUser *) user;
         
         NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
@@ -203,7 +203,7 @@
         
         [cell.messageLabel sizeToFit];
     }
-
+    
     
     return cell;
 }
@@ -218,10 +218,6 @@
     messageVC.senderId = [PFUser currentUser].objectId;
     messageVC.senderDisplayName = @"display name";
     messageVC.automaticallyScrollsToMostRecentMessage = YES;
-   /* [self presentViewController:messageVC animated:NO completion:^{
-        NSLog(@"presented message vc");
-    }];
-    */
     
     [self.navigationController pushViewController:messageVC animated:YES];
     

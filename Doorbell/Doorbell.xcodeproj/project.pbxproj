@@ -21,6 +21,12 @@
 		D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */; };
 		D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */; };
 		D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */; };
+		D44D020B1CFA7DEA0039A187 /* DBSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D020A1CFA7DEA0039A187 /* DBSideMenuController.m */; };
+		D44D020E1CFB6B3E0039A187 /* DBLeftMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D020D1CFB6B3E0039A187 /* DBLeftMenuViewController.m */; };
+		D44D02161CFB79D60039A187 /* DBLeftMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02141CFB79D60039A187 /* DBLeftMenuCell.m */; };
+		D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44D02151CFB79D60039A187 /* DBLeftMenuCell.xib */; };
+		D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */; };
+		D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
 		D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBLoginViewController.m */; };
@@ -95,6 +101,17 @@
 		D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedMedium.ttf; sourceTree = "<group>"; };
 		D44D02061CF95B4B0039A187 /* DBGenericProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBGenericProfileViewController.h; sourceTree = "<group>"; };
 		D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBGenericProfileViewController.m; sourceTree = "<group>"; };
+		D44D02091CFA7DEA0039A187 /* DBSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSideMenuController.h; sourceTree = "<group>"; };
+		D44D020A1CFA7DEA0039A187 /* DBSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSideMenuController.m; sourceTree = "<group>"; };
+		D44D020C1CFB6B3E0039A187 /* DBLeftMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBLeftMenuViewController.h; sourceTree = "<group>"; };
+		D44D020D1CFB6B3E0039A187 /* DBLeftMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBLeftMenuViewController.m; sourceTree = "<group>"; };
+		D44D02131CFB79D60039A187 /* DBLeftMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBLeftMenuCell.h; sourceTree = "<group>"; };
+		D44D02141CFB79D60039A187 /* DBLeftMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBLeftMenuCell.m; sourceTree = "<group>"; };
+		D44D02151CFB79D60039A187 /* DBLeftMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBLeftMenuCell.xib; sourceTree = "<group>"; };
+		D44D02181CFBD6DA0039A187 /* DBSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSettingsViewController.h; sourceTree = "<group>"; };
+		D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSettingsViewController.m; sourceTree = "<group>"; };
+		D44D021F1CFBE7290039A187 /* DBBlockedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBlockedUsersViewController.h; sourceTree = "<group>"; };
+		D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBlockedUsersViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A7EB1C5C36B200F47581 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D458A7ED1C5C36B200F47581 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -210,11 +227,13 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D44D020F1CFB70660039A187 /* Menu */,
 				D4F951DF1CB72AAF009B6057 /* Chat */,
 				D45BFC831CE3F70C007EEF66 /* Login */,
 				D45BFC851CE4117F007EEF66 /* Profile */,
 				D45BFC861CE4118D007EEF66 /* Feed */,
 				D45BFC871CE41197007EEF66 /* Request */,
+				D44D021B1CFBD6E00039A187 /* Settings */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -226,6 +245,29 @@
 				D45BFC841CE41167007EEF66 /* Cells */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		D44D020F1CFB70660039A187 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				D44D020C1CFB6B3E0039A187 /* DBLeftMenuViewController.h */,
+				D44D020D1CFB6B3E0039A187 /* DBLeftMenuViewController.m */,
+				D44D02131CFB79D60039A187 /* DBLeftMenuCell.h */,
+				D44D02141CFB79D60039A187 /* DBLeftMenuCell.m */,
+				D44D02151CFB79D60039A187 /* DBLeftMenuCell.xib */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		D44D021B1CFBD6E00039A187 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D44D02181CFBD6DA0039A187 /* DBSettingsViewController.h */,
+				D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */,
+				D44D021F1CFBE7290039A187 /* DBBlockedUsersViewController.h */,
+				D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		D458A7DE1C5C36B200F47581 = {
@@ -349,6 +391,8 @@
 			children = (
 				D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */,
 				D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */,
+				D44D02091CFA7DEA0039A187 /* DBSideMenuController.h */,
+				D44D020A1CFA7DEA0039A187 /* DBSideMenuController.m */,
 				D458A7ED1C5C36B200F47581 /* AppDelegate.h */,
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 			);
@@ -516,6 +560,7 @@
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
 				D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */,
+				D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */,
 				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
@@ -604,6 +649,8 @@
 				433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
 				433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */,
+				D44D02161CFB79D60039A187 /* DBLeftMenuCell.m in Sources */,
+				D44D020B1CFA7DEA0039A187 /* DBSideMenuController.m in Sources */,
 				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
 				D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
@@ -613,6 +660,9 @@
 				D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */,
 				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,
 				D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */,
+				D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */,
+				D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */,
+				D44D020E1CFB6B3E0039A187 /* DBLeftMenuViewController.m in Sources */,
 				D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

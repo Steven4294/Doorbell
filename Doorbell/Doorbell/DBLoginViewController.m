@@ -13,8 +13,7 @@
 #import <ParseFacebookUtilsV4.h>
 
 #import "DBProfileViewController.h"
-
-#import "DBNavigationController.h"
+#import "DBSideMenuController.h"
 
 #import "MMPopupItem.h"
 #import "MMAlertView.h"
@@ -103,7 +102,6 @@
                  }];
             }
             
-           // [self presentFeed];
             
             if (user.isNew)
             {
@@ -134,7 +132,7 @@
 - (void)presentFeed
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    DBNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
+    DBSideMenuController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
     [self presentViewController:vc animated:YES completion:^{}];
 }
 

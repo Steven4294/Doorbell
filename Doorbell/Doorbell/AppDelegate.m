@@ -15,6 +15,10 @@
 
 #import "DBNavigationController.h"
 #import "DBLoginViewController.h"
+#import "DBFeedTableViewController.h"
+#import "LGSideMenuController.h"
+#import "DBSideMenuController.h"
+
 
 @interface AppDelegate ()
 
@@ -42,17 +46,23 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-
+/*
     if ([PFUser currentUser] != nil)
     {
-        DBNavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
-        self.window.rootViewController = navigationController;
+        DBSideMenuController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
+        self.window.rootViewController = viewController;
     }
     else
     {
         DBNavigationController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
         self.window.rootViewController = loginController;
     }
+    
+ */
+    
+     DBSideMenuController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
+    
+    self.window.rootViewController = viewController;
     
     [self.window makeKeyAndVisible];
     

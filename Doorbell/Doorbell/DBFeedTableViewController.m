@@ -25,12 +25,14 @@
 #import "DBMessageViewController.h"
 #import "MOOMaskedIconView.h"
 #import "DBGenericProfileViewController.h"
+#import "DBSideMenuController.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
     NSMutableArray *requests;
     NSMutableDictionary *userDict;
     NSMutableArray *flaggedUsers;
+    NSMutableOrderedSet *requestOrderedSet;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -45,7 +47,7 @@
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
-    
+    requestOrderedSet = [[NSMutableOrderedSet alloc] init];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -54,15 +56,38 @@
     
     [[PFUser currentUser] fetchIfNeeded];
 
-    [self refreshTableView];
-    
+    [self loadTableView];
+    __weak typeof(self) welf = self;
+    self.shyNavBarManager.scrollView = self.tableView;
+
     [self.tableView addPullToRefreshWithActionHandler:^
     {
         // prepend data to dataSource, insert cells at top of table view
-        [self refreshTableView];
+        [welf refreshTableView];
         
     }];
     
+    [self setupRequestButton];
+
+     [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor whiteColor],
+     NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
+    
+
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.frame = CGRectMake(0, 0, 22, 22);
+    [rightButton setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+
+    UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
+    [rightButtonItem setCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightButtonItem;
+    
+    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
+}
+
+- (void)setupRequestButton
+{
     CGFloat padding_x = 0;
     CGFloat padding_y = 0;
     UIButton *requestButton = [[UIButton alloc] initWithFrame:CGRectMake(0 + padding_x, self.view.frame.size.height - 65 - padding_y, self.view.frame.size.width - 2*padding_x, 65 - padding_y)];
@@ -74,39 +99,45 @@
     [self.view bringSubviewToFront:requestButton];
     [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-   /* [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor colorWithRed:242/255.0 green:120/255.0 blue:75/255.0 alpha:1.0],
-       NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];*/
     
-     [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor whiteColor],
-     NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
-    
-    self.shyNavBarManager.scrollView = self.tableView;
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 20, 20);
-    [button setImage:[UIImage imageNamed:@"User_Profile_white.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    button2.frame = CGRectMake(0, 0, 22, 22);
-    [button2 setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
-    [button2 addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
-    [barButton setCustomView:button];
-    self.navigationItem.leftBarButtonItem = barButton;
-    
-    UIBarButtonItem *barButton2=[[UIBarButtonItem alloc] init];
-    [barButton2 setCustomView:button2];
-    self.navigationItem.rightBarButtonItem = barButton2;
-    
-    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
+}
+
+- (void)loadTableView
+{
+    NSLog(@"loading table view");
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+    PFQuery *relationQuery = [flaggedUserRelation query];
+    [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         flaggedUsers = [objects mutableCopy];
+         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+         [query orderByDescending:@"createdAt"];
+         [query includeKey:@"poster"];
+         [query whereKey:@"poster" notContainedIn:flaggedUsers   ];
+         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+             
+             if (!error)
+             {
+                 requests = [objects mutableCopy];
+                 [requestOrderedSet addObjectsFromArray:objects];
+                 [self.tableView reloadData];
+                 [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+             }
+             else
+             {
+                 // Log details of the failure
+                 NSLog(@"Error: %@ %@", error, [error userInfo]);
+             }
+         }];
+     }];
 }
 
 - (void)refreshTableView
 {
+    int countInitial = (int) requestOrderedSet.count;
+    NSLog(@"ordered set before: %d", countInitial);
+
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
     PFQuery *relationQuery = [flaggedUserRelation query];
@@ -121,8 +152,45 @@
             
             if (!error)
             {
-                requests = [objects mutableCopy];
-                [self.tableView reloadData];
+               
+                [requestOrderedSet addObjectsFromArray:objects];
+                int amountToInsert = (int)requestOrderedSet.count - countInitial;
+                NSLog(@"inserting: %d", amountToInsert);
+
+                if (amountToInsert > 0)
+                {
+                    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+                    
+                    for (int i = 0; i < amountToInsert; i++)
+                    {
+                        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                    }
+                    
+                    // sort the ordered set
+                    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+                    
+                    for (PFObject *object in objects)
+                    {
+                        object[@"createdAt"] = [object createdAt];
+                    }
+
+                    [requestOrderedSet sortUsingDescriptors:@[sortDescriptor]];
+                    [self.tableView beginUpdates];
+                    requests = [[requestOrderedSet array] mutableCopy];
+
+                    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+                    [self.tableView endUpdates];
+                }
+                else if (amountToInsert < 0)
+                {
+                    requests = [objects mutableCopy];
+                    [self.tableView reloadData];
+                 }
+                else
+                {
+                    requests = [objects mutableCopy];
+                }
+                
             }
             else
             {
@@ -136,32 +204,37 @@
 
 -(void)requestButtonPressed
 {
-    NSLog(@"request button pressed");
+    NSLog(@"request button pressed: %d", self.sideMenuController.leftViewShowing);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBRequestFormViewController"];
-    UIViewController *vc2 = [storyboard instantiateViewControllerWithIdentifier:@"DBBulletinFormViewController"];
-
-    vc.transitioningDelegate = self;
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    UIViewController *bulletinForm = [storyboard instantiateViewControllerWithIdentifier:@"DBBulletinFormViewController"];
     
-    vc2.transitioningDelegate = self;
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     
-    [self presentViewController:vc2 animated:YES completion:^{
-    }];
+    bulletinForm.transitioningDelegate = self;
+    [bulletinForm setModalPresentationStyle:UIModalPresentationFullScreen];
+    if (self.sideMenuController.leftViewShowing == YES)
+    {
+        NSLog(@"request button pressed: %@", self.sideMenuController);
+        [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
+        [self.sideMenuController presentViewController:bulletinForm animated:YES completion:nil];
+    }
+    else
+    {
+        [self.sideMenuController presentViewController:bulletinForm animated:YES completion:nil];
+    }
+    
 }
 
 -(void)profileButtonPressed
 {
-    
-    NSLog(@"profile button pressed");
+    /*[[NSNotificationCenter defaultCenter] postNotificationName:@"profileButtonPressed" object:nil];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBProfileViewController"];
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     
-    [self performSegueWithIdentifier:@"panSegue" sender:self];
-
+    [self performSegueWithIdentifier:@"panSegue" sender:self];*/
+    NSLog(@"profile Button pressed: %d", self.sideMenuController.isLeftViewShowing);
+    [self.sideMenuController showLeftViewAnimated:YES completionHandler:nil];
 }
 
 -(void)chatButtonPressed
@@ -181,8 +254,8 @@
     
 }
 
-
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -402,7 +475,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"panSegue"] || [segue.identifier isEqualToString:@"chatSegue"])
+    if ([segue.identifier isEqualToString:@"panSegue"] || [segue.identifier isEqualToString:@"DBFeedTableViewController"])
     {
         UIViewController *toVC = segue.destinationViewController;
         toVC.transitioningDelegate = self;

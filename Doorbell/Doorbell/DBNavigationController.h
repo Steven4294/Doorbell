@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@class CEReversibleAnimationController, CEBaseInteractionController;
+@class CEReversibleAnimationController, CEBaseInteractionController, DBSideMenuController;
 
 @interface DBNavigationController : UINavigationController <UINavigationControllerDelegate>
 
 @property (strong, nonatomic) CEReversibleAnimationController *navigationAnimationController;
 @property (strong, nonatomic) CEBaseInteractionController *navigationInteractionController;
+@property (strong, nonatomic) DBSideMenuController *sideMenuController;
 
 @end

@@ -128,6 +128,26 @@
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
 
+- (void)cellImageViewTapped:(id)sender
+{
+    // Light Box the profile image
+    UIGestureRecognizer *gesture = (UIGestureRecognizer *) sender;
+    UIImageView *imageView = (UIImageView *) gesture.view;
+    
+    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
+    imageInfo.image = imageView.image;
+    imageInfo.referenceRect = imageView.frame;
+    imageInfo.referenceView = imageView.superview;
+    imageInfo.referenceContentMode = imageView.contentMode;
+    imageInfo.referenceCornerRadius = imageView.layer.cornerRadius;
+    
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
+                                           initWithImageInfo:imageInfo
+                                           mode:JTSImageViewControllerMode_Image
+                                           backgroundStyle:JTSImageViewControllerBackgroundOption_Scaled];
+    
+    [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

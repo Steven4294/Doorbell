@@ -48,27 +48,6 @@
     }
     
     [self retrieveUsersRequests];
-    
-    PFRelation *relation = [currentUser relationForKey:@"messages"];
-    PFQuery *queryChat = [relation query];
-    queryChat.limit = 1000;
-    [queryChat findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-        if (!error)
-        {
-            // The find succeeded.
-            // Do something with the found objects
-            self.numberOfMessages.text = [NSString stringWithFormat:@"%lu", objects.count];
-            if (objects.count > 1000)
-            {
-                self.numberOfMessages.text = @"1000+";
-            }
-        }
-        else
-        {
-            // Log details of the failure
-        }
-    }];
 }
 
 - (void)retrieveUsersRequests
@@ -80,13 +59,23 @@
         
         if (!error)
         {
+
             // The find succeeded.
             // Do something with the found objects
             userRequests = [objects mutableCopy];
-            self.numberOfRequests.text = [NSString stringWithFormat:@"%lu", (unsigned long)userRequests.count];
-            if (userRequests.count > 100)
+            [self.tableView reloadData];
+
+            if (userRequests.count == 1)
             {
-                self.numberOfRequests.text = @"100+";
+                self.numberOfRequests.text = @"1 post";
+            }
+            else if (userRequests.count > 100)
+            {
+                self.numberOfRequests.text = @"100+ posts";
+            }
+            else
+            {
+                self.numberOfRequests.text = [NSString stringWithFormat:@"%lu posts", (unsigned long)userRequests.count];
             }
             
         }
@@ -105,7 +94,7 @@
                          placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
  
     self.profileImage.clipsToBounds = YES;
-    self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor ;
+    self.profileImage.layer.borderColor = [UIColor colorWithWhite:.2 alpha:1.0].CGColor ;
     self.profileImage.layer.borderWidth = 0.0f;
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
     [tapRecognizer addTarget:self action:@selector(profileImageTapped:)];
@@ -129,7 +118,7 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
--( void)logoutButton:(id)sender
+- (void)logoutButton:(id)sender
 {
     NSLog(@"logging out");
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
@@ -166,17 +155,6 @@
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
 
-
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -189,7 +167,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileTableViewCell" forIndexPath:indexPath];
+    DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     
     if ([userRequests count] > indexPath.row)
     {
@@ -202,22 +180,14 @@
         
         cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
         
-        [cell.messageLabel sizeToFit];
+        PFUser *currentUser = [PFUser currentUser];
+        cell.nameLabel.text = currentUser[@"facebookName"];
+        cell.messageLabel.text = itemString;
         
-        UIColor *normalColor = [UIColor blackColor];
-        UIColor *highlightColor = [UIColor colorWithRed:52.0/255.0f green:152.0/255.0f blue:219.0/255.0f alpha:1.0f];
-        NSDictionary *normalAttributes = @{NSForegroundColorAttributeName:normalColor};
-        NSDictionary *highlightAttributes = @{NSForegroundColorAttributeName:highlightColor};
+        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
+        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
+                             placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
         
-        if (itemString != nil) {
-            NSAttributedString *normalText = [[NSAttributedString alloc] initWithString:@"Requested: " attributes:normalAttributes];
-            NSAttributedString *highlightedText = [[NSAttributedString alloc] initWithString:itemString attributes:highlightAttributes];
-            
-            NSMutableAttributedString *finalAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:normalText];
-            [finalAttributedString appendAttributedString:highlightedText];
-            
-            cell.profileLabel.attributedText = finalAttributedString;
-        }
     }
     
     cell.borderView.layer.borderWidth = 1.0f;
@@ -228,9 +198,9 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return 107;
 }
 
 @end

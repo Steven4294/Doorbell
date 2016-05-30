@@ -10,6 +10,9 @@
 #import "DBMessageViewController.h"
 
 @interface DBMessageViewController ()
+{
+    BOOL isSendingMessage;
+}
 
 @end
 
@@ -17,15 +20,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0f];
     // Do any additional setup after loading the view.
     self.chatData = [[DBChatData alloc] init];
     self.chatData.userReciever = self.userReciever;
+    self.collectionView.collectionViewLayout.messageBubbleFont = font;
+    
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     self.inputToolbar.contentView.textView.layer.borderWidth = 0;
     self.inputToolbar.contentView.backgroundColor = [UIColor whiteColor];
     self.inputToolbar.contentView.textView.placeHolder = @"Type a message...";
+    self.inputToolbar.contentView.textView.font = font;
+    self.inputToolbar.contentView.rightBarButtonItem.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17];
     //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
     
 }
@@ -40,22 +49,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"view will appear");
     [super viewWillAppear:animated];
-
+    
     if (self.delegateModal)
     {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
@@ -82,7 +80,7 @@
     self.collectionView.collectionViewLayout.springinessEnabled =  NO;
     
     [super viewDidAppear:animated];
- 
+    
 }
 
 
@@ -101,63 +99,72 @@
      *  2. Add new id<JSQMessageData> object to your data source
      *  3. Call `finishSendingMessage`
      */
+    NSString *trimmedString = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    BOOL blank = [trimmedString isEqualToString:@""];
     
-    // iOS, OS X, tvOS, watchOS SDK: Objective-C
-
-    
-    // TODO.. add object to parse
-    PFUser *currentUser = [PFUser currentUser];
-    PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
-    messageObject[@"message"] = text;
-  
-    messageObject[@"from"] = currentUser;
-    messageObject[@"to"] = _userReciever;
-    
-    [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+    if ((isSendingMessage == NO)&&(blank == NO))
+    {
+        isSendingMessage = YES;
+        PFUser *currentUser = [PFUser currentUser];
+        PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
+        messageObject[@"message"] = text;
         
-        if (succeeded == YES)
-        {
-            PFRelation *relation = [currentUser relationForKey:@"messages"];
-            [relation addObject:messageObject];
+        messageObject[@"from"] = currentUser;
+        messageObject[@"to"] = _userReciever;
+        
+        [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             
-            [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
-             {
-                 if (succeeded == YES)
+            if (succeeded == YES)
+            {
+                PFRelation *relation = [currentUser relationForKey:@"messages"];
+                [relation addObject:messageObject];
+                
+                [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
                  {
-                     [JSQSystemSoundPlayer jsq_playMessageSentSound];
+                     if (succeeded == YES)
+                     {
+                         [JSQSystemSoundPlayer jsq_playMessageSentSound];
+                         
+                         JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
+                                                                  senderDisplayName:senderDisplayName
+                                                                               date:date
+                                                                               text:text];
+                         
+                         
+                         [self.chatData.messages addObject:message];
+                         [self finishSendingMessageAnimated:YES];
+                         isSendingMessage = NO;
+                         
+                     }
                      
-                     JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
-                                                              senderDisplayName:senderDisplayName
-                                                                           date:date
-                                                                           text:text];
+                     // adds the inverse relationship via the cloud!
+                     [PFCloud callFunctionInBackground:@"addRelationForMessage"
+                                        withParameters:@{@"messageID": messageObject.objectId,
+                                                         @"recieverID": _userReciever.objectId}
+                                                 block:^(NSString *result, NSError *error)
+                      {
+                          
+                      }];
                      
-                     
-                     [self.chatData.messages addObject:message];
-                     [self finishSendingMessageAnimated:YES];
-                 }
-                 
-                 // adds the inverse relationship via the cloud!
-                 [PFCloud callFunctionInBackground:@"addRelationForMessage"
-                                    withParameters:@{@"messageID": messageObject.objectId,
-                                                     @"recieverID": _userReciever.objectId}
-                                             block:^(NSString *result, NSError *error)
-                  {
-
-                  }];
-                 
-             }];
-            
-            
-        }
-    }];
+                 }];
+                
+                
+            }
+            else
+            {
+                isSendingMessage = NO;
+            }
+        }];
+    }
+    
     
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender
 {
     [self.inputToolbar.contentView.textView resignFirstResponder];
-   
-    }
+    
+}
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -252,18 +259,18 @@
      */
     JSQMessage *message = [self.chatData.messages objectAtIndex:indexPath.item];
     /*
-    if ([message.senderId isEqualToString:self.senderId]) {
-        if (![NSUserDefaults outgoingAvatarSetting]) {
-            return nil;
-        }
-    }
-    else {
-        if (![NSUserDefaults incomingAvatarSetting]) {
-            return nil;
-        }
-    }*/
+     if ([message.senderId isEqualToString:self.senderId]) {
+     if (![NSUserDefaults outgoingAvatarSetting]) {
+     return nil;
+     }
+     }
+     else {
+     if (![NSUserDefaults incomingAvatarSetting]) {
+     return nil;
+     }
+     }*/
     
-   
+    
     return [self.chatData.avatars objectForKey:message.senderId];
 }
 

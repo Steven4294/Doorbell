@@ -25,5 +25,9 @@ pod 'JSQMessagesViewController'
 pod 'MOOMaskedIconView', '~> 0.1'
 pod 'MMPopupView'
 pod 'JTSImageViewController', '~> 1.5'
+pod 'LGSideMenuController', '~> 1.0.0'
+pod 'Bohr'
+
+
 
 

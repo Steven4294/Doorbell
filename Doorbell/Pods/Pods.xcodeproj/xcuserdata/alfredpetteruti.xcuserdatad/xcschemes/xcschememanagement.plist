@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Bohr.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -60,6 +65,11 @@
 			<false/>
 		</dict>
 		<key>JTSImageViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>LGSideMenuController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -137,12 +147,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>274C8787C374EB6A9350544A61ECF2B6</key>
+		<key>0701CACFE9D252F3E6108801CB6AC87F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2BB65874C2C09F0FC8F2BAD4F3200C4A</key>
+		<key>0EAF8C3E24DECAC7EC75FC12E5FE4069</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1E465B00826F0E9F8BFFB16982383A4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -172,12 +187,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>43A19102444591DEBA1838C301DAE888</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4E286D373D75563CE26E479A68203892</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>53480ED0BE09FF49E34B1702D485CAAB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>53EF71FD00B4C9524CFF100A79D52A6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -192,7 +217,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7BAB2135994E7B114AE6F9271B374544</key>
+		<key>71B76793A3B7514D38CE8C93A9B8C8F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -222,12 +247,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
+		<key>9FA7E4903C781AEF37121FD226345C33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6BD925403DDE9D15B67263EB45A1F20</key>
+		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -242,17 +267,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DAFF7800BE05846A0E77BEA9B65E5024</key>
+		<key>E5E0C706B653E3E8AB2EC65038984D8E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>F21523DE0EE1E35B265242490D97EE4C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F6459E789C588165F5DCD65B06F8A706</key>
 		<dict>
 			<key>primary</key>
 			<true/>

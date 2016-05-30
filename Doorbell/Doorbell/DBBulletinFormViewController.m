@@ -57,28 +57,17 @@
     }];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50.0)];
-    
-    submitButton.backgroundColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
-    [submitButton setTitle:@"request" forState:UIControlStateNormal];
-    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [submitButton addTarget:self action:@selector(submitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    textField.inputAccessoryView = submitButton;
-    return YES;
-}
+
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50.0)];
     
     submitButton.backgroundColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
-    [submitButton setTitle:@"request" forState:UIControlStateNormal];
+    [submitButton setTitle:@"Post" forState:UIControlStateNormal];
     [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [submitButton addTarget:self action:@selector(submitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
+    submitButton.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:18.0];
     textView.inputAccessoryView = submitButton;
     return YES;
 }
