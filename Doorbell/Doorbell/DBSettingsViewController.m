@@ -15,8 +15,6 @@
 
 @interface DBSettingsViewController ()
 
-@property (nonatomic, strong) NSArray *arrayOfItems;
-
 @end
 
 @implementation DBSettingsViewController

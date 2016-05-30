@@ -11,12 +11,16 @@
 
 @interface DBBlockedUsersViewController ()
 
+@property (nonatomic, strong) NSMutableOrderedSet *flaggedUsersSet;
+
+
 @end
 
 @implementation DBBlockedUsersViewController
 
 
-- (void)setup{
+- (void)setup
+{
     self.title = @"";
     __unsafe_unretained typeof(self) welf = self;
 
@@ -25,39 +29,79 @@
     PFQuery *relationQuery = [flaggedUserRelation query];
     [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
-         if (error == nil) {
-             NSMutableArray *flaggedUsers = [objects mutableCopy];
-             
-             [welf addSection:[BOTableViewSection sectionWithHeaderTitle:@"Blocked Users" handler:^(BOTableViewSection *section) {
+         if (error == nil)
+         {
+             if (objects.count > 0)
+             {
+                 NSMutableArray *flaggedUsers = [objects mutableCopy];
+                 self.flaggedUsersSet = [NSMutableOrderedSet orderedSetWithArray:flaggedUsers];
                  
-                 for (PFUser *user in flaggedUsers)
-                 {
-                     BOSwitchTableViewCell *cell = [BOSwitchTableViewCell cellWithTitle:user[@"facebookName"] key:[user objectId] handler:^(BOSwitchTableViewCell *cell)
+                 [welf addSection:[BOTableViewSection sectionWithHeaderTitle:@"Blocked Users" handler:^(BOTableViewSection *section) {
+                     
+                     NSMutableDictionary *defaultDictionary = [[NSMutableDictionary alloc] init];
+                     
+                     for (PFUser *user in flaggedUsers)
                      {
-                         if (cell.toggleSwitch.on)
-                         {
-                             NSLog(@"switch on: %@", user[@"facebookName"]);
-                         }
-                         else
-                         {
-                             NSLog(@"switch off: %@", user[@"facebookName"]);
-                         }
-                         
-                         cell.actionbl
-                         
-                     }];
+                         [defaultDictionary setValue:@YES forKey:[user objectId]];
+                     }
+                     if (defaultDictionary != nil)
+                     {
+                         [[NSUserDefaults standardUserDefaults] registerDefaults:defaultDictionary];
+                     }
                      
-                     [cell.toggleSwitch setOn:YES];
+                     for (PFUser *user in flaggedUsers)
+                     {
+                         BOSwitchTableViewCell *cell = [BOSwitchTableViewCell cellWithTitle:user[@"facebookName"] key:[user objectId] handler:^(BOSwitchTableViewCell *cell)
+                                                        {
+                                                            __unsafe_unretained typeof(BOSwitchTableViewCell) *celf = cell;
+                                                            
+                                                            cell.actionBlock = ^{
+                                                                if (celf.toggleSwitch.on)
+                                                                {
+                                                                    NSLog(@"switch on: %@", user[@"facebookName"]);
+                                                                }
+                                                                else
+                                                                {
+                                                                    NSLog(@"switch off: %@", user[@"facebookName"]);
+                                                                }
+                                                            };
+                                                        }];
+                         [section addCell:cell];;
+                     }
                      
-                     [section addCell:cell];;
-                     
-                 }
-             }]];
-             
+                 }]];
+                 
+             }
+             else
+             {
+                 NSLog(@"no blocked users");
+                 // possibly add an empty state in future! :)
+             }
          }
-         
-         
      }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    // save the user defaults to flagging array
+    BOOL didRemoveObject = NO;
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+    for (PFUser *user in self.flaggedUsersSet)
+    {
+        NSNumber *flaggedNumber = [[NSUserDefaults standardUserDefaults] valueForKey:[user objectId]];
+        BOOL isFlagged = flaggedNumber.boolValue;
+        if (isFlagged == NO)
+        {
+            [flaggedUserRelation removeObject:user];
+            didRemoveObject = YES;
+        }
+    }
+    
+    if (didRemoveObject == YES)
+    {
+        [currentUser saveInBackground];
+    }
 }
 
 @end

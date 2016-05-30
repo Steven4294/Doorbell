@@ -28,6 +28,8 @@
 
 - (void)toggleSwitchValueDidChange {
 	self.setting.value = @(self.toggleSwitch.on);
+    if (self.actionBlock) self.actionBlock();
+
 }
 
 - (void)settingValueDidChange {

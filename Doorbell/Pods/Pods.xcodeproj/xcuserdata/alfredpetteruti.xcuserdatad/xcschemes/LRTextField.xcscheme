@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '410E63F9B210CB6933791CFC'
+               BlueprintIdentifier = '9D87C18FA7A999345CB03DBC'
                BlueprintName = 'LRTextField'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLRTextField.a'>
