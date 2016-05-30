@@ -23,7 +23,7 @@
 {
     self.title = @"";
     __unsafe_unretained typeof(self) welf = self;
-
+    
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
     PFQuery *relationQuery = [flaggedUserRelation query];
@@ -38,39 +38,21 @@
                  
                  [welf addSection:[BOTableViewSection sectionWithHeaderTitle:@"Blocked Users" handler:^(BOTableViewSection *section) {
                      
-                     NSMutableDictionary *defaultDictionary = [[NSMutableDictionary alloc] init];
-                     
                      for (PFUser *user in flaggedUsers)
                      {
-                         [defaultDictionary setValue:@YES forKey:[user objectId]];
-                     }
-                     if (defaultDictionary != nil)
-                     {
-                         [[NSUserDefaults standardUserDefaults] registerDefaults:defaultDictionary];
+                         [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:[user objectId]];
                      }
                      
                      for (PFUser *user in flaggedUsers)
                      {
                          BOSwitchTableViewCell *cell = [BOSwitchTableViewCell cellWithTitle:user[@"facebookName"] key:[user objectId] handler:^(BOSwitchTableViewCell *cell)
                                                         {
-                                                            __unsafe_unretained typeof(BOSwitchTableViewCell) *celf = cell;
                                                             
-                                                            cell.actionBlock = ^{
-                                                                if (celf.toggleSwitch.on)
-                                                                {
-                                                                    NSLog(@"switch on: %@", user[@"facebookName"]);
-                                                                }
-                                                                else
-                                                                {
-                                                                    NSLog(@"switch off: %@", user[@"facebookName"]);
-                                                                }
-                                                            };
                                                         }];
                          [section addCell:cell];;
                      }
                      
                  }]];
-                 
              }
              else
              {
