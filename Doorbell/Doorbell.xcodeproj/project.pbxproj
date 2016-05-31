@@ -48,6 +48,12 @@
 		D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */; };
 		D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7E1CE2BFEC007EEF66 /* Logout.png */; };
 		D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */; };
+		D487E8E01CFD481F009CEA01 /* event1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DB1CFD481F009CEA01 /* event1.png */; };
+		D487E8E11CFD481F009CEA01 /* home1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DC1CFD481F009CEA01 /* home1.png */; };
+		D487E8E21CFD481F009CEA01 /* notification1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DD1CFD481F009CEA01 /* notification1.png */; };
+		D487E8E31CFD481F009CEA01 /* profile1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DE1CFD481F009CEA01 /* profile1.png */; };
+		D487E8E41CFD481F009CEA01 /* settings1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DF1CFD481F009CEA01 /* settings1.png */; };
+		D487E8E71CFD4F92009CEA01 /* DBFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
@@ -149,6 +155,13 @@
 		D45BFC7E1CE2BFEC007EEF66 /* Logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logout.png; sourceTree = "<group>"; };
 		D45BFC801CE2CF37007EEF66 /* DBSearchUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSearchUserViewController.h; sourceTree = "<group>"; };
 		D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSearchUserViewController.m; sourceTree = "<group>"; };
+		D487E8DB1CFD481F009CEA01 /* event1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event1.png; sourceTree = "<group>"; };
+		D487E8DC1CFD481F009CEA01 /* home1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home1.png; sourceTree = "<group>"; };
+		D487E8DD1CFD481F009CEA01 /* notification1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification1.png; sourceTree = "<group>"; };
+		D487E8DE1CFD481F009CEA01 /* profile1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile1.png; sourceTree = "<group>"; };
+		D487E8DF1CFD481F009CEA01 /* settings1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings1.png; sourceTree = "<group>"; };
+		D487E8E51CFD4F92009CEA01 /* DBFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedbackViewController.h; sourceTree = "<group>"; };
+		D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedbackViewController.m; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
@@ -229,6 +242,11 @@
 				D45BFC7A1CE2B1B6007EEF66 /* envelope2.png */,
 				D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */,
 				D45BFC7E1CE2BFEC007EEF66 /* Logout.png */,
+				D487E8DB1CFD481F009CEA01 /* event1.png */,
+				D487E8DC1CFD481F009CEA01 /* home1.png */,
+				D487E8DD1CFD481F009CEA01 /* notification1.png */,
+				D487E8DE1CFD481F009CEA01 /* profile1.png */,
+				D487E8DF1CFD481F009CEA01 /* settings1.png */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -278,6 +296,8 @@
 				D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */,
 				D44D026C1CFD3A300039A187 /* DBNotificationSettingsViewController.h */,
 				D44D026D1CFD3A300039A187 /* DBNotificationSettingsViewController.m */,
+				D487E8E51CFD4F92009CEA01 /* DBFeedbackViewController.h */,
+				D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -567,6 +587,7 @@
 				D4EE0BF01CA4C762004A5A9F /* login-with-fb.png in Resources */,
 				D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */,
 				D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */,
+				D487E8E31CFD481F009CEA01 /* profile1.png in Resources */,
 				D45BFC7B1CE2B1B6007EEF66 /* envelope2.png in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
@@ -579,16 +600,20 @@
 				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
+				D487E8E01CFD481F009CEA01 /* event1.png in Resources */,
 				D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */,
 				D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */,
 				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
+				D487E8E21CFD481F009CEA01 /* notification1.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
+				D487E8E41CFD481F009CEA01 /* settings1.png in Resources */,
 				D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */,
 				D44D02241CFCFC000039A187 /* menu_icon1.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
 				D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
+				D487E8E11CFD481F009CEA01 /* home1.png in Resources */,
 				D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -667,6 +692,7 @@
 				D44D02711CFD3E8C0039A187 /* DBEventsViewController.m in Sources */,
 				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
+				D487E8E71CFD4F92009CEA01 /* DBFeedbackViewController.m in Sources */,
 				D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */,
 				433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,

@@ -20,8 +20,8 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EI-Nk-WYM">
-                        <rect key="frame" x="14" y="12" width="37" height="36"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4EI-Nk-WYM">
+                        <rect key="frame" x="15" y="15" width="30" height="30"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" red="0.1764705882352941" green="0.20392156862745098" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
@@ -29,6 +29,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <inset key="separatorInset" minX="60" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="iconImageView" destination="4EI-Nk-WYM" id="juO-hA-YgH"/>
                 <outlet property="itemLabel" destination="esg-wx-vU9" id="ko2-4K-H6Q"/>
             </connections>
             <point key="canvasLocation" x="604" y="296"/>

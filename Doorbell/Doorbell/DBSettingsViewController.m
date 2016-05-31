@@ -13,6 +13,7 @@
 #import "DBLoginViewController.h"
 #import "DBBlockedUsersViewController.h"
 #import "DBNotificationSettingsViewController.h"
+#import "DBFeedbackViewController.h"
 
 @interface DBSettingsViewController ()
 
@@ -41,22 +42,24 @@
     }]];
     
     __unsafe_unretained typeof(self) weakSelf = self;
-   /* [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"Information & Support" handler:^(BOTableViewSection *section) {
+    [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"Information & Support" handler:^(BOTableViewSection *section) {
         
-      
-        
-        
-    }]];*/
+        [section addCell:[BOChoiceTableViewCell cellWithTitle:@"Send Feedback" key:@"key" handler:^(BOChoiceTableViewCell *cell)
+        {
+            DBFeedbackViewController *vc = [[DBFeedbackViewController alloc] init];
+            cell.destinationViewController = vc;
+        }]];
+    }]];
     
     [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"" handler:^(BOTableViewSection *section) {
         
-        [section addCell:[BOButtonTableViewCell cellWithTitle:@"Logout" key:nil handler:^(BOButtonTableViewCell *cell) {
-            cell.actionBlock = ^{
+        [section addCell:[BOButtonTableViewCell cellWithTitle:@"Logout" key:nil handler:^(BOButtonTableViewCell *cell)
+        {
+            cell.actionBlock = ^
+            {
                 [weakSelf logout];
             };
-            //cell.mainColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
             cell.mainColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
-
         }]];
         
         section.footerTitle = @"Built in Cambridge";
@@ -64,22 +67,36 @@
 
 }
 
-- (void)logout {
+- (void)logout
+{
     {
-        NSLog(@"logging out");
-        [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-            if (error == nil) {
+        [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error)
+        {
+            if (error == nil)
+            {
                 [FBSDKAccessToken setCurrentAccessToken:nil];
                 
                 NSLog(@"logged out!");
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                 DBLoginViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
                 [self presentViewController:vc animated:NO completion:nil];
-                
             }
-            
         }];
-        
-    }}
+    }
+}
+
+#pragma mark - mail compose delegate
+-(void)mailComposeController:(MFMailComposeViewController *)controller
+         didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    if (result) {
+        NSLog(@"Result : %d",result);
+    }
+    if (error) {
+        NSLog(@"Error : %@",error);
+    }
+    [self dismissModalViewControllerAnimated:YES];
+    
+}
+
 
 @end

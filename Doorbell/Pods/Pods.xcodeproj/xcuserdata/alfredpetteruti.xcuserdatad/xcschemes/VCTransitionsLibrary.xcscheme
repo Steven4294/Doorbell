@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '08B5912F2574D17C7B9D8E0B'
+               BlueprintIdentifier = '977D8B72F4CBD23C1C95F79C'
                BlueprintName = 'VCTransitionsLibrary'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libVCTransitionsLibrary.a'>

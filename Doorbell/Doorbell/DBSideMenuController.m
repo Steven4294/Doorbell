@@ -14,10 +14,12 @@
 #import "DBFeedTableViewController.h"
 #import "DBSettingsViewController.h"
 #import "DBEventsViewController.h"
+#import "FTImageAssetRenderer.h"
 
 @interface DBSideMenuController()
 
 @property (strong, nonatomic) NSArray *titlesArray;
+@property (strong, nonatomic) NSArray *imagesArray;
 
 @end
 
@@ -29,6 +31,11 @@
                      @"Profile",
                      @"Events",
                      @"Settings"];
+    
+    _imagesArray = @[@"home1",
+                     @"profile1",
+                     @"event1",
+                     @"settings1"];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBNavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
@@ -84,8 +91,23 @@
     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DBLeftMenuCell" owner:self options:nil];
     DBLeftMenuCell *cell = [topLevelObjects objectAtIndex:0];
     cell.itemLabel.text = [self.titlesArray objectAtIndex:indexPath.row];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
+
+    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
+    renderer1.targetColor = [UIColor whiteColor];
+    UIImage *image_unhighlighted = [renderer1 imageWithCacheIdentifier:@"white"];
+    
+    FTImageAssetRenderer *renderer2 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
+    renderer2.targetColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
+    UIImage *image_highlighted = [renderer2 imageWithCacheIdentifier:@"render2"];
+
+   // cell.unhighlightedImage = image_unhighlighted;
+    //cell.highlightedImage = image_highlighted;
+    
+    [cell.iconImageView setImage:image_unhighlighted];
+    [cell.iconImageView setHighlightedImage:image_highlighted];
+        
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setSelected:YES animated:YES];
     
     return cell;

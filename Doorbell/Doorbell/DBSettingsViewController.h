@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Bohr/Bohr.h>
+#import <MessageUI/MessageUI.h>
 
 @interface DBSettingsViewController : BOTableViewController
 

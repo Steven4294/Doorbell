@@ -56,6 +56,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
+  - FTAssetRenderer (0.1.1)
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -97,6 +98,7 @@ DEPENDENCIES:
   - FBSDKMessengerShareKit
   - FBSDKShareKit
   - FormatterKit
+  - FTAssetRenderer
   - JSQMessagesViewController
   - JTHamburgerButton (~> 1.0)
   - JTSImageViewController (~> 1.5)
@@ -127,6 +129,7 @@ SPEC CHECKSUMS:
   FBSDKMessengerShareKit: 41c0b1a667d685c9433f993eb9611b3d5074e1cb
   FBSDKShareKit: b8c8ef0ed173f9fc1b3c8df384a0202ce53008d4
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
+  FTAssetRenderer: 034cc3dff8e0f9f10176179b6ccf8934841d2370
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   JTHamburgerButton: 9a41c7d051c72590a9d2c18416d84d1b912f12e3

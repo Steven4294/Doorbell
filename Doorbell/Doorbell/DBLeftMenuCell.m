@@ -22,12 +22,12 @@
     if (selected == YES)
     {
         self.itemLabel.textColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
-        //self.backgroundView = [UIColor darkGrayColor];
+        [self.iconImageView setHighlighted:YES];
     }
     else
     {
         self.itemLabel.textColor = [UIColor whiteColor];
-
+        [self.iconImageView setHighlighted:NO];
     }
 }
 
