@@ -13,6 +13,7 @@
 #import "DBLeftMenuCell.h"
 #import "DBFeedTableViewController.h"
 #import "DBSettingsViewController.h"
+#import "DBEventsViewController.h"
 
 @interface DBSideMenuController()
 
@@ -26,9 +27,7 @@
 {
     _titlesArray = @[@"Home",
                      @"Profile",
-                     @"Address Book",
                      @"Events",
-                     @"Notifications",
                      @"Settings"];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -118,9 +117,10 @@
             viewController.sideMenuController = self;
             [navigationController setViewControllers:@[viewController] animated:NO];
         }
-        else if ([menuItem isEqualToString:@"Address Book"])
+        else if ([menuItem isEqualToString:@"Events"])
         {
-            
+            DBEventsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBEventsViewController"];
+            [navigationController setViewControllers:@[viewController] animated:NO];
         }
         else if ([menuItem isEqualToString:@"Settings"])
         {

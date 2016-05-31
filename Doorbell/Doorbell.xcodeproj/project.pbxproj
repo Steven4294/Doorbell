@@ -27,6 +27,9 @@
 		D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44D02151CFB79D60039A187 /* DBLeftMenuCell.xib */; };
 		D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */; };
 		D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */; };
+		D44D02241CFCFC000039A187 /* menu_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = D44D02231CFCFC000039A187 /* menu_icon1.png */; };
+		D44D026E1CFD3A300039A187 /* DBNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D026D1CFD3A300039A187 /* DBNotificationSettingsViewController.m */; };
+		D44D02711CFD3E8C0039A187 /* DBEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D02701CFD3E8C0039A187 /* DBEventsViewController.m */; };
 		D458A7EC1C5C36B200F47581 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EB1C5C36B200F47581 /* main.m */; };
 		D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7EE1C5C36B200F47581 /* AppDelegate.m */; };
 		D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D458A7F11C5C36B200F47581 /* DBLoginViewController.m */; };
@@ -112,6 +115,11 @@
 		D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSettingsViewController.m; sourceTree = "<group>"; };
 		D44D021F1CFBE7290039A187 /* DBBlockedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBlockedUsersViewController.h; sourceTree = "<group>"; };
 		D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBlockedUsersViewController.m; sourceTree = "<group>"; };
+		D44D02231CFCFC000039A187 /* menu_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_icon1.png; sourceTree = "<group>"; };
+		D44D026C1CFD3A300039A187 /* DBNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNotificationSettingsViewController.h; sourceTree = "<group>"; };
+		D44D026D1CFD3A300039A187 /* DBNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBNotificationSettingsViewController.m; sourceTree = "<group>"; };
+		D44D026F1CFD3E8C0039A187 /* DBEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBEventsViewController.h; sourceTree = "<group>"; };
+		D44D02701CFD3E8C0039A187 /* DBEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBEventsViewController.m; sourceTree = "<group>"; };
 		D458A7E71C5C36B200F47581 /* Doorbell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doorbell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D458A7EB1C5C36B200F47581 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D458A7ED1C5C36B200F47581 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -199,6 +207,7 @@
 		D42A04441CD9522D00E141C1 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				D44D02231CFCFC000039A187 /* menu_icon1.png */,
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
 				D44417351CF269230044CBFD /* GothamRoundedBook.ttf */,
 				D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */,
@@ -227,6 +236,7 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D44D02721CFD3E960039A187 /* Events */,
 				D44D020F1CFB70660039A187 /* Menu */,
 				D4F951DF1CB72AAF009B6057 /* Chat */,
 				D45BFC831CE3F70C007EEF66 /* Login */,
@@ -266,15 +276,25 @@
 				D44D02191CFBD6DA0039A187 /* DBSettingsViewController.m */,
 				D44D021F1CFBE7290039A187 /* DBBlockedUsersViewController.h */,
 				D44D02201CFBE7290039A187 /* DBBlockedUsersViewController.m */,
+				D44D026C1CFD3A300039A187 /* DBNotificationSettingsViewController.h */,
+				D44D026D1CFD3A300039A187 /* DBNotificationSettingsViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		D44D02721CFD3E960039A187 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				D44D026F1CFD3E8C0039A187 /* DBEventsViewController.h */,
+				D44D02701CFD3E8C0039A187 /* DBEventsViewController.m */,
+			);
+			name = Events;
 			sourceTree = "<group>";
 		};
 		D458A7DE1C5C36B200F47581 = {
 			isa = PBXGroup;
 			children = (
 				D458A7E91C5C36B200F47581 /* Doorbell */,
-				D45BFC881CE411EB007EEF66 /* Root */,
 				D458A8031C5C36B200F47581 /* DoorbellTests */,
 				D458A80E1C5C36B200F47581 /* DoorbellUITests */,
 				D458A7E81C5C36B200F47581 /* Products */,
@@ -301,6 +321,7 @@
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D4F951DC1CB72352009B6057 /* Model */,
 				D42A04461CD9526100E141C1 /* Views */,
+				D45BFC881CE411EB007EEF66 /* Root */,
 				D458A7F61C5C36B200F47581 /* Assets.xcassets */,
 				D458A7F81C5C36B200F47581 /* LaunchScreen.storyboard */,
 				D458A7FB1C5C36B200F47581 /* Info.plist */,
@@ -397,7 +418,6 @@
 				D458A7EE1C5C36B200F47581 /* AppDelegate.m */,
 			);
 			name = Root;
-			path = Doorbell;
 			sourceTree = "<group>";
 		};
 		D4F951DC1CB72352009B6057 /* Model */ = {
@@ -565,6 +585,7 @@
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 				D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */,
+				D44D02241CFCFC000039A187 /* menu_icon1.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
 				D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
@@ -643,6 +664,7 @@
 			files = (
 				433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */,
 				D45BFC6D1CE2950A007EEF66 /* DBBulletinFormViewController.m in Sources */,
+				D44D02711CFD3E8C0039A187 /* DBEventsViewController.m in Sources */,
 				D458A7F21C5C36B200F47581 /* DBLoginViewController.m in Sources */,
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
 				D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */,
@@ -655,6 +677,7 @@
 				D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
 				D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */,
+				D44D026E1CFD3A300039A187 /* DBNotificationSettingsViewController.m in Sources */,
 				D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
 				D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */,

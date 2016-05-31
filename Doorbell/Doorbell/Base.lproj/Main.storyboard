@@ -117,7 +117,41 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="746.5" y="605.5"/>
+            <point key="canvasLocation" x="731.5" y="599.5"/>
+        </scene>
+        <!--Events View Controller-->
+        <scene sceneID="uBl-0s-57E">
+            <objects>
+                <viewController storyboardIdentifier="DBEventsViewController" id="pxR-4r-Gaz" customClass="DBEventsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="axy-1Q-uWt"/>
+                        <viewControllerLayoutGuide type="bottom" id="ucx-To-Fby"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dEb-d3-2ne">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No events" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdv-Jk-orw">
+                                <rect key="frame" x="0.0" y="164" width="375" height="37"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="19"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You can find local events here. Check back in later." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3o-UD-yy3">
+                                <rect key="frame" x="64" y="209" width="247" height="50"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.97317725170000002" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1W0-oK-Gmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-629.5" y="1366.5"/>
         </scene>
         <!--Left Menu View Controller-->
         <scene sceneID="Leg-Sp-lOJ">
@@ -165,7 +199,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r6N-ms-vYB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-419.5" y="1340.5"/>
+            <point key="canvasLocation" x="-159.5" y="1366.5"/>
         </scene>
         <!--Generic Profile View Controller-->
         <scene sceneID="LgK-nE-P0j">
@@ -198,8 +232,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="108" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sKl-Vf-GLa">
                                 <rect key="frame" x="0.0" y="280" width="375" height="328"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="108" id="PEb-kA-SsJ" customClass="DBTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="reuseIdentifier" rowHeight="108" id="PEb-kA-SsJ" customClass="DBTableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="375" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PEb-kA-SsJ" id="t31-xx-LYl">
@@ -236,6 +271,7 @@
                                                 <constraint firstItem="38Q-95-Rfn" firstAttribute="leading" secondItem="t31-xx-LYl" secondAttribute="leadingMargin" constant="72" id="yKt-DB-z0q"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="messageLabel" destination="38Q-95-Rfn" id="4DH-Qa-YCT"/>
                                             <outlet property="nameLabel" destination="AII-nb-fzq" id="nfE-Ge-2Lw"/>
@@ -292,7 +328,7 @@
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zC-80-odm">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
                                 <color key="backgroundColor" red="0.36339394291918253" green="0.56202323358235062" blue="0.93766361256544506" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                 <state key="normal" title="New message">
                                     <color key="titleColor" red="0.97460596639999997" green="0.97460596639999997" blue="0.97460596639999997" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -400,7 +436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIo-45-eXy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1170.5" y="1366.5"/>
+            <point key="canvasLocation" x="1182.5" y="1366.5"/>
         </scene>
         <!--Search User View Controller-->
         <scene sceneID="MPM-VC-Lfy">
@@ -487,12 +523,13 @@
                         <viewControllerLayoutGuide type="bottom" id="BpD-8N-PmL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ivf-zJ-WBM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rDl-z5-AyZ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="667"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rDl-z5-AyZ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="544"/>
                                 <color key="backgroundColor" red="0.97439025759138043" green="0.97977792299158883" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="91" id="vry-6g-Ffe" customClass="DBTableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="375" height="91"/>
@@ -540,15 +577,26 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjc-io-60W">
+                                <rect key="frame" x="0.0" y="543" width="375" height="60"/>
+                                <color key="backgroundColor" red="0.41960784309999999" green="0.72549019609999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                <state key="normal" title="Post"/>
+                            </button>
                         </subviews>
+                        <color key="backgroundColor" white="0.9731772517335826" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rDl-z5-AyZ" firstAttribute="height" secondItem="ivf-zJ-WBM" secondAttribute="height" id="8m4-Gz-jyq"/>
-                            <constraint firstItem="rDl-z5-AyZ" firstAttribute="width" secondItem="ivf-zJ-WBM" secondAttribute="width" id="AOk-Uo-lRy"/>
+                            <constraint firstItem="tjc-io-60W" firstAttribute="width" secondItem="ivf-zJ-WBM" secondAttribute="width" id="5zH-i2-uOS"/>
+                            <constraint firstItem="BpD-8N-PmL" firstAttribute="top" secondItem="tjc-io-60W" secondAttribute="bottom" id="Vam-Y0-gHe"/>
+                            <constraint firstItem="rDl-z5-AyZ" firstAttribute="width" secondItem="ivf-zJ-WBM" secondAttribute="width" id="hDc-hR-RIQ"/>
+                            <constraint firstItem="tjc-io-60W" firstAttribute="top" secondItem="rDl-z5-AyZ" secondAttribute="bottom" constant="-1" id="pLH-6f-IUl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="doorbell" id="LoQ-Gl-xPn"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="requestButton" destination="tjc-io-60W" id="fQ7-s0-goN"/>
                         <outlet property="tableView" destination="rDl-z5-AyZ" id="wBQ-Xt-pSE"/>
                         <segue destination="BYZ-38-t0r" kind="modal" identifier="panSegue" id="Q5A-Kj-LDU"/>
                     </connections>
@@ -640,7 +688,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xa-hJ-fGd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1144.5" y="605.5"/>
+            <point key="canvasLocation" x="1182.5" y="599.5"/>
         </scene>
         <!--doorbell-->
         <scene sceneID="EWf-89-mBH">

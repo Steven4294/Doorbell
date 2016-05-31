@@ -26,6 +26,7 @@
 #import "MOOMaskedIconView.h"
 #import "DBGenericProfileViewController.h"
 #import "DBSideMenuController.h"
+#import "UIColor+FlatColors.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -33,10 +34,11 @@
     NSMutableDictionary *userDict;
     NSMutableArray *flaggedUsers;
     NSMutableOrderedSet *requestOrderedSet;
+    
+    
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
-
 
 @end
 
@@ -58,7 +60,7 @@
 
     [self loadTableView];
     __weak typeof(self) welf = self;
-    self.shyNavBarManager.scrollView = self.tableView;
+   // self.shyNavBarManager.scrollView = self.tableView;
 
     [self.tableView addPullToRefreshWithActionHandler:^
     {
@@ -67,7 +69,7 @@
         
     }];
     
-    [self setupRequestButton];
+    [self.requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
      [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
@@ -83,23 +85,7 @@
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
     
-    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
-}
-
-- (void)setupRequestButton
-{
-    CGFloat padding_x = 0;
-    CGFloat padding_y = 0;
-    UIButton *requestButton = [[UIButton alloc] initWithFrame:CGRectMake(0 + padding_x, self.view.frame.size.height - 65 - padding_y, self.view.frame.size.width - 2*padding_x, 65 - padding_y)];
-    requestButton.backgroundColor = [UIColor colorWithRed:107/255.0 green:185/255.0 blue:240/255.0 alpha:1.0f];
-    [requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [requestButton setTitle:@"post" forState:UIControlStateNormal];
-    [requestButton.titleLabel setFont:[UIFont fontWithName:@"Avenir" size:20.0]];
-    [self.view addSubview:requestButton];
-    [self.view bringSubviewToFront:requestButton];
-    [requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+   // self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
 }
 
 - (void)loadTableView
@@ -147,7 +133,7 @@
         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
         [query orderByDescending:@"createdAt"];
         [query includeKey:@"poster"];
-        [query whereKey:@"poster" notContainedIn:flaggedUsers   ];
+        [query whereKey:@"poster" notContainedIn:flaggedUsers];
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             
             if (!error)
@@ -185,10 +171,13 @@
                 {
                     requests = [objects mutableCopy];
                     [self.tableView reloadData];
+
                  }
                 else
                 {
                     requests = [objects mutableCopy];
+                    [self.tableView reloadData];
+
                 }
                 
             }
@@ -260,7 +249,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -279,75 +267,40 @@
     //cell.profileImageView.image = nil;
     if ([requests count] > indexPath.row)
     {
-
         PFObject *object = [requests objectAtIndex:indexPath.row];
-
-        cell.messageLabel.text = [object objectForKey:@"message"];
-        
-        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-        NSDate *createdDate = [object createdAt];
-        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
-        
         PFUser *poster = object[@"poster"];
-        cell.user = poster;
-        
+        cell.requestObject = object;
+        cell.layoutMargins = UIEdgeInsetsZero;
         if (poster != nil)
         {
-            cell.nameLabel.text = poster[@"facebookName"];
+            //cell.nameLabel.text = poster[@"facebookName"];
             
-            NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", poster[@"facebookId"]];
+            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+            [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
+            [cell.profileImageView addGestureRecognizer:tapRecognizer];
+            
+            UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
+            [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
+            [cell.nameLabel addGestureRecognizer:tapRecognizer2];
             
             
+            cell.delegate = self;
             
-            [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                                     placeholderImage: nil
-                                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                                
-                                                UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-                                                [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
-                                                [cell.profileImageView addGestureRecognizer:tapRecognizer];
-                                                
-                                                UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
-                                                [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
-                                                [cell.nameLabel addGestureRecognizer:tapRecognizer2];
-                                            }];
-            [cell.messageLabel sizeToFit];
-            
+            [cell removeAllLeftButtons];
+            [cell removeAllRightButtons];
+            UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
             if (poster != [PFUser currentUser])
             {
-                
-                DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
-                DRCellSlideAction *commentAction = [DRCellSlideAction actionForFraction:0.25];
-                commentAction.activeBackgroundColor = [UIColor colorWithRed:34/255.0 green:167/255.0 blue:240/255.0 alpha:1.0f];
-                commentAction.inactiveBackgroundColor = [UIColor clearColor];
-                commentAction.behavior = DRCellSlideActionPullBehavior;
-                commentAction.elasticity = 40;
-                commentAction.didTriggerBlock = [self chatTriggerBlock];
-                
-                
-                DRCellSlideAction *flagAction = [DRCellSlideAction actionForFraction:.60];
-                flagAction.activeBackgroundColor = [UIColor colorWithRed:239/255.0 green:72/255.0 blue:54/255.0 alpha:1.0f];
-                flagAction.inactiveBackgroundColor = [UIColor clearColor];
-                flagAction.behavior = DRCellSlideActionPullBehavior;
-                flagAction.elasticity = 40;
-                flagAction.didTriggerBlock = [self flagTriggerBlock];
-
-                
-                
-                [slideGestureRecognizer addActions:commentAction];
-                [slideGestureRecognizer addActions:flagAction];
-                
-                
-                [cell addGestureRecognizer:slideGestureRecognizer];
- 
+                [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+                [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
+            }
+            else
+            {
+                [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
             }
         }
     }
-    
-    
-
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-
     return cell;
 }
 
@@ -370,39 +323,6 @@
     return labelHeight + staticHeight;
 }
 
-- (DRCellSlideActionBlock)chatTriggerBlock
-{
-    return ^(UITableView *tableView, NSIndexPath *indexPath)
-    {
-        DBTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
-        
-        messageVC.userReciever = cell.user;
-        messageVC.senderId = [PFUser currentUser].objectId;
-        messageVC.senderDisplayName = @"display name";
-        messageVC.automaticallyScrollsToMostRecentMessage = YES;
-
-        [self.navigationController pushViewController:messageVC animated:YES];
-    };
-}
-
-- (DRCellSlideActionBlock)flagTriggerBlock
-{
-    return ^(UITableView *tableView, NSIndexPath *indexPath)
-    {
-        DBTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        PFUser *userToFlag = cell.user;
-        NSLog(@"userToFlag: %@", userToFlag[@"facebookName"]);
-        
-        PFUser *currentUser = [PFUser currentUser];
-        
-        PFRelation *flagRelation =  [currentUser relationForKey:@"flaggedUsers"];
-        [flagRelation addObject:userToFlag];
-        [currentUser saveInBackground];
-    };
-}
-
 -(CGFloat)paddingForString:(NSString *)string
 {
     CGFloat kNumberOfCharsPerLine = 30.0f;
@@ -410,6 +330,72 @@
     padding = padding * 15.0f;
     return padding;
 }
+
+#pragma mark - SESlideDelegate
+
+- (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerLeftButton:(NSInteger)buttonIndex
+{
+
+}
+
+- (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerRightButton:(NSInteger)buttonIndex
+{
+    DBTableViewCell *feedCell = (DBTableViewCell *) cell;
+
+    NSLog(@"%@", feedCell.user);
+    if (feedCell.user == [PFUser currentUser])
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+                // delete content
+                [self deleteRequest:feedCell.requestObject];
+                [self removeCellFromFeed:feedCell];
+                break;
+        }
+    }
+    else
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+                // block content
+                [self blockUser:feedCell.user];
+                // remove cell from feed
+                [self removeCellFromFeed:feedCell];
+                break;
+            case 1:
+                // chat content
+                [self chatWithUser:feedCell.user];
+                break;
+        }
+    }
+}
+
+- (BOOL)slideTableViewCell:(SESlideTableViewCell*)cell canSlideToState:(SESlideTableViewCellSlideState)slideState
+{
+    switch (slideState)
+    {
+        default:
+            return YES;
+    }
+}
+
+- (void)slideTableViewCell:(SESlideTableViewCell *)cell willSlideToState:(SESlideTableViewCellSlideState)slideState
+{
+   
+}
+
+- (void)slideTableViewCell:(SESlideTableViewCell *)cell didSlideToState:(SESlideTableViewCellSlideState)slideState
+{
+   
+}
+
+- (void)slideTableViewCell:(SESlideTableViewCell *)cell wilShowButtonsOfSide:(SESlideTableViewCellSide)side
+{
+   
+}
+
 
 #pragma mark - UIViewControllerTransitioningDelegate
 
@@ -499,6 +485,74 @@
         [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self.navigationController pushViewController:vc animated:YES];
 
+    }
+}
+
+- (void)blockUser:(PFUser *)user
+{
+    NSLog(@"blocking user");
+    PFUser *userToFlag = user;
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flagRelation =  [currentUser relationForKey:@"flaggedUsers"];
+    [flagRelation addObject:userToFlag];
+    [currentUser saveInBackground];
+}
+
+- (void)chatWithUser:(PFUser *)user
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+    
+    messageVC.userReciever = user;
+    messageVC.senderId = [PFUser currentUser].objectId;
+    messageVC.senderDisplayName = @"display name";
+    messageVC.automaticallyScrollsToMostRecentMessage = YES;
+    
+    [self.navigationController pushViewController:messageVC animated:YES];
+}
+
+- (void)removeCellFromFeed:(DBTableViewCell *)cell
+{
+    
+    NSLog(@"object to remove: %@", [cell.requestObject objectId]);
+    
+    for (PFObject *object in requests) {
+        NSLog(@"%@", [object objectId]);
+    }
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    // TODO: protect against crashing here
+    [self.tableView beginUpdates];
+    NSLog(@"# of requests: %d", requests.count);
+    [requests removeObject:cell.requestObject];
+    NSLog(@"# of requests: %d", requests.count);
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    [self.tableView endUpdates];
+}
+
+- (void)deleteRequest:(PFObject *)request
+{
+    PFUser *poster = request[@"poster"];
+    NSString *posterId = poster.objectId;
+    NSString *currentUserId = [PFUser currentUser].objectId;
+    if ([posterId isEqualToString:currentUserId])
+    {
+        [request deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
+         {
+             if (error == nil)
+             {
+                 NSLog(@"deleted message");
+             }
+             else
+             {
+                 NSLog(@"error: %@", error);
+             }
+         }];
+    }
+    else
+    {
+        NSLog(@"user does not have permission to delete this request");
+        NSLog(@"%@ trying to delete %@ post", poster, currentUserId);
     }
 }
 

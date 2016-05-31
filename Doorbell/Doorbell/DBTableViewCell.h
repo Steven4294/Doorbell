@@ -6,11 +6,17 @@
 //  Copyright © 2016 Doorbell LLC. All rights reserved.
 //
 
+/*
+ *  Cell used for the feed
+ */
+
 #import <UIKit/UIKit.h>
+#import "SESlideTableViewCell.h"
 
-@class FBSDKProfilePictureView, PFUser;
+@class FBSDKProfilePictureView, PFUser, PFObject
+;
 
-@interface DBTableViewCell : UITableViewCell
+@interface DBTableViewCell : SESlideTableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *messageLabel;
 @property (nonatomic, strong) IBOutlet UILabel *profileLabel;
@@ -23,6 +29,9 @@
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 
 @property (nonatomic, strong) PFUser *user;
+
+// message object that can be used to create all of the labels
+@property (nonatomic, strong) PFObject *requestObject;
 
 
 @end

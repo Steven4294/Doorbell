@@ -64,6 +64,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JTHamburgerButton.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>JTSImageViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -124,12 +129,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SESlideTableViewCell.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SVPullToRefresh.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>TLYShyNavBar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIColor+FlatColors.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -142,6 +157,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0213D99580F885B119D14A23219CACCD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>03CB810E9ED12BFDE0DC62E253CD34A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>06F7B1887596B89DE7A1C45E05737694</key>
 		<dict>
 			<key>primary</key>
@@ -152,12 +177,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0EAF8C3E24DECAC7EC75FC12E5FE4069</key>
+		<key>1EB70C877F9290D6D9118051C6864339</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1E465B00826F0E9F8BFFB16982383A4C</key>
+		<key>2EFE823806BBE851C8360669A66D7227</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -187,22 +212,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>43A19102444591DEBA1838C301DAE888</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4E286D373D75563CE26E479A68203892</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>53480ED0BE09FF49E34B1702D485CAAB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>53EF71FD00B4C9524CFF100A79D52A6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -237,6 +252,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8F7E579B2AC70BFFD0E54716FE264335</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>952D3EF0884F36E4FB68AFEBD70B08C8</key>
 		<dict>
 			<key>primary</key>
@@ -247,12 +267,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FA7E4903C781AEF37121FD226345C33</key>
+		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A8526AA34ABFB99A5D4677997F6CC1B9</key>
+		<key>AEE90A4F0AAC15EFE3D2EB3C1536C92B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C96EB514A72DB4BBD1CA239FBF5A7AD7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D5325B0211A7FA324B84951091999C4E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -267,12 +297,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E5E0C706B653E3E8AB2EC65038984D8E</key>
+		<key>F21523DE0EE1E35B265242490D97EE4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F21523DE0EE1E35B265242490D97EE4C</key>
+		<key>FDF0CA3A7FC4F4315A7A8F6AD0764744</key>
 		<dict>
 			<key>primary</key>
 			<true/>

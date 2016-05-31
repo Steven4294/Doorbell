@@ -13,10 +13,14 @@
 #import "DBProfileViewController.h"
 #import "DBFeedTableViewController.h"
 #import "DBSideMenuController.h"
+#import "MOOMaskedIconView.h"
+
+#import <JTHamburgerButton.h>
 
 @interface DBNavigationController ()
 
 @property (nonatomic, strong) UIBarButtonItem *leftBarButton;
+@property (nonatomic, strong)  JTHamburgerButton *button;
 
 @end
 
@@ -33,18 +37,28 @@
     [self pushViewController:feed animated:nil];
 
     self.topViewController.navigationItem.leftBarButtonItem = self.leftBarButton;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willShowLeftView:) name:kLGSideMenuControllerWillShowLeftViewNotification object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissLeftView:) name:kLGSideMenuControllerWillDismissLeftViewNotification object:nil];
 
 }
 
 - (UIBarButtonItem *)leftBarButton
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    
+    /*UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 20, 20);
     [button setImage:[UIImage imageNamed:@"User_Profile_white.png"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [button addSubview:iconView];*/
+    
+    
+    self.button = [[JTHamburgerButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [self.button addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
-    [barButton setCustomView:button];
+    [barButton setCustomView:self.button];
 
     return barButton;
 }
@@ -65,7 +79,6 @@
     if (self.sideMenuController.leftViewShowing == YES)
     {
         [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
-
     }
     else
     {
@@ -73,6 +86,15 @@
     }
 }
 
+- (void)willShowLeftView:(id)sender
+{
+    [self.button setCurrentModeWithAnimation:JTHamburgerButtonModeCross];
+}
+
+- (void)willDismissLeftView:(id)sender
+{
+    [self.button setCurrentModeWithAnimation:JTHamburgerButtonModeHamburger];
+}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:
 (UINavigationController *)navigationController

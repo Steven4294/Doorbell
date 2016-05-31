@@ -59,6 +59,7 @@ PODS:
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - JTHamburgerButton (1.0.5)
   - JTSImageViewController (1.5.1)
   - LGSideMenuController (1.0.10)
   - LRTextField (1.1.3)
@@ -79,8 +80,10 @@ PODS:
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
+  - SESlideTableViewCell (0.7.0)
   - SVPullToRefresh (0.4.1)
   - TLYShyNavBar (1.0.0)
+  - UIColor+FlatColors (0.0.2)
   - VCTransitionsLibrary (1.5.0)
 
 DEPENDENCIES:
@@ -95,6 +98,7 @@ DEPENDENCIES:
   - FBSDKShareKit
   - FormatterKit
   - JSQMessagesViewController
+  - JTHamburgerButton (~> 1.0)
   - JTSImageViewController (~> 1.5)
   - LGSideMenuController (~> 1.0.0)
   - LRTextField
@@ -105,8 +109,10 @@ DEPENDENCIES:
   - ParseFacebookUtilsV4
   - RKSwipeBetweenViewControllers
   - SDWebImage (~> 3.7)
+  - SESlideTableViewCell
   - SVPullToRefresh
   - TLYShyNavBar
+  - UIColor+FlatColors
   - VCTransitionsLibrary
 
 SPEC CHECKSUMS:
@@ -123,6 +129,7 @@ SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  JTHamburgerButton: 9a41c7d051c72590a9d2c18416d84d1b912f12e3
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   LGSideMenuController: 8682bdbd0008c1acfbce95eaf96cc3657bca5f95
   LRTextField: 340e3ad5dad7e9dc058252fc1257836b98517248
@@ -134,8 +141,10 @@ SPEC CHECKSUMS:
   ParseFacebookUtilsV4: 216e03bd560404eed09a4875c75f0c1cdf758070
   RKSwipeBetweenViewControllers: 2236038119d6f7eb64ff589eb423fcda80cbe962
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SESlideTableViewCell: 1487a6aedc84b480a888fc33b8d1c58fa5026f99
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
+  UIColor+FlatColors: 6c699df7a575281794c688c64cee6c44fd1f93b4
   VCTransitionsLibrary: d61fd9b7b6721942f0d583bcc0e7f8c31ec9271b
 
 COCOAPODS: 0.39.0
