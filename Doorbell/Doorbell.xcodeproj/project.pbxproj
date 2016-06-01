@@ -54,6 +54,8 @@
 		D487E8E31CFD481F009CEA01 /* profile1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DE1CFD481F009CEA01 /* profile1.png */; };
 		D487E8E41CFD481F009CEA01 /* settings1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DF1CFD481F009CEA01 /* settings1.png */; };
 		D487E8E71CFD4F92009CEA01 /* DBFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */; };
+		D487E8E91CFE65BC009CEA01 /* heart.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8E81CFE65BC009CEA01 /* heart.png */; };
+		D487E8EC1CFE8B9D009CEA01 /* DBCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8EB1CFE8B9D009CEA01 /* DBCommentViewController.m */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
@@ -162,6 +164,9 @@
 		D487E8DF1CFD481F009CEA01 /* settings1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings1.png; sourceTree = "<group>"; };
 		D487E8E51CFD4F92009CEA01 /* DBFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedbackViewController.h; sourceTree = "<group>"; };
 		D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedbackViewController.m; sourceTree = "<group>"; };
+		D487E8E81CFE65BC009CEA01 /* heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart.png; sourceTree = "<group>"; };
+		D487E8EA1CFE8B9D009CEA01 /* DBCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCommentViewController.h; sourceTree = "<group>"; };
+		D487E8EB1CFE8B9D009CEA01 /* DBCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCommentViewController.m; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 		D42A04441CD9522D00E141C1 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				D487E8E81CFE65BC009CEA01 /* heart.png */,
 				D44D02231CFCFC000039A187 /* menu_icon1.png */,
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
 				D44417351CF269230044CBFD /* GothamRoundedBook.ttf */,
@@ -254,6 +260,7 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D487E8ED1CFE8BA9009CEA01 /* Comments */,
 				D44D02721CFD3E960039A187 /* Events */,
 				D44D020F1CFB70660039A187 /* Menu */,
 				D4F951DF1CB72AAF009B6057 /* Chat */,
@@ -440,6 +447,15 @@
 			name = Root;
 			sourceTree = "<group>";
 		};
+		D487E8ED1CFE8BA9009CEA01 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				D487E8EA1CFE8B9D009CEA01 /* DBCommentViewController.h */,
+				D487E8EB1CFE8B9D009CEA01 /* DBCommentViewController.m */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
 		D4F951DC1CB72352009B6057 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,6 +616,7 @@
 				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
+				D487E8E91CFE65BC009CEA01 /* heart.png in Resources */,
 				D487E8E01CFD481F009CEA01 /* event1.png in Resources */,
 				D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */,
 				D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */,
@@ -700,6 +717,7 @@
 				D44D02161CFB79D60039A187 /* DBLeftMenuCell.m in Sources */,
 				D44D020B1CFA7DEA0039A187 /* DBSideMenuController.m in Sources */,
 				433AFB551C98B799007A9C3D /* DBTableViewCell.m in Sources */,
+				D487E8EC1CFE8B9D009CEA01 /* DBCommentViewController.m in Sources */,
 				D4F951E21CC07162009B6057 /* DBChatNavigationController.m in Sources */,
 				D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */,
 				D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */,

@@ -85,6 +85,7 @@ PODS:
   - SVPullToRefresh (0.4.1)
   - TLYShyNavBar (1.0.0)
   - UIColor+FlatColors (0.0.2)
+  - UIImage-Resize (1.0.1)
   - VCTransitionsLibrary (1.5.0)
 
 DEPENDENCIES:
@@ -115,6 +116,7 @@ DEPENDENCIES:
   - SVPullToRefresh
   - TLYShyNavBar
   - UIColor+FlatColors
+  - UIImage-Resize (~> 1.0)
   - VCTransitionsLibrary
 
 SPEC CHECKSUMS:
@@ -148,6 +150,7 @@ SPEC CHECKSUMS:
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
   UIColor+FlatColors: 6c699df7a575281794c688c64cee6c44fd1f93b4
+  UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   VCTransitionsLibrary: d61fd9b7b6721942f0d583bcc0e7f8c31ec9271b
 
 COCOAPODS: 0.39.0

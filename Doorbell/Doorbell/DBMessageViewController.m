@@ -8,10 +8,12 @@
 // Displays
 
 #import "DBMessageViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface DBMessageViewController ()
 {
     BOOL isSendingMessage;
+    UIFont *fontTitle;
 }
 
 @end
@@ -20,8 +22,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    fontTitle = [UIFont fontWithName:@"HelveticaNeue" size:17.0f];
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:16.0f];
     
-    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0f];
+    [self configureNavigationBar];
+
     // Do any additional setup after loading the view.
     self.chatData = [[DBChatData alloc] init];
     self.chatData.userReciever = self.userReciever;
@@ -37,6 +42,35 @@
     self.inputToolbar.contentView.rightBarButtonItem.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17];
     //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
     
+}
+
+- (void)configureNavigationBar
+{
+    NSArray *components = [self.userReciever[@"facebookName"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *string = [NSString stringWithFormat:@"%@ %@.", [components objectAtIndex:0], [[components objectAtIndex:1] substringToIndex:1]];
+    
+    UIView *view= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 140, 40)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, 40)];
+    label.text = string;
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    [label setFont:fontTitle];
+    /*
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    imageView.layer.cornerRadius = imageView.bounds.size.width/2;
+    view.backgroundColor = [UIColor clearColor];
+    
+    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", self.userReciever[@"facebookId"]];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:URLString]
+                             placeholderImage: nil
+                                    completed: nil];
+    */
+    [view addSubview:imageView];
+    [view addSubview:label];
+
+    self.navigationItem.titleView = label; // some UILabel with the desired formatting
 }
 
 - (void)viewDidDisappear:(BOOL)animated

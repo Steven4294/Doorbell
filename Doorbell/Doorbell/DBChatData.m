@@ -9,7 +9,6 @@
 #import "DBChatData.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-
 @implementation DBChatData
 
 - (instancetype)init

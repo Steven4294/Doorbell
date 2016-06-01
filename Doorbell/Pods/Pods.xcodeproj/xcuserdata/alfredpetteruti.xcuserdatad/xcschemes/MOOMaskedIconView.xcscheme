@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E46E3A2630CC03D500FA8B04'
+               BlueprintIdentifier = '80DDE76BF917E18E0C4172C4'
                BlueprintName = 'MOOMaskedIconView'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libMOOMaskedIconView.a'>

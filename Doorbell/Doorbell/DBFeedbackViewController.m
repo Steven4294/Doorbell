@@ -41,7 +41,6 @@ BOOL shouldPresentMail = YES;
         [self sendMail:self];
         shouldPresentMail = NO;
     }
-
 }
 
 -(void)sendMail:(id)sender

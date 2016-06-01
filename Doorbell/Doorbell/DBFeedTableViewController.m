@@ -34,8 +34,7 @@
     NSMutableDictionary *userDict;
     NSMutableArray *flaggedUsers;
     NSMutableOrderedSet *requestOrderedSet;
-    
-    
+    int currentSelection;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -47,7 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     requestOrderedSet = [[NSMutableOrderedSet alloc] init];
     self.tableView.delegate = self;
@@ -57,35 +56,35 @@
     NSLog(@"view did load");
     
     [[PFUser currentUser] fetchIfNeeded];
-
+    
     [self loadTableView];
     __weak typeof(self) welf = self;
-   // self.shyNavBarManager.scrollView = self.tableView;
-
+    // self.shyNavBarManager.scrollView = self.tableView;
+    
     [self.tableView addPullToRefreshWithActionHandler:^
-    {
-        // prepend data to dataSource, insert cells at top of table view
-        [welf refreshTableView];
-        
-    }];
+     {
+         // prepend data to dataSource, insert cells at top of table view
+         [welf refreshTableView];
+         
+     }];
     
     [self.requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-
-     [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor whiteColor],
-     NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
-
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor whiteColor],
+       NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
+    
+    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.frame = CGRectMake(0, 0, 22, 22);
     [rightButton setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-
+    
     UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
     
-   // self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
+    // self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
 }
 
 - (void)loadTableView
@@ -100,6 +99,7 @@
          PFQuery *query = [PFQuery queryWithClassName:@"Request"];
          [query orderByDescending:@"createdAt"];
          [query includeKey:@"poster"];
+
          [query whereKey:@"poster" notContainedIn:flaggedUsers   ];
          [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
              
@@ -123,72 +123,70 @@
 {
     int countInitial = (int) requestOrderedSet.count;
     NSLog(@"ordered set before: %d", countInitial);
-
+    int countBefore = requests.count;
+    
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
     PFQuery *relationQuery = [flaggedUserRelation query];
     [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-    {
-        flaggedUsers = [objects mutableCopy];
-        PFQuery *query = [PFQuery queryWithClassName:@"Request"];
-        [query orderByDescending:@"createdAt"];
-        [query includeKey:@"poster"];
-        [query whereKey:@"poster" notContainedIn:flaggedUsers];
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-            
-            if (!error)
-            {
-               
-                [requestOrderedSet addObjectsFromArray:objects];
-                int amountToInsert = (int)requestOrderedSet.count - countInitial;
-                NSLog(@"inserting: %d", amountToInsert);
-
-                if (amountToInsert > 0)
-                {
-                    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-                    
-                    for (int i = 0; i < amountToInsert; i++)
-                    {
-                        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                    }
-                    
-                    // sort the ordered set
-                    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
-                    
-                    for (PFObject *object in objects)
-                    {
-                        object[@"createdAt"] = [object createdAt];
-                    }
-
-                    [requestOrderedSet sortUsingDescriptors:@[sortDescriptor]];
-                    [self.tableView beginUpdates];
-                    requests = [[requestOrderedSet array] mutableCopy];
-
-                    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-                    [self.tableView endUpdates];
-                }
-                else if (amountToInsert < 0)
-                {
-                    requests = [objects mutableCopy];
-                    [self.tableView reloadData];
-
+     {
+         flaggedUsers = [objects mutableCopy];
+         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+         [query orderByDescending:@"createdAt"];
+         [query includeKey:@"poster"];
+         [query whereKey:@"poster" notContainedIn:flaggedUsers];
+         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+             
+             if (!error)
+             {
+                 requests = [objects mutableCopy];
+                 [requestOrderedSet addObjectsFromArray:objects];
+                 int amountToInsert = (int)requests.count - countBefore;
+                 NSLog(@"inserting: %d", amountToInsert);
+                 
+                 if (amountToInsert > 0)
+                 {
+                     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+                     
+                     for (int i = 0; i < amountToInsert; i++)
+                     {
+                         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                     }
+                     
+                     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+                     
+                     for (PFObject *object in objects)
+                     {
+                         object[@"createdAt"] = [object createdAt];
+                     }
+                     [requests sortUsingDescriptors:@[sortDescriptor]];
+                     
+                     [self.tableView beginUpdates];
+                     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+                     [self.tableView endUpdates];
                  }
-                else
-                {
-                    requests = [objects mutableCopy];
-                    [self.tableView reloadData];
-
-                }
-                
-            }
-            else
-            {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-            [self.tableView.pullToRefreshView stopAnimating];
-        }];
-    }];
+                 else if (amountToInsert < 0)
+                 {
+                     requests = [objects mutableCopy];
+                     [self.tableView reloadData];
+                     
+                 }
+                 else
+                 {
+                     requests = [objects mutableCopy];
+                     [self.tableView reloadData];
+                     
+                 }
+                 
+             }
+             else
+             {
+                 // Log details of the failure
+                 NSLog(@"Error: %@ %@", error, [error userInfo]);
+             }
+             [self.tableView.pullToRefreshView stopAnimating];
+         }];
+     }];
 }
 
 -(void)requestButtonPressed
@@ -215,25 +213,17 @@
 
 -(void)profileButtonPressed
 {
-    /*[[NSNotificationCenter defaultCenter] postNotificationName:@"profileButtonPressed" object:nil];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBProfileViewController"];
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-    [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    
-    [self performSegueWithIdentifier:@"panSegue" sender:self];*/
     NSLog(@"profile Button pressed: %d", self.sideMenuController.isLeftViewShowing);
     [self.sideMenuController showLeftViewAnimated:YES completionHandler:nil];
 }
 
 -(void)chatButtonPressed
 {
-    
     NSLog(@"chat button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBChatNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBChatNavigationController"];
     DBChatTableViewController *vc2 = [storyboard instantiateViewControllerWithIdentifier:@"DBChatTableViewController"];
-
+    
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
     [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     
@@ -249,6 +239,79 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)likeLabelTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"like label tapped");
+    CGPoint tapLocation = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
+    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self toggleLike:cell];
+}
+
+- (void)toggleLike:(DBTableViewCell *)cell
+{
+    [self fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+        
+        if (error == nil)
+        {
+            if (isLiked == YES)
+            {
+                // user already liked it.. unlike it
+                [self unlikeCell:cell];
+            }
+            else
+            {
+                [self likeCell:cell];
+            }
+        }
+        else
+        {
+            NSLog(@"error: %@", error);
+        }
+    }];
+}
+
+- (void)likeCell:(DBTableViewCell *)cell
+{
+    NSLog(@"like cell");
+    PFObject *currentUser = [PFUser currentUser];
+    PFObject *request = cell.requestObject;
+    PFRelation *relation =  [request relationForKey:@"likers"];
+    [relation addObject:currentUser];
+    [request saveInBackground];
+    
+    [cell.likersArray addObject:currentUser];
+    [cell configureLikeLabel];
+}
+
+- (void)unlikeCell:(DBTableViewCell *)cell
+{
+    NSLog(@"dislike cell");
+    PFObject *currentUser = [PFUser currentUser];
+    PFObject *request = cell.requestObject;
+    PFRelation *relation =  [request relationForKey:@"likers"];
+    [relation removeObject:currentUser];
+    [request saveInBackground];
+    [cell.likersArray removeObject:currentUser];
+    [cell configureLikeLabel];
+}
+
+- (void)fetchLikersForRequest:(PFObject *)request withBlock:(void (^)(BOOL isLiked, NSArray *objects, NSError *error))block
+{
+    PFRelation *relation = request[@"likers"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         if (block != nil)
+         {
+             BOOL doesLike = [objects containsObject:[PFUser currentUser]];
+             block(doesLike, objects, error);
+         }
+         
+     }];
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -258,22 +321,32 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   return [requests count];
+    return [requests count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    //cell.profileImageView.image = nil;
     if ([requests count] > indexPath.row)
     {
         PFObject *object = [requests objectAtIndex:indexPath.row];
         PFUser *poster = object[@"poster"];
         cell.requestObject = object;
         cell.layoutMargins = UIEdgeInsetsZero;
+        cell.listOfLikersLabel.text = @" ";
+        
+        [cell configureLikeLabel];
+        
+        [self fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error)
+        {
+            if (error == nil)
+            {
+                cell.likersArray = [objects mutableCopy];
+                [cell configureLikeLabel];
+            }
+        }];
         if (poster != nil)
         {
-            //cell.nameLabel.text = poster[@"facebookName"];
             
             UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
             [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
@@ -283,6 +356,9 @@
             [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
             [cell.nameLabel addGestureRecognizer:tapRecognizer2];
             
+            UITapGestureRecognizer *tapRecognizer3 = [[UITapGestureRecognizer alloc] init];
+            [tapRecognizer3 addTarget:self action:@selector(likeLabelTapped:)];
+            [cell.likeLabel addGestureRecognizer:tapRecognizer3];
             
             cell.delegate = self;
             
@@ -305,23 +381,39 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    return 150;
-}
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = [indexPath row];
+    currentSelection = row;
+   // [tableView beginUpdates];
+   // [tableView endUpdates];
+    
+   // [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+    
+   // [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+/*
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  
     // dynamically resizes cells
     PFObject *object = [requests objectAtIndex:indexPath.row];
     NSString *messageString = [object objectForKey:@"message"];
     CGFloat labelHeight = [self paddingForString:messageString];
     CGFloat staticHeight = 85.0f;
     
-    return labelHeight + staticHeight;
-}
+    return labelHeight + staticHeight + 100;
+}*/
 
 -(CGFloat)paddingForString:(NSString *)string
 {
@@ -335,13 +427,13 @@
 
 - (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerLeftButton:(NSInteger)buttonIndex
 {
-
+    
 }
 
 - (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerRightButton:(NSInteger)buttonIndex
 {
     DBTableViewCell *feedCell = (DBTableViewCell *) cell;
-
+    
     NSLog(@"%@", feedCell.user);
     if (feedCell.user == [PFUser currentUser])
     {
@@ -383,17 +475,17 @@
 
 - (void)slideTableViewCell:(SESlideTableViewCell *)cell willSlideToState:(SESlideTableViewCellSlideState)slideState
 {
-   
+    
 }
 
 - (void)slideTableViewCell:(SESlideTableViewCell *)cell didSlideToState:(SESlideTableViewCellSlideState)slideState
 {
-   
+    
 }
 
 - (void)slideTableViewCell:(SESlideTableViewCell *)cell wilShowButtonsOfSide:(SESlideTableViewCellSide)side
 {
-   
+    
 }
 
 
@@ -415,13 +507,13 @@
     {
         navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
         navigationController.navigationAnimationController.reverse = YES;
-
+        
     }
     if ([presented isKindOfClass:NSClassFromString(@"DBChatTableViewController")])
     {
         navigationController.navigationAnimationController = [[NSClassFromString(@"CEPanAnimationController") alloc] init];
         navigationController.navigationAnimationController.reverse = NO;
-
+        
     }
     
     return navigationController.navigationAnimationController;
@@ -430,7 +522,7 @@
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
     DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
-
+    
     navigationController.navigationAnimationController.reverse = NO;
     
     navigationController.navigationAnimationController = nil;
@@ -453,7 +545,7 @@
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {
     DBNavigationController *navigationController = (DBNavigationController *) self.navigationController;
-
+    
     return navigationController.navigationInteractionController && navigationController.navigationInteractionController.interactionInProgress ? navigationController.navigationInteractionController : nil;
 }
 
@@ -474,7 +566,7 @@
         CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
         NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
         DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
-
+        
         PFUser *user = tappedCell.user;
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -484,7 +576,7 @@
         [vc setModalPresentationStyle:UIModalPresentationFullScreen];
         [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self.navigationController pushViewController:vc animated:YES];
-
+        
     }
 }
 
@@ -520,7 +612,7 @@
         NSLog(@"%@", [object objectId]);
     }
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-
+    
     // TODO: protect against crashing here
     [self.tableView beginUpdates];
     NSLog(@"# of requests: %d", requests.count);

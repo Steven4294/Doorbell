@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6C1DF0CDF83825272C96DB65'
+               BlueprintIdentifier = 'A25E8E2B78266BC9EDF6DCC0'
                BlueprintName = 'SVPullToRefresh'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libSVPullToRefresh.a'>

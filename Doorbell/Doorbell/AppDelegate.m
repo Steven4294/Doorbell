@@ -46,7 +46,7 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-/*
+
     if ([PFUser currentUser] != nil)
     {
         DBSideMenuController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
@@ -54,16 +54,10 @@
     }
     else
     {
-        DBNavigationController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
+        DBLoginViewController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
         self.window.rootViewController = loginController;
     }
-    
- */
-    
-     DBSideMenuController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
-    
-    self.window.rootViewController = viewController;
-    
+        
     [self.window makeKeyAndVisible];
     
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);

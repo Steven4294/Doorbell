@@ -154,6 +154,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>UIImage-Resize.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>VCTransitionsLibrary.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -162,11 +167,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>018F6BCBEB9BA332CE326811E8D9D0B7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>06F7B1887596B89DE7A1C45E05737694</key>
 		<dict>
 			<key>primary</key>
@@ -177,17 +177,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>182F49FF8CCC6792D7929F39F30A46C5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2EFEDBB649146422B0A076290AB959DE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>351D334B3C0B49938E167678166C1A44</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>36E2DF6232EBE0F12B9AF528D6E90FB9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -222,6 +222,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>555C49A249973D6556C4C3121808C267</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>57C086F0BC86D966E07C60FB1D983BF9</key>
 		<dict>
 			<key>primary</key>
@@ -232,32 +237,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>66A673C3F0E3A01E6BD0947847C77E92</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6779692F39D73A6BF8777ACD5BAAC42B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>68B89B09F6EFC08DEDC4DC39181E6D57</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>71B76793A3B7514D38CE8C93A9B8C8F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>741025657E01D1015AE54D46DDD44D2D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7B5C91721E93F34D9BEBD3EC7FBA4A5E</key>
+		<key>7918E7BC9AC8F6FDA607957C7B2CD5BC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -272,7 +257,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>84CA74805B5E62F5E308D142C42AD3CA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8816573C36DAEDEC45EB8753A0E63183</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8AE929DF3225391782D3ED2D8EF08310</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8B99F8D6224A9F2810E03105EAC89759</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -292,7 +292,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>AC7DF83200121C04762ED5A40A89ED1D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AEE90A4F0AAC15EFE3D2EB3C1536C92B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B924B365B1827FA808014B4C3969480A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D2CF6588B6BE08EE2E67CD7F056D528B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -303,11 +318,6 @@
 			<true/>
 		</dict>
 		<key>D692624CE562FBC8BCEE15C9C5B17685</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EC02F9190AD112F0F681DF5F3209884F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
