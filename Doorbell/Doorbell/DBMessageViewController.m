@@ -41,6 +41,7 @@
     self.inputToolbar.contentView.textView.font = font;
     self.inputToolbar.contentView.rightBarButtonItem.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17];
     //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
+        
     
 }
 
