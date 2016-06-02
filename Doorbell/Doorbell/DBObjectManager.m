@@ -102,7 +102,6 @@
     }
 }
 
-
 - (void)blockUser:(PFUser *)user
         withBlock:(void (^)(BOOL success, NSError *error))block;
 {
@@ -114,6 +113,26 @@
      {
          if (block) block(succeeded, error);
     }];
+}
+
+- (void)fetchAllRequests:(void (^)(NSError *error, NSArray *requests))block
+{
+    PFUser *currentUser = [PFUser currentUser];
+    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+    PFQuery *relationQuery = [flaggedUserRelation query];
+    [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         // objects = all the flagged users
+         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+         [query orderByDescending:@"createdAt"];
+         [query includeKey:@"poster"];
+         
+         [query whereKey:@"poster" notContainedIn:objects   ];
+         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+         {
+                 if (block) block(error, objects);
+         }];
+     }];
 }
 
 # pragma mark - Internal Methods

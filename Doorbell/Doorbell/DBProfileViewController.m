@@ -20,6 +20,7 @@
 #import "JTSImageViewController.h"
 #import "JTSImageInfo.h"
 
+#import "UIImageView+Profile.h"
 
 @interface DBProfileViewController ()
 {
@@ -88,11 +89,14 @@
 
 - (void)setupProfilePicture
 {
-    PFUser *currentUser = [PFUser currentUser];
+    /*PFUser *currentUser = [PFUser currentUser];
     NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
     [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
-                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
- 
+                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];*/
+    
+    //[self.profileImage set;
+    //[set.profileImage setupProfilePicture:[PFUser currentUser]];
+    
     self.profileImage.clipsToBounds = YES;
     self.profileImage.layer.borderColor = [UIColor colorWithWhite:.2 alpha:1.0].CGColor ;
     self.profileImage.layer.borderWidth = 0.0f;

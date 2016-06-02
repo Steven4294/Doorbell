@@ -92,61 +92,31 @@
 
 - (void)loadTableView
 {
-    NSLog(@"loading table view");
-    PFUser *currentUser = [PFUser currentUser];
-    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
-    PFQuery *relationQuery = [flaggedUserRelation query];
-    [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-         flaggedUsers = [objects mutableCopy];
-         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
-         [query orderByDescending:@"createdAt"];
-         [query includeKey:@"poster"];
-
-         [query whereKey:@"poster" notContainedIn:flaggedUsers   ];
-         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-             
-             if (!error)
-             {
-                 requests = [objects mutableCopy];
-                 [requestOrderedSet addObjectsFromArray:objects];
-                 [self.tableView reloadData];
-                 [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
-             }
-             else
-             {
-                 // Log details of the failure
-                 NSLog(@"Error: %@ %@", error, [error userInfo]);
-             }
-         }];
-     }];
+    [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
+        
+        if (!error) {
+            requests = [objects mutableCopy];
+            [requestOrderedSet addObjectsFromArray:objects];
+            [self.tableView reloadData];
+            [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+        }
+    }];
 }
 
 - (void)refreshTableView
 {
     int countInitial = (int) requestOrderedSet.count;
     NSLog(@"ordered set before: %d", countInitial);
-    int countBefore = requests.count;
+    int countBefore = (int)requests.count;
     
-    PFUser *currentUser = [PFUser currentUser];
-    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
-    PFQuery *relationQuery = [flaggedUserRelation query];
-    [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-         flaggedUsers = [objects mutableCopy];
-         PFQuery *query = [PFQuery queryWithClassName:@"Request"];
-         [query orderByDescending:@"createdAt"];
-         [query includeKey:@"poster"];
-         [query whereKey:@"poster" notContainedIn:flaggedUsers];
-         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-             
-             if (!error)
-             {
+    [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
+        
+        if (error == nil) {
+            
                  requests = [objects mutableCopy];
                  [requestOrderedSet addObjectsFromArray:objects];
                  int amountToInsert = (int)requests.count - countBefore;
-                 NSLog(@"inserting: %d", amountToInsert);
-                 
+        
                  if (amountToInsert > 0)
                  {
                      NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -180,16 +150,13 @@
                      [self.tableView reloadData];
                      
                  }
-                 
-             }
-             else
-             {
-                 // Log details of the failure
-                 NSLog(@"Error: %@ %@", error, [error userInfo]);
-             }
-             [self.tableView.pullToRefreshView stopAnimating];
-         }];
-     }];
+        }
+        else
+        {
+            NSLog(@"error refreshing: %@", error);
+        }
+        [self.tableView.pullToRefreshView stopAnimating];
+    }];
 }
 
 -(void)requestButtonPressed
@@ -557,47 +524,13 @@
 
 - (void)removeCellFromFeed:(DBTableViewCell *)cell
 {
-    
-    NSLog(@"object to remove: %@", [cell.requestObject objectId]);
-    
-    for (PFObject *object in requests) {
-        NSLog(@"%@", [object objectId]);
-    }
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     // TODO: protect against crashing here
     [self.tableView beginUpdates];
-    NSLog(@"# of requests: %d", requests.count);
     [requests removeObject:cell.requestObject];
-    NSLog(@"# of requests: %d", requests.count);
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     [self.tableView endUpdates];
-}
-
-- (void)deleteRequest:(PFObject *)request
-{
-    PFUser *poster = request[@"poster"];
-    NSString *posterId = poster.objectId;
-    NSString *currentUserId = [PFUser currentUser].objectId;
-    if ([posterId isEqualToString:currentUserId])
-    {
-        [request deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
-         {
-             if (error == nil)
-             {
-                 NSLog(@"deleted message");
-             }
-             else
-             {
-                 NSLog(@"error: %@", error);
-             }
-         }];
-    }
-    else
-    {
-        NSLog(@"user does not have permission to delete this request");
-        NSLog(@"%@ trying to delete %@ post", poster, currentUserId);
-    }
 }
 
 @end

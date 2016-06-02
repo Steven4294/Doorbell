@@ -64,6 +64,8 @@
 		D487E8FF1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D487E8FD1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift */; };
 		D487E9001CFFEAA6009CEA01 /* NextGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */; };
 		D487E9031D00B6CC009CEA01 /* DBObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E9021D00B6CC009CEA01 /* DBObjectManager.m */; };
+		D487E9061D00EF29009CEA01 /* DBProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E9051D00EF29009CEA01 /* DBProfileEditViewController.m */; };
+		D487E9091D00F0A1009CEA01 /* UIImageView+Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */; };
 		D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BE81CA21BE6004A5A9F /* boston.png */; };
 		D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */; };
 		D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4EE0BED1CA36D4F004A5A9F /* DBNavigationController.m */; };
@@ -188,6 +190,10 @@
 		D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
 		D487E9011D00B6CC009CEA01 /* DBObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBObjectManager.h; sourceTree = "<group>"; };
 		D487E9021D00B6CC009CEA01 /* DBObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBObjectManager.m; sourceTree = "<group>"; };
+		D487E9041D00EF29009CEA01 /* DBProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBProfileEditViewController.h; sourceTree = "<group>"; };
+		D487E9051D00EF29009CEA01 /* DBProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBProfileEditViewController.m; sourceTree = "<group>"; };
+		D487E9071D00F0A1009CEA01 /* UIImageView+Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Profile.h"; sourceTree = "<group>"; };
+		D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Profile.m"; sourceTree = "<group>"; };
 		D4EE0BE81CA21BE6004A5A9F /* boston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boston.png; sourceTree = "<group>"; };
 		D4EE0BEA1CA24FB9004A5A9F /* profile_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_icon.png; sourceTree = "<group>"; };
 		D4EE0BEC1CA36D4F004A5A9F /* DBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNavigationController.h; sourceTree = "<group>"; };
@@ -299,8 +305,6 @@
 		D42A04461CD9526100E141C1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D487E9011D00B6CC009CEA01 /* DBObjectManager.h */,
-				D487E9021D00B6CC009CEA01 /* DBObjectManager.m */,
 				D42A04451CD9524300E141C1 /* View Controllers */,
 				D45BFC841CE41167007EEF66 /* Cells */,
 			);
@@ -373,6 +377,7 @@
 				D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */,
 				D42A04441CD9522D00E141C1 /* icons */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
+				D487E90A1D00F0A9009CEA01 /* Categories */,
 				D4F951DC1CB72352009B6057 /* Model */,
 				D42A04461CD9526100E141C1 /* Views */,
 				D45BFC881CE411EB007EEF66 /* Root */,
@@ -438,6 +443,8 @@
 				D458A8341C6189F200F47581 /* DBProfileViewController.m */,
 				D44D02061CF95B4B0039A187 /* DBGenericProfileViewController.h */,
 				D44D02071CF95B4B0039A187 /* DBGenericProfileViewController.m */,
+				D487E9041D00EF29009CEA01 /* DBProfileEditViewController.h */,
+				D487E9051D00EF29009CEA01 /* DBProfileEditViewController.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -498,9 +505,20 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		D487E90A1D00F0A9009CEA01 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				D487E9071D00F0A1009CEA01 /* UIImageView+Profile.h */,
+				D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		D4F951DC1CB72352009B6057 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D487E9011D00B6CC009CEA01 /* DBObjectManager.h */,
+				D487E9021D00B6CC009CEA01 /* DBObjectManager.m */,
 				433AFB611C9CC6A0007A9C3D /* DBAcDataSource.h */,
 				433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */,
 				D4F951D81CB5B5F5009B6057 /* DBChatData.h */,
@@ -757,6 +775,7 @@
 				D458A7EF1C5C36B200F47581 /* AppDelegate.m in Sources */,
 				D487E8E71CFD4F92009CEA01 /* DBFeedbackViewController.m in Sources */,
 				D4F951DA1CB5B5F5009B6057 /* DBChatData.m in Sources */,
+				D487E9061D00EF29009CEA01 /* DBProfileEditViewController.m in Sources */,
 				433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */,
 				D458A8351C6189F200F47581 /* DBProfileViewController.m in Sources */,
 				433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */,
@@ -775,6 +794,7 @@
 				D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */,
 				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,
 				D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */,
+				D487E9091D00F0A1009CEA01 /* UIImageView+Profile.m in Sources */,
 				D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */,
 				D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */,
 				D487E8F21CFF723B009CEA01 /* DBCommentTopCell.m in Sources */,
@@ -920,6 +940,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22A6800498CE19204F21989A /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -942,6 +963,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
