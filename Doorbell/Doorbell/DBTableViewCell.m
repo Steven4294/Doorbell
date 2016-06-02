@@ -84,8 +84,6 @@
     return user[@"facebookName"];
 }
 
-
-
 - (void)configureLikeLabel
 {
     BOOL isUserLiker = [self.likersArray containsObject:[PFUser currentUser]];
@@ -106,7 +104,7 @@
             NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
             NSString *string2 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:1]];
             
-            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, and %@", string1, string2];
+            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, %@", string1, string2];
         }
         else
         {
@@ -123,15 +121,8 @@
     }
     else
     {
-        self.likeLabel.text = @"Like"   ;
+        self.likeLabel.text = @"Like";
     }
-}
-
-- (void)tempddfs{
-    
-    NSLog(@"updating consrtaints");
-    
-
 }
 
 @end

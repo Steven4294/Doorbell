@@ -32,6 +32,9 @@ pod 'UIColor+FlatColors'
 pod 'JTHamburgerButton', '~> 1.0'
 pod 'FTAssetRenderer'
 pod 'UIImage-Resize', '~> 1.0'
+pod 'TTTAttributedLabel', '~> 2.0'
+
+
 
 
 

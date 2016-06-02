@@ -13,8 +13,7 @@
 #import <UIKit/UIKit.h>
 #import "SESlideTableViewCell.h"
 
-@class FBSDKProfilePictureView, PFUser, PFObject
-;
+@class PFUser, PFObject;
 
 @interface DBTableViewCell : SESlideTableViewCell
 

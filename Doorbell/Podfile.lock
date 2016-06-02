@@ -84,6 +84,7 @@ PODS:
   - SESlideTableViewCell (0.7.0)
   - SVPullToRefresh (0.4.1)
   - TLYShyNavBar (1.0.0)
+  - TTTAttributedLabel (2.0.0)
   - UIColor+FlatColors (0.0.2)
   - UIImage-Resize (1.0.1)
   - VCTransitionsLibrary (1.5.0)
@@ -115,6 +116,7 @@ DEPENDENCIES:
   - SESlideTableViewCell
   - SVPullToRefresh
   - TLYShyNavBar
+  - TTTAttributedLabel (~> 2.0)
   - UIColor+FlatColors
   - UIImage-Resize (~> 1.0)
   - VCTransitionsLibrary
@@ -149,6 +151,7 @@ SPEC CHECKSUMS:
   SESlideTableViewCell: 1487a6aedc84b480a888fc33b8d1c58fa5026f99
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIColor+FlatColors: 6c699df7a575281794c688c64cee6c44fd1f93b4
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   VCTransitionsLibrary: d61fd9b7b6721942f0d583bcc0e7f8c31ec9271b

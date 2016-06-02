@@ -27,6 +27,8 @@
 #import "DBGenericProfileViewController.h"
 #import "DBSideMenuController.h"
 #import "UIColor+FlatColors.h"
+#import "DBCommentViewController.h"
+#import "DBObjectManager.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -35,6 +37,7 @@
     NSMutableArray *flaggedUsers;
     NSMutableOrderedSet *requestOrderedSet;
     int currentSelection;
+    DBObjectManager *objectManager;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -46,7 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    objectManager = [[DBObjectManager alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     requestOrderedSet = [[NSMutableOrderedSet alloc] init];
     self.tableView.delegate = self;
@@ -250,67 +253,23 @@
 
 - (void)toggleLike:(DBTableViewCell *)cell
 {
-    [self fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+    [objectManager toggleLike:cell.requestObject withBlock:^(BOOL success, BOOL wasLiked, NSError *error) {
         
-        if (error == nil)
+        if (wasLiked == YES)
         {
-            if (isLiked == YES)
-            {
-                // user already liked it.. unlike it
-                [self unlikeCell:cell];
-            }
-            else
-            {
-                [self likeCell:cell];
-            }
+            NSLog(@"Update UI because of LIKE");
+            [cell.likersArray addObject:[PFUser currentUser]];
+            [cell configureLikeLabel];
         }
         else
         {
-            NSLog(@"error: %@", error);
+            NSLog(@"Update UI because of UNLIKE");
+            [cell.likersArray removeObject:[PFUser currentUser]];
+            [cell configureLikeLabel];
         }
+        
     }];
 }
-
-- (void)likeCell:(DBTableViewCell *)cell
-{
-    NSLog(@"like cell");
-    PFObject *currentUser = [PFUser currentUser];
-    PFObject *request = cell.requestObject;
-    PFRelation *relation =  [request relationForKey:@"likers"];
-    [relation addObject:currentUser];
-    [request saveInBackground];
-    
-    [cell.likersArray addObject:currentUser];
-    [cell configureLikeLabel];
-}
-
-- (void)unlikeCell:(DBTableViewCell *)cell
-{
-    NSLog(@"dislike cell");
-    PFObject *currentUser = [PFUser currentUser];
-    PFObject *request = cell.requestObject;
-    PFRelation *relation =  [request relationForKey:@"likers"];
-    [relation removeObject:currentUser];
-    [request saveInBackground];
-    [cell.likersArray removeObject:currentUser];
-    [cell configureLikeLabel];
-}
-
-- (void)fetchLikersForRequest:(PFObject *)request withBlock:(void (^)(BOOL isLiked, NSArray *objects, NSError *error))block
-{
-    PFRelation *relation = request[@"likers"];
-    PFQuery *query = [relation query];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-         if (block != nil)
-         {
-             BOOL doesLike = [objects containsObject:[PFUser currentUser]];
-             block(doesLike, objects, error);
-         }
-         
-     }];
-}
-
 
 #pragma mark - Table view data source
 
@@ -337,8 +296,8 @@
         
         [cell configureLikeLabel];
         
-        [self fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error)
-        {
+        [objectManager fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+            
             if (error == nil)
             {
                 cell.likersArray = [objects mutableCopy];
@@ -393,27 +352,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = [indexPath row];
-    currentSelection = row;
-   // [tableView beginUpdates];
-   // [tableView endUpdates];
-    
-   // [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-    
-   // [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self openCommentsViewController:cell];
 }
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (void)openCommentsViewController:(DBTableViewCell *)cell
 {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
+    vc.likersArray = cell.likersArray;
+    vc.request = cell.requestObject;
   
-    // dynamically resizes cells
-    PFObject *object = [requests objectAtIndex:indexPath.row];
-    NSString *messageString = [object objectForKey:@"message"];
-    CGFloat labelHeight = [self paddingForString:messageString];
-    CGFloat staticHeight = 85.0f;
-    
-    return labelHeight + staticHeight + 100;
-}*/
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 -(CGFloat)paddingForString:(NSString *)string
 {
@@ -441,7 +392,7 @@
         {
             case 0:
                 // delete content
-                [self deleteRequest:feedCell.requestObject];
+                [objectManager deleteRequest:feedCell.requestObject withBlock:nil];
                 [self removeCellFromFeed:feedCell];
                 break;
         }
@@ -452,7 +403,7 @@
         {
             case 0:
                 // block content
-                [self blockUser:feedCell.user];
+                [objectManager blockUser:feedCell.user withBlock:nil];
                 // remove cell from feed
                 [self removeCellFromFeed:feedCell];
                 break;
@@ -582,12 +533,13 @@
 
 - (void)blockUser:(PFUser *)user
 {
+    
     NSLog(@"blocking user");
     PFUser *userToFlag = user;
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flagRelation =  [currentUser relationForKey:@"flaggedUsers"];
     [flagRelation addObject:userToFlag];
-    [currentUser saveInBackground];
+    
 }
 
 - (void)chatWithUser:(PFUser *)user
