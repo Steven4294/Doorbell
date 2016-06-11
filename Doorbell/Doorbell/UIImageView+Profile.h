@@ -12,6 +12,6 @@
 
 @interface UIImageView (Profile)
 
-- (void)setProfileImageViewForUser:(PFUser *)user;
+- (void)setProfileImageViewForUser:(PFUser *)user isCircular:(BOOL)circle;
 
 @end

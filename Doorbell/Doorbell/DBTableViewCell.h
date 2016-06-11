@@ -12,6 +12,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SESlideTableViewCell.h"
+#import "Doorbell-Swift.h"
 
 @class PFUser, PFObject;
 
@@ -22,8 +23,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
 @property (nonatomic, strong) IBOutlet UILabel *likeLabel;
+@property (nonatomic, strong) IBOutlet UILabel *commentLabel;
 @property (nonatomic, strong) IBOutlet UILabel *listOfLikersLabel;
-@property (nonatomic, strong) IBOutlet UIView *borderView;
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 
 @property (nonatomic, strong) PFUser *user;
@@ -32,6 +33,6 @@
 @property (nonatomic, strong) PFObject *requestObject;
 @property (nonatomic, strong) NSMutableArray *likersArray;
 
-- (void)configureLikeLabel;
+- (void)configureLikeLabelWithInteger:(int)numberOfLikers;
 
 @end

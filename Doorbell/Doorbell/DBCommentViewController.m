@@ -12,8 +12,9 @@
 #import "DBCommentLikeCell.h"
 #import "Parse.h"
 #import "DBObjectManager.h"
-
 #import "Doorbell-Swift.h"
+#import "FRHyperLabel.h"
+#import "NSString+Utils.h"
 
 @interface DBCommentViewController ()
 {
@@ -27,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    commentsArray = [[NSMutableArray alloc] init];
     objectManager = [[DBObjectManager alloc] init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self loadComments];
@@ -48,9 +50,13 @@
         [objectManager postCommentWithString:self.NextGrowingTextView.text toRequest:self.request fromUser:[PFUser currentUser] withCompletion:^(BOOL success, PFObject *comment) {
             if (success)
             {
+               
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+                NSLog(@"before:%d", commentsArray.count);
                 [self.tableView beginUpdates];
                 [commentsArray insertObject:comment atIndex:0];
+                NSLog(@"after:%d", commentsArray.count);
+
                 [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
                 [self.tableView endUpdates];
                 
@@ -113,7 +119,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (1 + commentsArray.count);
+    return (2 + commentsArray.count);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,35 +166,70 @@
         {
            // cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
         }
-        cell.comment = [commentsArray objectAtIndex:(indexPath.row - 2)];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-
         
+        
+        PFObject *comment = [commentsArray objectAtIndex:(indexPath.row - 2)];
+        cell.comment = comment;
+        
+        void(^handler)(FRHyperLabel *label, NSString *substring) = ^(FRHyperLabel *label, NSString *substring){
+            NSLog(@"Selected: %@", substring);
+        };
+
+        NSString *fullName = comment[@"poster"][@"facebookName"];
+        NSString *firstName = [fullName firstName];
+        
+       // [cell.textLabel setLinksForSubstrings:@[firstName] withLinkHandler:handler];
+        
+        cell.textLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        cell.textLabel.layer.borderWidth = 1.0f;
+
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+       // [cell.textLabel updateConstraints];
+
         return cell;
     }
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0)
-    {
-        // top cell
-        return UITableViewAutomaticDimension;
-    }
-    else if (indexPath.row == 1)
-    {
-        return UITableViewAutomaticDimension;
-    }
-    else
-    {
-        return UITableViewAutomaticDimension;
-    }
+    return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewAutomaticDimension;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[DBCommentLikeCell class]])
+    {
+        // toggle like
+        DBCommentLikeCell *likeCell = (DBCommentLikeCell *) cell;
+        [self toggleLike:likeCell];
+    }
+}
+
+- (void)toggleLike:(DBCommentLikeCell *)cell
+{
+    [objectManager toggleLike:self.request withBlock:^(BOOL success, BOOL wasLiked, int numberOfLikers, NSError *error) {
+        
+        if (wasLiked == YES)
+        {
+            NSLog(@"Update UI because of LIKE");
+            [cell.likersArray addObject:[PFUser currentUser]];
+            [cell configureLikeLabel];
+        }
+        else
+        {
+            NSLog(@"Update UI because of UNLIKE");
+            [cell.likersArray removeObject:[PFUser currentUser]];
+            [cell configureLikeLabel];
+        }
+        
+    }];
 }
 
 @end

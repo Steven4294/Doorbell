@@ -11,16 +11,16 @@
 #import "DBTableViewCell.h"
 #import "TTTTimeIntervalFormatter.h"
 #import "DBLoginViewController.h"
-
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
-
-#import <SDWebImage/UIImageView+WebCache.h>
-
 #import "JTSImageViewController.h"
 #import "JTSImageInfo.h"
-
 #import "UIImageView+Profile.h"
+#import "DBProfileEditViewController.h"
+#import "FTImageAssetRenderer.h"
+#import "UIColor+FlatColors.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "DBCommentViewController.h"
 
 @interface DBProfileViewController ()
 {
@@ -42,6 +42,7 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.title = @"profile";
     
     if (currentUser[@"facebookName"] != nil)
     {
@@ -49,6 +50,35 @@
     }
     
     [self retrieveUsersRequests];
+    /*
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.frame = CGRectMake(0, 0, 22, 22);
+    [rightButton setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
+    [rightButtonItem setCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightButtonItem;
+     */
+    
+    FTImageAssetRenderer *renderer = [FTAssetRenderer rendererForImageNamed:@"pencil" withExtension:@"png"];
+    renderer.targetColor = [UIColor whiteColor];
+    UIImage *image = [renderer imageWithCacheIdentifier:@"white"];
+    [self.editImageButton setImage:image];
+    self.editImageButton.layer.cornerRadius = self.editImageButton.frame.size.width/2;
+    self.editImageButton.layer.borderColor = self.editImageButton.superview.backgroundColor.CGColor;
+    self.editImageButton.backgroundColor = [UIColor flatTurquoiseColor];
+
+    
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editButtonPressed:)];
+    [self.editImageButton addGestureRecognizer:gesture];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileImage) name:@"updatedProfileImage" object:nil];
+}
+
+- (void)updateProfileImage
+{
+    [self.tableView reloadData];
+    [self setupProfilePicture];
 }
 
 - (void)retrieveUsersRequests
@@ -60,7 +90,6 @@
         
         if (!error)
         {
-
             // The find succeeded.
             // Do something with the found objects
             userRequests = [objects mutableCopy];
@@ -89,17 +118,8 @@
 
 - (void)setupProfilePicture
 {
-    /*PFUser *currentUser = [PFUser currentUser];
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
-                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];*/
+    [self.profileImage setProfileImageViewForUser:[PFUser currentUser] isCircular:YES];
     
-    //[self.profileImage set;
-    //[set.profileImage setupProfilePicture:[PFUser currentUser]];
-    
-    self.profileImage.clipsToBounds = YES;
-    self.profileImage.layer.borderColor = [UIColor colorWithWhite:.2 alpha:1.0].CGColor ;
-    self.profileImage.layer.borderWidth = 0.0f;
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
     [tapRecognizer addTarget:self action:@selector(profileImageTapped:)];
     [self.profileImage addGestureRecognizer:tapRecognizer];
@@ -176,26 +196,13 @@
     if ([userRequests count] > indexPath.row)
     {
         PFObject *object = [userRequests objectAtIndex:indexPath.row];
-        NSString *itemString = [object objectForKey:@"message"];
-        
-        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-        
-        NSDate *createdDate = [object createdAt];
-        
-        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];;
-        
-        PFUser *currentUser = [PFUser currentUser];
-        cell.nameLabel.text = currentUser[@"facebookName"];
-        cell.messageLabel.text = itemString;
-        
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
-        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                             placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
-        
+        cell.requestObject = object;
     }
     
-    cell.borderView.layer.borderWidth = 1.0f;
-    cell.borderView.layer.borderColor = [UIColor colorWithWhite:0 alpha:.06].CGColor;
+    UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
+    commentGesture.minimumPressDuration = 0.0f;
+    [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
+    [cell.commentLabel addGestureRecognizer:commentGesture];
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
@@ -204,7 +211,77 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 107;
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self openCommentsViewController:cell];
+}
+
+- (void)openCommentsViewController:(DBTableViewCell *)cell
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
+    vc.likersArray = cell.likersArray;
+    vc.request = cell.requestObject;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+# pragma mark - Actions
+
+- (void)editButtonPressed:(id)sender
+{
+    UIImagePickerController *viewController = [[UIImagePickerController alloc] init];
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    NSString *fileName = [NSString stringWithFormat:@"%@.png", @"facebookName"];
+    PFFile *file = [PFFile fileWithName:fileName data:UIImageJPEGRepresentation(image, .9)];
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser[@"profileImage"] = file;
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedProfileImage" object:nil];
+     }];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)commentLabelWasTapped:(UIGestureRecognizer *)gesture
+{
+    CGPoint swipeLocation = [gesture locationInView:self.tableView];
+    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+    DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+    
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        tappedCell.commentLabel.alpha = .5;
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+        [self openCommentsViewController:tappedCell];
+    }
+    else
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+    }
 }
 
 @end

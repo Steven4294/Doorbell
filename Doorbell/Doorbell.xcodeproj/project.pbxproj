@@ -16,6 +16,10 @@
 		D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */; };
 		D43B16DD1CEFF66100E32348 /* message_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D43B16DC1CEFF66100E32348 /* message_icon.png */; };
 		D43B16DF1CEFF6ED00E32348 /* warning_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D43B16DE1CEFF6ED00E32348 /* warning_icon.png */; };
+		D43E34A41D0281D700F8CFB6 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = D43E34A31D0281D700F8CFB6 /* add.png */; };
+		D43E34A81D02879F00F8CFB6 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = D43E34A71D02879F00F8CFB6 /* pencil.png */; };
+		D43E34B01D037F4100F8CFB6 /* message_bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = D43E34AF1D037F4100F8CFB6 /* message_bubble.png */; };
+		D43E34B61D05311100F8CFB6 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = D43E34B51D05311100F8CFB6 /* NSString+Utils.m */; };
 		D4422A271C8FC24E006D08E9 /* DBFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */; };
 		D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417351CF269230044CBFD /* GothamRoundedBook.ttf */; };
 		D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44417381CF26B060044CBFD /* GothamRoundedMedium.ttf */; };
@@ -60,7 +64,7 @@
 		D487E8F21CFF723B009CEA01 /* DBCommentTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8F11CFF723B009CEA01 /* DBCommentTopCell.m */; };
 		D487E8F51CFF725E009CEA01 /* DBCommentChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8F41CFF725E009CEA01 /* DBCommentChatCell.m */; };
 		D487E8F91CFF84F9009CEA01 /* DBCommentLikeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E8F81CFF84F9009CEA01 /* DBCommentLikeCell.m */; };
-		D487E8FB1CFF8611009CEA01 /* heart_large.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8FA1CFF8611009CEA01 /* heart_large.png */; };
+		D487E8FB1CFF8611009CEA01 /* heart_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8FA1CFF8611009CEA01 /* heart_large@2x.png */; };
 		D487E8FF1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D487E8FD1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift */; };
 		D487E9001CFFEAA6009CEA01 /* NextGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */; };
 		D487E9031D00B6CC009CEA01 /* DBObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D487E9021D00B6CC009CEA01 /* DBObjectManager.m */; };
@@ -115,6 +119,11 @@
 		D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageViewController.m; sourceTree = "<group>"; };
 		D43B16DC1CEFF66100E32348 /* message_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_icon.png; sourceTree = "<group>"; };
 		D43B16DE1CEFF6ED00E32348 /* warning_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warning_icon.png; sourceTree = "<group>"; };
+		D43E34A31D0281D700F8CFB6 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
+		D43E34A71D02879F00F8CFB6 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
+		D43E34AF1D037F4100F8CFB6 /* message_bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_bubble.png; sourceTree = "<group>"; };
+		D43E34B41D05311100F8CFB6 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		D43E34B51D05311100F8CFB6 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		D4422A251C8FC24E006D08E9 /* DBFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFeedTableViewController.h; sourceTree = "<group>"; };
 		D4422A261C8FC24E006D08E9 /* DBFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFeedTableViewController.m; sourceTree = "<group>"; };
 		D44417351CF269230044CBFD /* GothamRoundedBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamRoundedBook.ttf; sourceTree = "<group>"; };
@@ -184,7 +193,7 @@
 		D487E8F41CFF725E009CEA01 /* DBCommentChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCommentChatCell.m; sourceTree = "<group>"; };
 		D487E8F71CFF84F9009CEA01 /* DBCommentLikeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCommentLikeCell.h; sourceTree = "<group>"; };
 		D487E8F81CFF84F9009CEA01 /* DBCommentLikeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCommentLikeCell.m; sourceTree = "<group>"; };
-		D487E8FA1CFF8611009CEA01 /* heart_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart_large.png; sourceTree = "<group>"; };
+		D487E8FA1CFF8611009CEA01 /* heart_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heart_large@2x.png"; sourceTree = "<group>"; };
 		D487E8FC1CFFEAA5009CEA01 /* Doorbell-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Doorbell-Bridging-Header.h"; sourceTree = "<group>"; };
 		D487E8FD1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingInternalTextView.swift; sourceTree = "<group>"; };
 		D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
@@ -252,7 +261,10 @@
 		D42A04441CD9522D00E141C1 /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				D487E8FA1CFF8611009CEA01 /* heart_large.png */,
+				D43E34AF1D037F4100F8CFB6 /* message_bubble.png */,
+				D43E34A71D02879F00F8CFB6 /* pencil.png */,
+				D43E34A31D0281D700F8CFB6 /* add.png */,
+				D487E8FA1CFF8611009CEA01 /* heart_large@2x.png */,
 				D487E8EE1CFF4D17009CEA01 /* newyork.jpg */,
 				D487E8E81CFE65BC009CEA01 /* heart.png */,
 				D44D02231CFCFC000039A187 /* menu_icon1.png */,
@@ -309,6 +321,23 @@
 				D45BFC841CE41167007EEF66 /* Cells */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		D43E348A1D022AD500F8CFB6 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				D43E348B1D022AEE00F8CFB6 /* NextGrowingTextView */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		D43E348B1D022AEE00F8CFB6 /* NextGrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				D487E8FD1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift */,
+				D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */,
+			);
+			name = NextGrowingTextView;
 			sourceTree = "<group>";
 		};
 		D44D020F1CFB70660039A187 /* Menu */ = {
@@ -373,8 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */,
-				D487E8FD1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift */,
-				D487E8FE1CFFEAA6009CEA01 /* NextGrowingTextView.swift */,
+				D43E348A1D022AD500F8CFB6 /* Dependencies */,
 				D42A04441CD9522D00E141C1 /* icons */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D487E90A1D00F0A9009CEA01 /* Categories */,
@@ -508,6 +536,8 @@
 		D487E90A1D00F0A9009CEA01 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D43E34B41D05311100F8CFB6 /* NSString+Utils.h */,
+				D43E34B51D05311100F8CFB6 /* NSString+Utils.m */,
 				D487E9071D00F0A1009CEA01 /* UIImageView+Profile.h */,
 				D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */,
 			);
@@ -662,6 +692,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4EE0BF01CA4C762004A5A9F /* login-with-fb.png in Resources */,
+				D43E34B01D037F4100F8CFB6 /* message_bubble.png in Resources */,
 				D458A7FA1C5C36B200F47581 /* LaunchScreen.storyboard in Resources */,
 				D487E8EF1CFF4D17009CEA01 /* newyork.jpg in Resources */,
 				D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */,
@@ -685,13 +716,15 @@
 				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
 				D487E8E21CFD481F009CEA01 /* notification1.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
+				D43E34A81D02879F00F8CFB6 /* pencil.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 				D487E8E41CFD481F009CEA01 /* settings1.png in Resources */,
 				D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */,
 				D44D02241CFCFC000039A187 /* menu_icon1.png in Resources */,
+				D43E34A41D0281D700F8CFB6 /* add.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
 				D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */,
-				D487E8FB1CFF8611009CEA01 /* heart_large.png in Resources */,
+				D487E8FB1CFF8611009CEA01 /* heart_large@2x.png in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
 				D487E8E11CFD481F009CEA01 /* home1.png in Resources */,
 				D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */,
@@ -798,6 +831,7 @@
 				D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */,
 				D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */,
 				D487E8F21CFF723B009CEA01 /* DBCommentTopCell.m in Sources */,
+				D43E34B61D05311100F8CFB6 /* NSString+Utils.m in Sources */,
 				D487E8F91CFF84F9009CEA01 /* DBCommentLikeCell.m in Sources */,
 				D487E8F51CFF725E009CEA01 /* DBCommentChatCell.m in Sources */,
 				D44D020E1CFB6B3E0039A187 /* DBLeftMenuViewController.m in Sources */,

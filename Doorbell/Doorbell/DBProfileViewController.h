@@ -11,7 +11,7 @@
 
 @class DBSideMenuController;
 
-@interface DBProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface DBProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIImageView *profileImage;
 @property (nonatomic, strong) IBOutlet UIImageView *coverImage;
@@ -19,6 +19,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRequests;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessages;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIImageView *editImageButton;
 
 @property (nonatomic, strong) DBSideMenuController *sideMenuController;
 

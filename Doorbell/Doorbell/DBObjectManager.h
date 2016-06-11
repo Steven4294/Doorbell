@@ -24,13 +24,15 @@
  *  @param wasLiked: determines whether you have liked or unliked the object
  */
 - (void)toggleLike:(PFObject *)request
-         withBlock:(void (^)(BOOL success, BOOL wasLiked, NSError *error))block;
+         withBlock:(void (^)(BOOL success, BOOL wasLiked, int numberOfLikers, NSError *error))block;
 
 - (void)deleteRequest:(PFObject *)request
             withBlock:(void (^)(BOOL success, NSError *error))block;
 
 - (void)blockUser:(PFUser *)user
         withBlock:(void (^)(BOOL success, NSError *error))block;
+
+- (void)postMessage:(NSString *)string toUser:(PFUser *)user withCompletion:(void (^)(BOOL success))block;
 
 //
 //  Fetching APIs
@@ -41,10 +43,19 @@
 
 - (void)fetchAllRequests:(void (^)(NSError *error, NSArray *requests))block;
 
+- (void)fetchImageForUser:(PFUser *)user withBlock:(void (^)(BOOL success, UIImage *image))block;
 
+- (void)fetchConversationWithUser:(PFUser *)user withCompletion:(void (^)(BOOL success, PFObject *conversation))block;
 
+- (void)fetchAllMessagesForUser:(PFUser *)user withCompletion:(void (^)(BOOL success, NSArray *messages))block;
 
+- (void)fetchAllConversations:(void (^)(BOOL success, NSArray *conversations))block;
 
+- (void)fetchAllUsersThatHaveMessaged:(void (^)(BOOL success, NSArray *users))block;
+
+- (void)fetchMostRecentMessageForUser:(PFUser *)user withCompletion:(void (^)(BOOL success, PFObject *message, BOOL wasRead))block;
+
+- (void)fetchAllMostRecentMessagesWithCompletion:(void (^)(BOOL success, NSArray *messages))block;
 
 
 @end

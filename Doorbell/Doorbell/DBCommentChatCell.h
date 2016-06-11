@@ -8,19 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "TTTAttributedLabel.h"
+#import "KILabel.h"
 
-@class PFObject, PFUser, TTTAttributedLabel;
+@class PFObject, PFUser;
 
 @interface DBCommentChatCell : UITableViewCell <TTTAttributedLabelDelegate>
 
-@property (nonatomic, strong) IBOutlet UILabel *messageLabel;
+@property (nonatomic, strong) IBOutlet KILabel *messageLabel;
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *attributedLabel;
-
 
 @property (nonatomic, strong) PFObject *comment;
 @property (nonatomic, strong) PFUser *user;
-
 
 @end

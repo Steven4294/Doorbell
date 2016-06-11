@@ -15,13 +15,16 @@
 #import "DBChatNavigationController.h"
 #import "TTTTimeIntervalFormatter.h"
 #import "DBSearchUserViewController.h"
+#import "UIImageView+Profile.h"
+#import "DBObjectManager.h"
 
 
 @interface DBChatTableViewController ()
 {
     NSMutableArray *usersArray;
     NSMutableArray *usersWithMessages;
-    NSMutableArray *recentMessagesArray;
+    NSMutableArray *mostRecentMessages;
+    DBObjectManager *objectManager;
     
 }
 
@@ -33,8 +36,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    usersWithMessages = [[NSMutableArray alloc] init];
-    recentMessagesArray = [[NSMutableArray alloc] init];
+    objectManager = [[DBObjectManager alloc] init];
+
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -45,27 +48,6 @@
     
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.messageButton addTarget:self action:@selector(newMessageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    usersArray = [[NSMutableArray alloc] init];
-    PFQuery *query = [PFUser query];
-    
-    [query orderByAscending:@"facebookName"];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-        if (!error)
-        {
-            // The find succeeded.
-            // Do something with the found objects
-            usersArray = [objects mutableCopy];
-            [self.tableView reloadData];
-        }
-        else
-        {
-            // Log details of the failure
-        }
-    }];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -73,14 +55,6 @@
     [self findUsersWithMessages];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-}
-
-- (void)messageWasSent
-{
-    NSLog(@"message was sent");
-}
 
 - (void)newMessageButtonPressed
 {
@@ -92,72 +66,41 @@
 
 - (void)findUsersWithMessages
 {
-    NSLog(@"making call");
-    PFUser *currentUser = [PFUser currentUser];
-    PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
-    PFQuery *flagQuery = [flaggedUserRelation query];
-    
-    PFRelation *relation = currentUser[@"messages"];
-    PFQuery *query = [relation query];
-    query.limit = 1000;
-    [query orderByDescending:@"createdAt"];
-    [query includeKey:@"poster"];
-    
-    [flagQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-        NSMutableArray *flaggedUsers = [objects mutableCopy];
-        
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-         {
-             for (PFObject *message in objects)
-             {
-                 PFUser *userTo = message[@"to"];
-                 PFUser *userFrom = message[@"from"];
-                 
-                 if (![usersWithMessages containsObject:userTo] && userTo != currentUser && (![flaggedUsers containsObject:userTo]))
-                 {
-                     [usersWithMessages addObject:userTo];
-                 }
-                 else if (![usersWithMessages containsObject:userFrom] && userFrom != currentUser && (![flaggedUsers containsObject:userFrom]))
-                 {
-                     [usersWithMessages addObject:userFrom];
-                 }
-             }
-             
-             [self.tableView reloadData];
-             
-         }];
-        
-    }];
-    
-    
-}
-- (void)findMostRecentMessageForUser:(PFUser *)user withBlock:(void (^)(PFObject *message, BOOL success))completionBlock
-{
-    PFUser *currentUser = [PFUser currentUser];
-    PFRelation *relation =  currentUser[@"messages"];
-    PFQuery *query = [relation query];
-    [query whereKey:@"from" containedIn:@[user, currentUser ]];
-    [query whereKey:@"to" containedIn:@[user, currentUser ]];
-    query.limit = 1;
-    [query orderByDescending:@"createdAt"];
-    [query includeKey:@"createdAt"];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+    usersWithMessages = [[NSMutableArray alloc] init];
+    mostRecentMessages = [[NSMutableArray alloc] init];
+    [objectManager fetchAllConversations:^(BOOL success, NSArray *conversations)
      {
-         
-         PFObject *object = [objects firstObject];
-         completionBlock(object, YES);
-     }];
-    
+        if (success)
+        {
+            for (PFObject *conversation in conversations) {
+                if (conversation[@"mostRecentMessage"]) {
+                    [mostRecentMessages addObject:conversation[@"mostRecentMessage"]];
+
+                }
+                else
+                {
+                    PFObject *spoofMessage = [PFObject objectWithClassName:@"Message"];
+                    spoofMessage[@"sender"] = [PFUser currentUser];
+                    spoofMessage[@"message"] = @" ";
+                    
+                    [mostRecentMessages addObject:spoofMessage];
+                }
+                NSArray *users = [conversation valueForKey:@"users"];
+                for (PFUser *user in users) {
+                    if (user != [PFUser currentUser]) {
+                        [usersWithMessages addObject:user];
+                    }
+                }
+            }
+            
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 - (void)cancelButtonPressed
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-    
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -167,7 +110,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [usersWithMessages count];
+    return [mostRecentMessages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -175,32 +118,26 @@
     DBChatViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     
-    if ([usersWithMessages count] > indexPath.row)
+    if ([mostRecentMessages count] > indexPath.row)
     {
+        
+        PFObject *message = [mostRecentMessages objectAtIndex:indexPath.row];
         PFUser *user = [usersWithMessages objectAtIndex:indexPath.row];
+
         cell.messageLabel.text = @"";
         
-        if (user[@"facebookName"] != nil)
-        {
-            cell.nameLabel.text = user[@"facebookName"];
-            
-        }
-        
-        [self findMostRecentMessageForUser:user withBlock:^(PFObject *message, BOOL success) {
-
-            cell.messageLabel.text = message[@"message"];
-            NSDate *date = [message createdAt];
-            TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-            cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
-        }];
-        
-        
+        //PFUser *user = message[@"sender"];
+        cell.nameLabel.text = user[@"facebookName"];
         cell.user = (PFUser *) user;
+        [cell.profileImageView setProfileImageViewForUser:user isCircular:NO];
         
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
-        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                                 placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+        cell.messageLabel.text = message[@"message"];
+        NSDate *date = [message createdAt];
+        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
         
+        
+
         [cell.messageLabel sizeToFit];
     }
     

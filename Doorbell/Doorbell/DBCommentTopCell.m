@@ -10,7 +10,7 @@
 #import "TTTTimeIntervalFormatter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Parse.h"
-#import "UIImage+Resize.h"
+#import "UIImageView+Profile.h"
 
 @implementation DBCommentTopCell
 
@@ -35,10 +35,7 @@
     
     
     
-    [self.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                             placeholderImage: nil
-                                    completed: nil];
-    
+    [self.profileImageView setProfileImageViewForUser:user isCircular:YES];
     self.messageLabel.text = [requestObject objectForKey:@"message"];
     
     TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];

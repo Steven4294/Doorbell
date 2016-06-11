@@ -9,11 +9,13 @@
 
 #import "DBMessageViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "DBObjectManager.h"
 
 @interface DBMessageViewController ()
 {
     BOOL isSendingMessage;
     UIFont *fontTitle;
+    DBObjectManager *objectManager;
 }
 
 @end
@@ -22,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    objectManager = [[DBObjectManager alloc] init];
     fontTitle = [UIFont fontWithName:@"HelveticaNeue" size:17.0f];
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:16.0f];
     
@@ -57,17 +60,7 @@
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
     [label setFont:fontTitle];
-    /*
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.clipsToBounds = YES;
-    imageView.layer.cornerRadius = imageView.bounds.size.width/2;
-    view.backgroundColor = [UIColor clearColor];
-    
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", self.userReciever[@"facebookId"]];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                             placeholderImage: nil
-                                    completed: nil];
-    */
+ 
     [view addSubview:imageView];
     [view addSubview:label];
 
@@ -140,59 +133,31 @@
     if ((isSendingMessage == NO)&&(blank == NO))
     {
         isSendingMessage = YES;
-        PFUser *currentUser = [PFUser currentUser];
-        PFObject *messageObject = [PFObject objectWithClassName:@"Message"];
-        messageObject[@"message"] = text;
+        [objectManager postMessage:text toUser:self.userReciever withCompletion:^(BOOL success)
+         {
+             isSendingMessage = NO;
+             
+             if (success)
+             {
+                 [JSQSystemSoundPlayer jsq_playMessageSentSound];
+                 
+                 JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
+                                                          senderDisplayName:senderDisplayName
+                                                                       date:date
+                                                                       text:text];
+                 
+                 
+                 [self.chatData.messages addObject:message];
+                 [self finishSendingMessageAnimated:YES];
+                 
+              /* [PFCloud callFunctionInBackground:@"addRelationForMessage"
+                  withParameters:@{@"messageID": messageObject.objectId,
+                  @"recieverID": _userReciever.objectId}
+                  block:nil];*/
+             }
+         }];
         
-        messageObject[@"from"] = currentUser;
-        messageObject[@"to"] = _userReciever;
-        
-        [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-            
-            if (succeeded == YES)
-            {
-                PFRelation *relation = [currentUser relationForKey:@"messages"];
-                [relation addObject:messageObject];
-                
-                [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
-                 {
-                     if (succeeded == YES)
-                     {
-                         [JSQSystemSoundPlayer jsq_playMessageSentSound];
-                         
-                         JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
-                                                                  senderDisplayName:senderDisplayName
-                                                                               date:date
-                                                                               text:text];
-                         
-                         
-                         [self.chatData.messages addObject:message];
-                         [self finishSendingMessageAnimated:YES];
-                         isSendingMessage = NO;
-                         
-                     }
-                     
-                     // adds the inverse relationship via the cloud!
-                     [PFCloud callFunctionInBackground:@"addRelationForMessage"
-                                        withParameters:@{@"messageID": messageObject.objectId,
-                                                         @"recieverID": _userReciever.objectId}
-                                                 block:^(NSString *result, NSError *error)
-                      {
-                          
-                      }];
-                     
-                 }];
-                
-                
-            }
-            else
-            {
-                isSendingMessage = NO;
-            }
-        }];
     }
-    
-    
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender

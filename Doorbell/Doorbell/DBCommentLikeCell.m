@@ -9,6 +9,7 @@
 #import "DBCommentLikeCell.h"
 #import "FTImageAssetRenderer.h"
 #import "Parse.h"
+#import "UIColor+FlatColors.h"
 
 @implementation DBCommentLikeCell
 
@@ -28,8 +29,8 @@
     if ([self.likersArray containsObject:[PFUser currentUser]])
     {
         FTImageAssetRenderer *renderer = [FTAssetRenderer rendererForImageNamed:@"heart_large" withExtension:@"png"];
-        renderer.targetColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
-        UIImage *image_highlighted = [renderer imageWithCacheIdentifier:@"blue"];
+        renderer.targetColor = [UIColor flatAlizarinColor];
+        UIImage *image_highlighted = [renderer imageWithCacheIdentifier:@"Alizarin"];
         self.likeIconView.image = image_highlighted;
     }
     else

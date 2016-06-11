@@ -7,31 +7,66 @@
 //
 
 #import "DBProfileEditViewController.h"
+#import "Parse.h"
+#import "UIImageView+Profile.h"
 
 @interface DBProfileEditViewController ()
+
+@property (nonatomic, strong) UIImage *chosenImage;
 
 @end
 
 @implementation DBProfileEditViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.title = @"Edit Profile";
+    
+    [self.profileImage setProfileImageViewForUser:[PFUser currentUser] isCircular:YES];
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImageTapped)];
+    [self.profileImage addGestureRecognizer:gesture];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)profileImageTapped
+{
+    NSLog(@"profile image tapped");
+    UIImagePickerController *viewController = [[UIImagePickerController alloc] init];
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    self.chosenImage = info[UIImagePickerControllerOriginalImage];
+    self.profileImage.image = self.chosenImage;
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
-*/
+
+ - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)saveButtonPressed:(id)sender
+{
+    if (self.chosenImage)
+    {
+        NSString *fileName = [NSString stringWithFormat:@"%@.png", @"facebookName"];
+        PFFile *file = [PFFile fileWithName:fileName data:UIImageJPEGRepresentation(self.chosenImage, .9)];
+        PFUser *currentUser = [PFUser currentUser];
+        currentUser[@"profileImage"] = file;
+        [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedProfileImage" object:nil];
+        }];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)cancelButtonPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
 
 @end

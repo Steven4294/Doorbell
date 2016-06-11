@@ -103,14 +103,10 @@
             }
             
             
-            if (user.isNew)
-            {
-                // the user is new!
-            }
-            else
-            {
-                // an old user has logged back in
-            }
+            PFInstallation *installation = [PFInstallation currentInstallation];
+            installation[@"user"] = [PFUser currentUser];
+            [installation saveInBackground];
+            
             NSLog(@"%@", user[@"verifiedCode"]);
             BOOL isVerified = [user[@"verifiedCode"] boolValue];
           

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBProfileEditViewController : UIViewController
+@interface DBProfileEditViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
+@property (nonatomic, strong) IBOutlet UIImageView *profileImage;
 
 @end

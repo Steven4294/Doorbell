@@ -29,6 +29,7 @@
 #import "UIColor+FlatColors.h"
 #import "DBCommentViewController.h"
 #import "DBObjectManager.h"
+#import "LMPullToBounceWrapper.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -38,6 +39,8 @@
     NSMutableOrderedSet *requestOrderedSet;
     int currentSelection;
     DBObjectManager *objectManager;
+    LMPullToBounceWrapper *pullToBounce;
+
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -47,7 +50,8 @@
 @implementation DBFeedTableViewController
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     objectManager = [[DBObjectManager alloc] init];
     // Uncomment the following line to preserve selection between presentations.
@@ -61,16 +65,8 @@
     [[PFUser currentUser] fetchIfNeeded];
     
     [self loadTableView];
-    __weak typeof(self) welf = self;
-    // self.shyNavBarManager.scrollView = self.tableView;
-    
-    [self.tableView addPullToRefreshWithActionHandler:^
-     {
-         // prepend data to dataSource, insert cells at top of table view
-         [welf refreshTableView];
-         
-     }];
-    
+
+    [self setupRefreshControl];
     [self.requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     [self.navigationController.navigationBar setTitleTextAttributes:
@@ -87,9 +83,32 @@
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
     
-    // self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.view.frame.size.width, self.view.frame.size.height   );
+    /*
+    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+    [query whereKey:@"facebookName" equalTo:@"Benny Pleat"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        
+    PFUser *benPleat = [objects firstObject];
+    [objectManager postMessage:@"Test Message using New API - be!" toUser:benPleat withCompletion:^(BOOL success) {
+        
+        
+    }];
+    
+    }];*/
+    
+   
 }
 
+- (void)setupRefreshControl
+{
+    __weak typeof(self) welf = self;
+    [self.tableView addPullToRefreshWithActionHandler:^
+     {
+         // prepend data to dataSource, insert cells at top of table view
+         [welf refreshTableView];
+         
+     }];
+}
 - (void)loadTableView
 {
     [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
@@ -106,13 +125,12 @@
 - (void)refreshTableView
 {
     int countInitial = (int) requestOrderedSet.count;
-    NSLog(@"ordered set before: %d", countInitial);
     int countBefore = (int)requests.count;
     
     [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
         
-        if (error == nil) {
-            
+        if (error == nil)
+        {
                  requests = [objects mutableCopy];
                  [requestOrderedSet addObjectsFromArray:objects];
                  int amountToInsert = (int)requests.count - countBefore;
@@ -142,13 +160,13 @@
                  {
                      requests = [objects mutableCopy];
                      [self.tableView reloadData];
+
                      
                  }
                  else
                  {
                      requests = [objects mutableCopy];
                      [self.tableView reloadData];
-                     
                  }
         }
         else
@@ -178,64 +196,62 @@
     {
         [self.sideMenuController presentViewController:bulletinForm animated:YES completion:nil];
     }
-    
 }
 
--(void)profileButtonPressed
+- (void)profileButtonPressed
 {
-    NSLog(@"profile Button pressed: %d", self.sideMenuController.isLeftViewShowing);
     [self.sideMenuController showLeftViewAnimated:YES completionHandler:nil];
 }
 
--(void)chatButtonPressed
+- (void)chatButtonPressed
 {
-    NSLog(@"chat button pressed");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    DBChatNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBChatNavigationController"];
     DBChatTableViewController *vc2 = [storyboard instantiateViewControllerWithIdentifier:@"DBChatTableViewController"];
     
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-    [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    
-    //[self performSegueWithIdentifier:@"chatSegue" sender:self];
-    
     [self.navigationController pushViewController:vc2 animated:YES];
+}
+
+#pragma mark - Gesture Recognizers
+
+- (void)cellImageViewTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+        DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+        
+        PFUser *user = tappedCell.user;
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+        vc.user = user;
+        
+        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+        [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+}
+
+- (void)commentLabelWasTapped:(UIGestureRecognizer *)gesture
+{
+    CGPoint swipeLocation = [gesture locationInView:self.tableView];
+    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+    DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
     
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)likeLabelTapped:(UIGestureRecognizer *)gestureRecognizer
-{
-    NSLog(@"like label tapped");
-    CGPoint tapLocation = [gestureRecognizer locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
-    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    [self toggleLike:cell];
-}
-
-- (void)toggleLike:(DBTableViewCell *)cell
-{
-    [objectManager toggleLike:cell.requestObject withBlock:^(BOOL success, BOOL wasLiked, NSError *error) {
-        
-        if (wasLiked == YES)
-        {
-            NSLog(@"Update UI because of LIKE");
-            [cell.likersArray addObject:[PFUser currentUser]];
-            [cell configureLikeLabel];
-        }
-        else
-        {
-            NSLog(@"Update UI because of UNLIKE");
-            [cell.likersArray removeObject:[PFUser currentUser]];
-            [cell configureLikeLabel];
-        }
-        
-    }];
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        tappedCell.commentLabel.alpha = .5;
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+        [self openCommentsViewController:tappedCell];
+    }
+    else
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+    }
 }
 
 #pragma mark - Table view data source
@@ -259,53 +275,39 @@
         PFUser *poster = object[@"poster"];
         cell.requestObject = object;
         cell.layoutMargins = UIEdgeInsetsZero;
-        cell.listOfLikersLabel.text = @" ";
         
-        [cell configureLikeLabel];
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+        [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
+        [cell.profileImageView addGestureRecognizer:tapRecognizer];
         
-        [objectManager fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
-            
-            if (error == nil)
-            {
-                cell.likersArray = [objects mutableCopy];
-                [cell configureLikeLabel];
-            }
-        }];
-        if (poster != nil)
+        UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
+        [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
+        [cell.nameLabel addGestureRecognizer:tapRecognizer2];
+        
+        UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
+        commentGesture.minimumPressDuration = 0.0f;
+        [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
+        [cell.commentLabel addGestureRecognizer:commentGesture];
+        
+        cell.delegate = self;
+        
+        [cell removeAllLeftButtons];
+        [cell removeAllRightButtons];
+        
+        UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
+        if (poster != [PFUser currentUser])
         {
-            
-            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-            [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
-            [cell.profileImageView addGestureRecognizer:tapRecognizer];
-            
-            UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
-            [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
-            [cell.nameLabel addGestureRecognizer:tapRecognizer2];
-            
-            UITapGestureRecognizer *tapRecognizer3 = [[UITapGestureRecognizer alloc] init];
-            [tapRecognizer3 addTarget:self action:@selector(likeLabelTapped:)];
-            [cell.likeLabel addGestureRecognizer:tapRecognizer3];
-            
-            cell.delegate = self;
-            
-            [cell removeAllLeftButtons];
-            [cell removeAllRightButtons];
-            UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
-            if (poster != [PFUser currentUser])
-            {
-                [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
-                [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
-            }
-            else
-            {
-                [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
-            }
+            [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+            [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
+        }
+        else
+        {
+            [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
         }
     }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -343,11 +345,6 @@
 
 #pragma mark - SESlideDelegate
 
-- (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerLeftButton:(NSInteger)buttonIndex
-{
-    
-}
-
 - (void)slideTableViewCell:(SESlideTableViewCell*)cell didTriggerRightButton:(NSInteger)buttonIndex
 {
     DBTableViewCell *feedCell = (DBTableViewCell *) cell;
@@ -381,31 +378,6 @@
         }
     }
 }
-
-- (BOOL)slideTableViewCell:(SESlideTableViewCell*)cell canSlideToState:(SESlideTableViewCellSlideState)slideState
-{
-    switch (slideState)
-    {
-        default:
-            return YES;
-    }
-}
-
-- (void)slideTableViewCell:(SESlideTableViewCell *)cell willSlideToState:(SESlideTableViewCellSlideState)slideState
-{
-    
-}
-
-- (void)slideTableViewCell:(SESlideTableViewCell *)cell didSlideToState:(SESlideTableViewCellSlideState)slideState
-{
-    
-}
-
-- (void)slideTableViewCell:(SESlideTableViewCell *)cell wilShowButtonsOfSide:(SESlideTableViewCellSide)side
-{
-    
-}
-
 
 #pragma mark - UIViewControllerTransitioningDelegate
 
@@ -476,26 +448,6 @@
     }
     
     [super prepareForSegue:segue sender:sender];
-}
-
-- (void)cellImageViewTapped:(UIGestureRecognizer *)gestureRecognizer
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
-        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
-        DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
-        
-        PFUser *user = tappedCell.user;
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
-        vc.user = user;
-        
-        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-        [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-        [self.navigationController pushViewController:vc animated:YES];
-        
-    }
 }
 
 - (void)blockUser:(PFUser *)user

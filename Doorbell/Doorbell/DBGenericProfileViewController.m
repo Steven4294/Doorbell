@@ -19,6 +19,9 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "UIImageView+Profile.h"
+#import "DBCommentViewController.h"
+
 @interface DBGenericProfileViewController ()
 {
     NSMutableArray *userRequests;
@@ -43,15 +46,14 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", self.user[@"facebookId"]];
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
-                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
+
+    [self.profileImage setProfileImageViewForUser:self.user isCircular:YES];
     
     self.profileImage.clipsToBounds = YES;
     self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor ;
     self.profileImage.layer.borderWidth = 0.0f;
     self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
+    
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
     [tapRecognizer addTarget:self action:@selector(profileImageTapped:)];
     [self.profileImage addGestureRecognizer:tapRecognizer];
@@ -166,41 +168,63 @@
     if ([userRequests count] > indexPath.row)
     {
         PFObject *object = [userRequests objectAtIndex:indexPath.row];
-        NSString *itemString = [object objectForKey:@"message"];
-        
-        TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
-        
-        NSDate *createdDate = [object createdAt];
-        
-        cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
-        
-        cell.nameLabel.text = self.user[@"facebookName"];
-        cell.messageLabel.text = itemString;
-        cell.messageLabel.numberOfLines = 2;
-        
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", self.user[@"facebookId"]];
-        
-        
-        
-        [cell.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                                 placeholderImage: nil
-                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                            
-                                            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-                                            [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
-                                            [cell.profileImageView addGestureRecognizer:tapRecognizer];
-                                        }];
-        //[cell.messageLabel sizeToFit];
-
-        
-    
+        cell.requestObject = object;
     }
     
-   
+    UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
+    commentGesture.minimumPressDuration = 0.0f;
+    [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
+    [cell.commentLabel addGestureRecognizer:commentGesture];
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+ - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self openCommentsViewController:cell];
+}
+
+- (void)openCommentsViewController:(DBTableViewCell *)cell
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
+    vc.likersArray = cell.likersArray;
+    vc.request = cell.requestObject;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)commentLabelWasTapped:(UIGestureRecognizer *)gesture
+{
+    CGPoint swipeLocation = [gesture locationInView:self.tableView];
+    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
+    DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+    
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        tappedCell.commentLabel.alpha = .5;
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+        [self openCommentsViewController:tappedCell];
+    }
+    else
+    {
+        tappedCell.commentLabel.alpha = 1.0f;
+    }
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "DBChatData.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "DBObjectManager.h"
 
 @implementation DBChatData
 
@@ -70,9 +71,10 @@
 - (void)setUserReciever:(PFUser *)userReciever
 {
     _userReciever = userReciever;
-    
     PFUser *currentUser = [PFUser currentUser];
-    
+    DBObjectManager *objectManager = [[DBObjectManager alloc] init];
+
+    /*
     PFRelation *messagesRelation = currentUser[@"messages"];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Message"];
@@ -97,7 +99,6 @@
              PFUser *from = message[@"from"];
              PFUser *to = message[@"to"];
             
-             
              if (from != to)
              {
                  if ([from.objectId isEqualToString:currentUser.objectId])
@@ -120,62 +121,40 @@
 
          [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
          
-     }];
+     }];*/
+    
+    [objectManager fetchAllMessagesForUser:userReciever withCompletion:^(BOOL success, NSArray *messages) {
+        
+        for (PFObject *message in messages)
+        {
+            PFUser *sender = message[@"sender"];
+            JSQMessage *jsqMessage = [[JSQMessage alloc] initWithSenderId:sender.objectId senderDisplayName:sender[@"facebookName"] date:[message createdAt] text:message[@"message"]];
+            [self.messages addObject:jsqMessage];
+        }
+        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
+    }];
+    
     
     // get the FB image of the reciever
-    if (userReciever[@"facebookId"] != nil)
-    {
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", userReciever[@"facebookId"]];
-        NSURL *imageURL = [NSURL URLWithString:URLString];
-
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadImageWithURL:imageURL
-                              options:0
-                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                 // progression tracking code
-                             }
-                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                if (image)
-                                {
-                                    JSQMessagesAvatarImage *fromImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
-                                                                                                                   diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
-                                    NSDictionary *avatarDict = @{kJSQDemoAvatarIdFrom: fromImage};
-                                    [self.avatars addEntriesFromDictionary:avatarDict];
-                                    
-                                }
-                            }];
-
-    }
+    [objectManager fetchImageForUser:userReciever withBlock:^(BOOL success, UIImage *image)
+     {
+         JSQMessagesAvatarImage *fromImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
+                                                                                        diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+         NSDictionary *avatarDict = @{kJSQDemoAvatarIdFrom: fromImage};
+         [self.avatars addEntriesFromDictionary:avatarDict];
+     }];
     
     // get the FB image of the current User
-    if (currentUser[@"facebookId"] != nil)
-    {
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
-        NSURL *imageURL = [NSURL URLWithString:URLString];
-        
-        NSString *avatarIdSender = currentUser.objectId;
-        
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadImageWithURL:imageURL
-                              options:0
-                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                 // progression tracking code
-                             }
-                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                if (image)
-                                {
-                                    JSQMessagesAvatarImage *toImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
-                                                                                                                   diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
-                                    NSDictionary *avatarDict = @{avatarIdSender: toImage};
-                                    [self.avatars addEntriesFromDictionary:avatarDict];
-                                    
-                                }
-                            }];
-        
-    }
     
-    
-    
+    NSString *avatarIdSender = currentUser.objectId;
+    [objectManager fetchImageForUser:currentUser withBlock:^(BOOL success, UIImage *image)
+     {
+         JSQMessagesAvatarImage *toImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
+                                                                                      diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+         NSDictionary *avatarDict = @{avatarIdSender: toImage};
+         [self.avatars addEntriesFromDictionary:avatarDict];
+         
+     }];
     
 }
 

@@ -10,6 +10,7 @@
 #import "DBLeftMenuCell.h"
 #import "DBSideMenuController.h"
 #import "Parse.h"
+#import "UIImageView+Profile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface DBLeftMenuViewController ()
@@ -48,20 +49,25 @@
     
     [self.tableView reloadData];
     
+    [self updateProfileImage];
+    
     PFUser *currentUser = [PFUser currentUser];
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentUser[@"facebookId"]];
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:URLString]
-                         placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
-    
+
     self.nameLabel.text = currentUser[@"facebookName"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileImage) name:@"updatedProfileImage" object:nil];
+}
+- (void)updateProfileImage
+{
     
+    PFUser *currentUser = [PFUser currentUser];
+    
+    [self.profileImage setProfileImageViewForUser:currentUser isCircular:YES];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width/2;
-    self.profileImage.clipsToBounds = YES;
+
     self.profileImage.layer.borderWidth = 1.0f;
     self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor;
     

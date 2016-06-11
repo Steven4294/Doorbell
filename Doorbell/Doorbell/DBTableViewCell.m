@@ -11,15 +11,26 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Parse.h"
 #import "UIImage+Resize.h"
+#import "UIImageView+Profile.h"
+#import "DBObjectManager.h"
+#import "DBCommentViewController.h"
+
+@interface DBTableViewCell ()
+{
+DBObjectManager *objectManager;
+
+}
+@end
 
 @implementation DBTableViewCell
 
 - (void)awakeFromNib
 {
+    objectManager = [[DBObjectManager alloc] init];
+    self.likersArray = [[NSMutableArray alloc] init];
     // Initialization code
     self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width/2.0f;
     self.profileImageView.clipsToBounds = YES;
-    
     
     // COMMENT THIS OUT
     /*
@@ -38,16 +49,11 @@
     self.likeLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.likeLabel.layer.borderWidth = 1.0f;
      */
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];    
+    
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] init];
+    gesture.minimumPressDuration = 0.0f;
+    [gesture addTarget:self action:@selector(likeLabelTapped:)];
+    [self.likeLabel addGestureRecognizer:gesture];
 }
 
 - (void)setRequestObject:(PFObject *)requestObject
@@ -58,13 +64,7 @@
     
     self.nameLabel.text = user[@"facebookName"];
     
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
-    
-    
-    
-    [self.profileImageView sd_setImageWithURL:[NSURL URLWithString:URLString]
-                             placeholderImage: nil
-                                    completed: nil];
+    [self.profileImageView setProfileImageViewForUser:user isCircular:YES];
     
     self.messageLabel.text = [requestObject objectForKey:@"message"];
     
@@ -72,6 +72,18 @@
     NSDate *createdDate = [requestObject createdAt];
     self.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
     [self.messageLabel sizeToFit];
+    
+    // pass in weak-self
+    [objectManager fetchLikersForRequest:self.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+        if (error == nil)
+        {
+            NSNumber *numberOfLikers = self.requestObject[@"numberOfLikers"];
+            self.likersArray = [objects mutableCopy];
+            [self configureLikeLabelWithInteger:numberOfLikers.intValue];
+        }
+    }];
+    
+    [self configureCommentLabel];
 }
 
 - (void)setLikersArray:(NSMutableArray *)likersArray
@@ -84,44 +96,84 @@
     return user[@"facebookName"];
 }
 
-- (void)configureLikeLabel
+- (void)configureLikeLabelWithInteger:(int)numberOfLikers
 {
     BOOL isUserLiker = [self.likersArray containsObject:[PFUser currentUser]];
-    
-    if (self.likersArray.count == 0)
-    {
-        self.listOfLikersLabel.text = @" ";
-    }
-    else
-    {
-        if (self.likersArray.count == 1)
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            self.listOfLikersLabel.text = string1;
-        }
-        else if (self.likersArray.count == 2)
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            NSString *string2 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:1]];
-            
-            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, %@", string1, string2];
-        }
-        else
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            NSString *string2 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:1]];
-            NSInteger others = self.likersArray.count - 2;
-            
-            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, %@ and %ld others", string1, string2, (long)others];
-        }
-    }
+    //NSNumber *number = self.requestObject[@"numberOfLikers"];
+
     if (isUserLiker == YES)
     {
         self.likeLabel.text = @"Unlike";
+        self.likeLabel.attributedText = [self concatText:@"Unlike    " withInteger:numberOfLikers];
     }
     else
     {
         self.likeLabel.text = @"Like";
+        self.likeLabel.attributedText = [self concatText:@"Like        " withInteger:numberOfLikers];
+    }
+}
+
+- (void)configureCommentLabel
+{
+    NSNumber *number = self.requestObject[@"numberOfComments"];
+    if (number.intValue > 0)
+    {
+        self.commentLabel.attributedText = [self concatText:@"Comment    " withInteger:number.intValue];
+    }
+    else
+    {
+        self.commentLabel.text = @"Comment";
+    }
+}
+
+- (void)likeLabelTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        self.likeLabel.alpha = .5;
+    }
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        self.likeLabel.alpha = 1.0f;
+        [self toggleLike:self];
+    }
+}
+
+- (void)toggleLike:(DBTableViewCell *)cell
+{
+    [objectManager toggleLike:cell.requestObject withBlock:^(BOOL success, BOOL wasLiked, int numberOfLikers, NSError *error)
+    {
+        if (wasLiked == YES)
+        {
+            [cell.likersArray addObject:[PFUser currentUser]];
+            [cell configureLikeLabelWithInteger:numberOfLikers];
+        }
+        else
+        {
+            [cell.likersArray removeObject:[PFUser currentUser]];
+            [cell configureLikeLabelWithInteger:numberOfLikers];
+        }
+    }];
+}
+
+- (NSAttributedString *)concatText:(NSString *)text withInteger:(int)integer
+{
+    UIColor *color = [UIColor colorWithWhite:.80 alpha:1.0]; //0 = black,  1 = white
+    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:11.0];
+    NSDictionary *dict = @{NSForegroundColorAttributeName: color, NSFontAttributeName: font};
+    
+    if (integer > 0)
+    {
+        NSString *messageBody = [NSString stringWithFormat:@"%@", text];
+        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%d", messageBody, integer]];
+        
+        [attrStr addAttributes:dict range:NSMakeRange(messageBody.length, 1)];
+        return [attrStr copy];
+    }
+    else
+    {
+        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
+        return attrStr;
     }
 }
 
