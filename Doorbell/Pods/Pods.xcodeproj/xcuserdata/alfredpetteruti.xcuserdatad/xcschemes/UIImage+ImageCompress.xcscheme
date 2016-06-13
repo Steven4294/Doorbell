@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '559312FC0D352F622501A2FB'
+               BlueprintIdentifier = 'A2B71299D0F118969D72E7BD'
                BlueprintName = 'UIImage+ImageCompress'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libUIImage+ImageCompress.a'>

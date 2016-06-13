@@ -36,8 +36,6 @@ pod 'TTTAttributedLabel', '~> 2.0'
 pod 'LMPullToBounce', '~> 1.1'
 pod 'UIImage+ImageCompress'
 pod 'FRHyperLabel'
-pod 'KILabel', '1.0.0'
-
 
 
 

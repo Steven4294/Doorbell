@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class PFUser, PFObject;
+@class PFUser, PFObject, KILabel;
 
 @interface DBCommentTopCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *messageLabel;
 @property (nonatomic, strong) IBOutlet UILabel *profileLabel;
-@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (nonatomic, strong) IBOutlet KILabel *nameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
 @property (nonatomic, strong) IBOutlet UILabel *likeLabel;
 @property (nonatomic, strong) IBOutlet UILabel *listOfLikersLabel;

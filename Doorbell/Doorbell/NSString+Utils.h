@@ -10,4 +10,9 @@
 
 @interface NSString (Utils)
 - (NSString *)firstName;
+
+- (NSString *)lastName;
+
+- (NSString *)firstNameLastInitial;
+
 @end

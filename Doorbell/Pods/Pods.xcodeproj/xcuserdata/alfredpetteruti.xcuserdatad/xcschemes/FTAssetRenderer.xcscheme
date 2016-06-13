@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C1736330406B7516C987CC04'
+               BlueprintIdentifier = '1347EB8017EDC58734BEBC78'
                BlueprintName = 'FTAssetRenderer'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libFTAssetRenderer.a'>

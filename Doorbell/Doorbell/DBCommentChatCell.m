@@ -33,15 +33,15 @@
     PFUser *user = comment[@"poster"];
     self.user = user;
     
-    NSString *userName = [user[@"facebookName"] firstName];
+    NSString *userName = [user[@"facebookName"] firstNameLastInitial];
     NSString *messageBody = comment[@"commentString"];
     
-    UIColor *blueColor = [UIColor flatBelizeHoleColor];
-    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:15.0f];
+    UIColor *fontColor = [UIColor darkTextColor];
+    UIFont *font = [UIFont fontWithName:@"AvenirNext-Regular" size:15.0f];
     
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: %@", userName, messageBody]];
     
-   // [attrStr addAttributes:@{NSForegroundColorAttributeName: blueColor, NSFontAttributeName: font} range:NSMakeRange(0, userName.length+1)];
+    [attrStr addAttributes:@{NSForegroundColorAttributeName: fontColor, NSFontAttributeName: font} range:NSMakeRange(0, attrStr.length)];
     self.messageLabel.attributedText = [attrStr copy];
     
     [self.profileImageView setProfileImageViewForUser:user isCircular:YES];

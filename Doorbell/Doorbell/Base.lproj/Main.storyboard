@@ -937,19 +937,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="This is an example of a standard request" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAY-eG-QCl">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is an example of a standard request" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAY-eG-QCl">
                                                     <rect key="frame" x="80" y="36" width="277" height="23"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Steven Petteruti" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkq-oT-HTK">
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steven Petteruti" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkq-oT-HTK" customClass="KILabel">
                                                     <rect key="frame" x="80" y="16" width="277" height="15"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.24965469609999999" green="0.24965469609999999" blue="0.24965469609999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="2d ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bjx-xh-EUw">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2d ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bjx-xh-EUw">
                                                     <rect key="frame" x="80" y="68" width="277" height="15"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                                     <color key="textColor" red="0.44939140189999999" green="0.44939140189999999" blue="0.44939140189999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -980,7 +980,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="messageLabel" destination="dAY-eG-QCl" id="YfF-uo-bWY"/>
-                                            <outlet property="nameLabel" destination="Zkq-oT-HTK" id="Jcd-4Y-jwG"/>
+                                            <outlet property="nameLabel" destination="Zkq-oT-HTK" id="oYE-B0-JXF"/>
                                             <outlet property="profileImageView" destination="RNI-sT-HVD" id="sMd-Kw-4K7"/>
                                             <outlet property="timeLabel" destination="Bjx-xh-EUw" id="IS6-Kw-dFf"/>
                                         </connections>
@@ -999,7 +999,7 @@
                                                         <constraint firstAttribute="width" constant="22" id="QZv-H6-jBU"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Be the first to like this." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odv-ly-tM3">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Be the first to like this." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odv-ly-tM3" customClass="KILabel">
                                                     <rect key="frame" x="77" y="8" width="254" height="23"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1017,7 +1017,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="likeIconView" destination="4eC-JE-ef3" id="aTx-mF-5ur"/>
-                                            <outlet property="likeLabel" destination="Odv-ly-tM3" id="Fkd-hB-mCx"/>
+                                            <outlet property="likeLabel" destination="Odv-ly-tM3" id="Nd5-RQ-38p"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DBCommentChatCell" rowHeight="68" id="IEI-3v-8HX" customClass="DBCommentChatCell">

@@ -59,6 +59,14 @@
             
             self.likeLabel.text = [NSString stringWithFormat:@"%@, %@", string1, string2];
         }
+        else if (self.likersArray.count == 3)
+        {
+            NSString *string1 = [self.likersArray objectAtIndex:0][@"facebookName"];
+            NSString *string2 = [self.likersArray objectAtIndex:1][@"facebookName"];
+            NSInteger others = self.likersArray.count - 2;
+            
+            self.likeLabel.text = [NSString stringWithFormat:@"%@, %@ and 1 other", string1, string2, (long)others];
+        }
         else
         {
             NSString *string1 = [self.likersArray objectAtIndex:0][@"facebookName"];
@@ -68,10 +76,6 @@
             self.likeLabel.text = [NSString stringWithFormat:@"%@, %@ and %ld others", string1, string2, (long)others];
         }
     }
-
-
-    
-    NSLog(@"configuring like label");
 }
 
 @end

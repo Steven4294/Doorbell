@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KILabel.h"
 
 @interface DBCommentLikeCell : UITableViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *likeIconView;
-@property (nonatomic, strong) IBOutlet UILabel *likeLabel;
+@property (nonatomic, strong) IBOutlet KILabel *likeLabel;
 
 @property (nonatomic, strong) NSMutableArray *likersArray;
 

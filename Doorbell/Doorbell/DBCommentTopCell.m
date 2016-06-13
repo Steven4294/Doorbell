@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Parse.h"
 #import "UIImageView+Profile.h"
+#import "KILabel.h"
 
 @implementation DBCommentTopCell
 
@@ -42,47 +43,6 @@
     NSDate *createdDate = [requestObject createdAt];
     self.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
     [self.messageLabel sizeToFit];
-}
-
-- (void)configureLikeLabel
-{
-    BOOL isUserLiker = [self.likersArray containsObject:[PFUser currentUser]];
-    
-    if (self.likersArray.count == 0)
-    {
-        self.listOfLikersLabel.text = @" ";
-    }
-    else
-    {
-        if (self.likersArray.count == 1)
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            self.listOfLikersLabel.text = string1;
-        }
-        else if (self.likersArray.count == 2)
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            NSString *string2 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:1]];
-            
-            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, and %@", string1, string2];
-        }
-        else
-        {
-            NSString *string1 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:0]];
-            NSString *string2 = [self formattedUsernameForUser:[self.likersArray objectAtIndex:1]];
-            NSInteger others = self.likersArray.count - 2;
-            
-            self.listOfLikersLabel.text = [NSString stringWithFormat:@"%@, %@ and %ld others", string1, string2, (long)others];
-        }
-    }
-    if (isUserLiker == YES)
-    {
-        self.likeLabel.text = @"Unlike";
-    }
-    else
-    {
-        self.likeLabel.text = @"Like"   ;
-    }
 }
 
 - (NSString *)formattedUsernameForUser:(PFUser *)user

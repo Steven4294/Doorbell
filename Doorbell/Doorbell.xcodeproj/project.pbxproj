@@ -52,6 +52,7 @@
 		D45BFC7D1CE2BFC7007EEF66 /* Arrowhead-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7C1CE2BFC7007EEF66 /* Arrowhead-Right.png */; };
 		D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7E1CE2BFEC007EEF66 /* Logout.png */; };
 		D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */; };
+		D45FC8C81D0F3BD20099BCD6 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC8C71D0F3BD20099BCD6 /* KILabel.m */; };
 		D487E8E01CFD481F009CEA01 /* event1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DB1CFD481F009CEA01 /* event1.png */; };
 		D487E8E11CFD481F009CEA01 /* home1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DC1CFD481F009CEA01 /* home1.png */; };
 		D487E8E21CFD481F009CEA01 /* notification1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DD1CFD481F009CEA01 /* notification1.png */; };
@@ -176,6 +177,8 @@
 		D45BFC7E1CE2BFEC007EEF66 /* Logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logout.png; sourceTree = "<group>"; };
 		D45BFC801CE2CF37007EEF66 /* DBSearchUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSearchUserViewController.h; sourceTree = "<group>"; };
 		D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSearchUserViewController.m; sourceTree = "<group>"; };
+		D45FC8C61D0F3BD20099BCD6 /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
+		D45FC8C71D0F3BD20099BCD6 /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		D487E8DB1CFD481F009CEA01 /* event1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event1.png; sourceTree = "<group>"; };
 		D487E8DC1CFD481F009CEA01 /* home1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home1.png; sourceTree = "<group>"; };
 		D487E8DD1CFD481F009CEA01 /* notification1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification1.png; sourceTree = "<group>"; };
@@ -402,6 +405,8 @@
 			isa = PBXGroup;
 			children = (
 				D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */,
+				D45FC8C61D0F3BD20099BCD6 /* KILabel.h */,
+				D45FC8C71D0F3BD20099BCD6 /* KILabel.m */,
 				D43E348A1D022AD500F8CFB6 /* Dependencies */,
 				D42A04441CD9522D00E141C1 /* icons */,
 				D458A7F31C5C36B200F47581 /* Main.storyboard */,
@@ -832,6 +837,7 @@
 				D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */,
 				D487E8F21CFF723B009CEA01 /* DBCommentTopCell.m in Sources */,
 				D43E34B61D05311100F8CFB6 /* NSString+Utils.m in Sources */,
+				D45FC8C81D0F3BD20099BCD6 /* KILabel.m in Sources */,
 				D487E8F91CFF84F9009CEA01 /* DBCommentLikeCell.m in Sources */,
 				D487E8F51CFF725E009CEA01 /* DBCommentChatCell.m in Sources */,
 				D44D020E1CFB6B3E0039A187 /* DBLeftMenuViewController.m in Sources */,
