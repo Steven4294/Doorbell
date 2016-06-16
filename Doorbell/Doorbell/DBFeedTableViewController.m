@@ -30,6 +30,7 @@
 #import "DBCommentViewController.h"
 #import "DBObjectManager.h"
 #import "LMPullToBounceWrapper.h"
+#import "UIScrollView+JElasticPullToRefresh.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -48,8 +49,10 @@
 @end
 
 @implementation DBFeedTableViewController
-
-
+- (void)dealloc
+{
+    [self.tableView removeJElasticPullToRefreshView];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -73,7 +76,6 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
-    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.frame = CGRectMake(0, 0, 22, 22);
     [rightButton setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
@@ -82,32 +84,30 @@
     UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
-    
-    /*
-    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
-    [query whereKey:@"facebookName" equalTo:@"Benny Pleat"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
-    PFUser *benPleat = [objects firstObject];
-    [objectManager postMessage:@"Test Message using New API - be!" toUser:benPleat withCompletion:^(BOOL success) {
-        
-        
-    }];
-    
-    }];*/
-    
-   
 }
 
 - (void)setupRefreshControl
 {
     __weak typeof(self) welf = self;
-    [self.tableView addPullToRefreshWithActionHandler:^
+   /* [self.tableView addPullToRefreshWithActionHandler:^
      {
          // prepend data to dataSource, insert cells at top of table view
          [welf refreshTableView];
          
-     }];
+     }];*/
+    
+    
+    JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
+    loadingViewCircle.tintColor = [UIColor whiteColor];
+    
+    [self.tableView addJElasticPullToRefreshViewWithActionHandler:^
+     {
+         [welf refreshTableView];
+     }
+                                                      LoadingView:loadingViewCircle];
+    
+    [self.tableView setJElasticPullToRefreshFillColor:self.navigationController.navigationBar.barTintColor];
+    [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor whiteColor]];
 }
 - (void)loadTableView
 {
@@ -160,8 +160,6 @@
                  {
                      requests = [objects mutableCopy];
                      [self.tableView reloadData];
-
-                     
                  }
                  else
                  {
@@ -174,6 +172,7 @@
             NSLog(@"error refreshing: %@", error);
         }
         [self.tableView.pullToRefreshView stopAnimating];
+        [self.tableView stopLoading];
     }];
 }
 
@@ -279,10 +278,6 @@
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
         [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
         [cell.profileImageView addGestureRecognizer:tapRecognizer];
-        
-        UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc] init];
-        [tapRecognizer2 addTarget:self action:@selector(cellImageViewTapped:)];
-        [cell.nameLabel addGestureRecognizer:tapRecognizer2];
         
         UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
         commentGesture.minimumPressDuration = 0.0f;

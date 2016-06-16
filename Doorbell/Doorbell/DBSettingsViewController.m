@@ -14,6 +14,7 @@
 #import "DBBlockedUsersViewController.h"
 #import "DBNotificationSettingsViewController.h"
 #import "DBFeedbackViewController.h"
+#import "DBBuildingSettingsViewController.h"
 
 @interface DBSettingsViewController ()
 
@@ -21,7 +22,8 @@
 
 @implementation DBSettingsViewController
 
-- (void)setup{
+- (void)setup
+{
     self.title = @"settings";
     
     [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"Account" handler:^(BOTableViewSection *section) {
@@ -49,6 +51,12 @@
             DBFeedbackViewController *vc = [[DBFeedbackViewController alloc] init];
             cell.destinationViewController = vc;
         }]];
+        
+        [section addCell:[BOChoiceTableViewCell cellWithTitle:@"Building Information" key:@"key" handler:^(BOChoiceTableViewCell *cell)
+                          {
+                              DBBuildingSettingsViewController *vc = [[DBBuildingSettingsViewController alloc] init];
+                              cell.destinationViewController = vc;
+                          }]];
     }]];
     
     [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"" handler:^(BOTableViewSection *section) {

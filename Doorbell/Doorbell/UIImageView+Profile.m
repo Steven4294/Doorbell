@@ -14,6 +14,13 @@
 
 - (void)setProfileImageViewForUser:(PFUser *)user isCircular:(BOOL)circle
 {
+    self.clipsToBounds = YES;
+    
+    if (circle == YES)
+    {
+        self.layer.cornerRadius =  self.frame.size.width/2;
+    }
+    
     if (user[@"profileImage"] != nil)
     {
         // use custom profile image
@@ -21,12 +28,7 @@
          {
              [self setImage:[UIImage imageWithData:data]];
              self.contentMode = UIViewContentModeScaleAspectFill;
-             self.clipsToBounds = YES;
-             
-             if (circle == YES)
-             {
-                 self.layer.cornerRadius =  self.frame.size.width/2;
-             }
+          
          }];
     }
     else

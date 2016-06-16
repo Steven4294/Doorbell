@@ -155,6 +155,7 @@
          PFQuery *query = [PFQuery queryWithClassName:@"Request"];
          [query orderByDescending:@"createdAt"];
          [query includeKey:@"poster"];
+         [query whereKey:@"building" equalTo:currentUser[@"building"]];
          
          [query whereKey:@"poster" notContainedIn:objects   ];
          [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
@@ -171,8 +172,11 @@
         // use custom profile image
         [user[@"profileImage"] getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error)
          {
-             if (error == nil) {
+             if (error == nil)
+             {
                  UIImage *image = [UIImage imageWithData:data];
+                 CGFloat size = MIN(image.size.width, image.size.height);
+                 image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
                  if (block) block(YES, image);
              }
          }];
@@ -189,7 +193,9 @@
          {
              if (error == nil)
              {
-                 if (block) block(YES, image);
+                 CGFloat size = MIN(image.size.width, image.size.height);
+                 UIImage *cropped_image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
+                 if (block) block(YES, cropped_image);
              }
          }];
     }
@@ -213,7 +219,7 @@
                      PFRelation *relation = [conversation relationForKey:@"messages"];
                      [relation addObject:message];
                      conversation[@"mostRecentMessage"] = message;
-                     
+                     conversation[@"read"] = [NSNumber numberWithBool:NO];
                      [conversation saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                          if (succeeded)
                          {
@@ -301,15 +307,18 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Conversation"];
     [query includeKey:@"mostRecentMessage"];
+    [query includeKey:@"users"];
     [query whereKey:@"users" containsAllObjectsInArray:@[self.currentUser]];
-    [query orderByDescending:@"updatedAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
          // filter out the messages sent to oneself
          if (error == nil)
          {
-             NSLog(@"error is nil");
-             if (block) block(YES, objects);
+             NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"mostRecentMessage.createdAt" ascending:NO];
+             NSArray *sortedArray = [[NSArray alloc] init];
+             sortedArray = [objects sortedArrayUsingDescriptors:@[sortDescriptor]];
+             
+             if (block) block(YES, sortedArray);
          }
          else
          {
@@ -393,6 +402,20 @@
              block(YES, otherUsers);
          }
      } ];
+}
+
+- (UIImage *)imageByCroppingImage:(UIImage *)image toSize:(CGSize)size
+{
+    double x = (image.size.width - size.width) / 2.0;
+    double y = (image.size.height - size.height) / 2.0;
+    
+    CGRect cropRect = CGRectMake(x, y, size.height, size.width);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+    
+    UIImage *cropped = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    return cropped;
 }
 
 

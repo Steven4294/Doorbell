@@ -14,6 +14,7 @@
 #import "DBFeedTableViewController.h"
 #import "DBSettingsViewController.h"
 #import "DBEventsViewController.h"
+#import "DBChatTableViewController.h"
 #import "FTImageAssetRenderer.h"
 
 @interface DBSideMenuController()
@@ -29,11 +30,13 @@
 {
     _titlesArray = @[@"Home",
                      @"Profile",
+                     @"Messages",
                      @"Events",
                      @"Settings"];
     
     _imagesArray = @[@"home1",
                      @"profile1",
+                     @"message_bubble",
                      @"event1",
                      @"settings1"];
     
@@ -46,17 +49,23 @@
 
     self.leftViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBLeftMenuViewController"];
     self.leftViewController.sideMenuController = self;
-
-    //leftViewController.view.backgroundColor = [UIColor yellowColor];
-    [self setLeftViewEnabledWithWidth:250.0f presentationStyle:LGSideMenuPresentationStyleSlideBelow alwaysVisibleOptions:0];
     
+    DBChatTableViewController *rightViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBChatTableViewController"];
+
+    // remove this later
+    rightViewController.view.backgroundColor = [UIColor yellowColor];
+    
+    [self setLeftViewEnabledWithWidth:250.0f presentationStyle:LGSideMenuPresentationStyleSlideBelow alwaysVisibleOptions:0];
+
     // some properties for the side menu
     self.leftViewStatusBarStyle = UIStatusBarStyleDefault;
     self.leftViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnAll;
+    
     self.rightViewStatusBarStyle = UIStatusBarStyleDefault;
     self.rightViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnAll;
     
     [self.leftView addSubview:self.leftViewController.view];
+
     
     return self;
 }
@@ -92,7 +101,6 @@
     DBLeftMenuCell *cell = [topLevelObjects objectAtIndex:0];
     cell.itemLabel.text = [self.titlesArray objectAtIndex:indexPath.row];
     
-
     FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
     renderer1.targetColor = [UIColor whiteColor];
     UIImage *image_unhighlighted = [renderer1 imageWithCacheIdentifier:@"white"];
@@ -117,46 +125,16 @@
 {
     NSIndexPath *indexPathForSelectedRow = [tableView indexPathForSelectedRow];
     
-    
-    if (indexPathForSelectedRow != indexPath)
-    {
         DBLeftMenuCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         NSString *menuItem = cell.itemLabel.text;
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
-        DBNavigationController *navigationController = (DBNavigationController *) self.rootViewController;
-        
-        if ([menuItem isEqualToString:@"Home"])
-        {
-            DBFeedTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBFeedTableViewController"];
-            viewController.sideMenuController = self;
-            [navigationController setViewControllers:@[viewController] animated:NO];
-
-        }
-        else if ([menuItem isEqualToString:@"Profile"])
-        {
-            DBProfileViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBProfileViewController"];
-            viewController.sideMenuController = self;
-            [navigationController setViewControllers:@[viewController] animated:NO];
-        }
-        else if ([menuItem isEqualToString:@"Events"])
-        {
-            DBEventsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBEventsViewController"];
-            [navigationController setViewControllers:@[viewController] animated:NO];
-        }
-        else if ([menuItem isEqualToString:@"Settings"])
-        {
-            DBSettingsViewController *viewController = [[DBSettingsViewController alloc] init];
-            [navigationController setViewControllers:@[viewController] animated:NO];
-        }
-    }
+        [self transitionToMenuItem:menuItem];
  
     return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self hideLeftViewAnimated:YES completionHandler:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -164,6 +142,67 @@
     return 60;
 }
 
+- (void)transitionToMenuItem:(NSString *)menuItem
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    DBNavigationController *navigationController = (DBNavigationController *) self.rootViewController;
+    
+    NSString *currentClass = NSStringFromClass([[navigationController.viewControllers lastObject] class]);
+    
+    NSString *newClass = [self classNameForMenuItem:menuItem];
+    
+    if ([currentClass isEqualToString:newClass] == FALSE)
+    {
+        if ([newClass isEqualToString:@"DBSettingsViewController"])
+        {
+            DBSettingsViewController *viewController = [[DBSettingsViewController alloc] init];
+            [navigationController setViewControllers:@[viewController] animated:NO];
+        }
+        else
+        {
+            id viewController = [storyboard instantiateViewControllerWithIdentifier:newClass];
+            if ([viewController respondsToSelector:@selector(sideMenuController)])
+            {
+                [viewController setSideMenuController:self];
+            }
+            [navigationController setViewControllers:@[viewController] animated:NO];
+        }
+    }
+    
+    // delay for a short time just for animation's sake
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+    {
+        [self hideLeftViewAnimated:YES completionHandler:nil];
+    });
+}
 
+- (NSString *)classNameForMenuItem:(NSString *)menuItem
+{
+    if ([menuItem isEqualToString:@"Home"])
+    {
+        return @"DBFeedTableViewController";
+    }
+    else if ([menuItem isEqualToString:@"Profile"])
+    {
+        return @"DBProfileViewController";
+    }
+    else if ([menuItem isEqualToString:@"Messages"])
+    {
+        return @"DBChatTableViewController";
+    }
+    else if ([menuItem isEqualToString:@"Events"])
+    {
+        return @"DBEventsViewController";
+    }
+    else if ([menuItem isEqualToString:@"Settings"])
+    {
+        return @"DBSettingsViewController";
+    }
+    else
+    {
+        return @"Unknown Menu";
+    }
+}
 
 @end

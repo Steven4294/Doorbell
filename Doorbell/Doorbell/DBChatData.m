@@ -9,6 +9,7 @@
 #import "DBChatData.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DBObjectManager.h"
+#import "UIColor+FlatColors.h"
 
 @implementation DBChatData
 
@@ -18,7 +19,6 @@
     if (self) {
         
         self.messages = [[NSMutableArray alloc] init];
-        [self loadFakeMessages];
         
         /**
          *  Create avatar images once.
@@ -59,10 +59,14 @@
          *  Be sure to create your bubble images one time and reuse them for good performance.
          *
          */
-        JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
+        JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc]
+                                                        initWithBubbleImage:[UIImage imageNamed:@"bubble_custom3.png"]
+                                                        capInsets:UIEdgeInsetsZero];
         
-        self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
-        self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleBlueColor]];
+        NSLog(@"created bubble factory");
+# warning - custom bubble goes here
+        self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor flatPeterRiverColor]];
+        self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
     }
     
     return self;
@@ -74,55 +78,6 @@
     PFUser *currentUser = [PFUser currentUser];
     DBObjectManager *objectManager = [[DBObjectManager alloc] init];
 
-    /*
-    PFRelation *messagesRelation = currentUser[@"messages"];
-    
-    PFQuery *query1 = [PFQuery queryWithClassName:@"Message"];
-    PFQuery *query2 = [messagesRelation query];
-   // [query2 whereKey:@"to" equalTo:userReciever];
-    [query2 whereKey:@"to" containedIn:@[userReciever, currentUser]];
-    [query2 whereKey:@"from" containedIn:@[userReciever, currentUser]];
-
-    [query1 whereKey:@"to" matchesKey:@"to" inQuery:query2];
-    [query1 whereKey:@"from" matchesKey:@"from" inQuery:query2];
-
-    
-    query1.limit = 200;
-    query2.limit = 5000;// keep this limit large
-    // get the messages
-    [query1 orderByDescending:@"createdAt"];
-    [query1 findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-         NSLog(@"Found: %lu", objects.count);
-         for (PFObject *message in objects)
-         {
-             PFUser *from = message[@"from"];
-             PFUser *to = message[@"to"];
-            
-             if (from != to)
-             {
-                 if ([from.objectId isEqualToString:currentUser.objectId])
-                 {
-                     // the message was sent by the current user
-                     JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:currentUser.objectId senderDisplayName:currentUser.objectId date:[message createdAt] text:message[@"message"]];
-                     [self.messages addObject:Message];
-                     
-                 }
-                 else
-                 {
-                     
-                     JSQMessage *Message = [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdFrom senderDisplayName:userReciever[@"facebookName"] date:[message createdAt] text:message[@"message"]];
-                     [self.messages addObject:Message];
-                 }
-             }
-
-         }
-         self.messages = [[[self.messages reverseObjectEnumerator] allObjects] mutableCopy];
-
-         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
-         
-     }];*/
-    
     [objectManager fetchAllMessagesForUser:userReciever withCompletion:^(BOOL success, NSArray *messages) {
         
         for (PFObject *message in messages)
@@ -140,7 +95,7 @@
      {
          JSQMessagesAvatarImage *fromImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:image
                                                                                         diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
-         NSDictionary *avatarDict = @{kJSQDemoAvatarIdFrom: fromImage};
+         NSDictionary *avatarDict = @{userReciever.objectId: fromImage};
          [self.avatars addEntriesFromDictionary:avatarDict];
      }];
     
@@ -156,51 +111,6 @@
          
      }];
     
-}
-
-- (void)loadFakeMessages
-{
-    /*
-    self.messages = [[NSMutableArray alloc] initWithObjects:
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate distantPast]
-                                                     text:@"Welcome to JSQMessages: A messaging UI framework for iOS."],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdWoz
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameWoz
-                                                     date:[NSDate distantPast]
-                                                     text:@"It is simple, elegant, and easy to use. There are super sweet default settings, but you can customize like crazy."],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate distantPast]
-                                                     text:@"It even has data detectors. You can call me tonight. My cell number is 123-456-7890. My website is www.hexedbits.com."],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdJobs
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameJobs
-                                                     date:[NSDate date]
-                                                     text:@"JSQMessagesViewController is nearly an exact replica of the iOS Messages App. And perhaps, better."],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdCook
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameCook
-                                                     date:[NSDate date]
-                                                     text:@"It is unit-tested, free, open-source, and documented."],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate date]
-                                                     text:@"Now with media messages!"],
-                     nil];
-    
-    
-   
-    JSQMessage *reallyLongMessage = [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
-                                                        displayName:kJSQDemoAvatarDisplayNameSquires
-                                                               text:@"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? END Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? END"];
-    
-    [self.messages addObject:reallyLongMessage];
-    */
 }
 
 - (void)addPhotoMediaMessage

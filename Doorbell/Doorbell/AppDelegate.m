@@ -74,9 +74,22 @@
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
 }
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [PFPush handlePush:userInfo];
-    NSLog(@"recieved push");
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"recieved a push");
+
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation saveInBackground];
+    
+    if ([[userInfo objectForKey:@"type"] isEqualToString:@"message"])
+    {
+        //[PFPush handlePush:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"pushNotificationRecievedForMessage" object:nil userInfo:userInfo];
+    }
+    else
+    {
+        [PFPush handlePush:userInfo];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -97,6 +110,13 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     [FBSDKAppEvents activateApp];
+    
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.badge != 0)
+    {
+        currentInstallation.badge = 0;
+        [currentInstallation saveEventually];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

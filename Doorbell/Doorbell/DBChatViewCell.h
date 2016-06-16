@@ -19,7 +19,6 @@
 @property (nonatomic, strong) PFUser *user;
 
 @property (nonatomic, strong) IBOutlet UIImageView *profileImageView;
-
-
+@property (nonatomic, strong) IBOutlet UIImageView *iconImageView;
 
 @end

@@ -55,10 +55,39 @@
 
     self.nameLabel.text = currentUser[@"facebookName"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileImage) name:@"updatedProfileImage" object:nil];
+    
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(headerViewTapped:)];
+    gesture.minimumPressDuration = 0.0f;
+    [self.headerView addGestureRecognizer:gesture];
 }
+- (void)headerViewTapped:(UILongPressGestureRecognizer *)gesture
+{
+    NSLog(@"header view tapped");
+    if (gesture.state == UIGestureRecognizerStateBegan )
+    {
+        UIColor *darkBlueColor = self.headerView.backgroundColor;
+        
+        [UIView animateWithDuration:.2 animations:^
+         {
+             self.headerView.layer.backgroundColor = [UIColor darkGrayColor].CGColor;
+         }
+                         completion:^(BOOL finished) {
+                             
+                             [UIView animateWithDuration:.2 animations:^
+                              {
+                                  self.headerView.layer.backgroundColor = darkBlueColor.CGColor;
+                              } completion:nil];
+                         }];
+        
+    }    // do a cheeky animation
+    else
+    {
+        [self.sideMenuController transitionToMenuItem:@"Profile"];
+    }
+}
+
 - (void)updateProfileImage
 {
-    
     PFUser *currentUser = [PFUser currentUser];
     
     [self.profileImage setProfileImageViewForUser:currentUser isCircular:YES];
@@ -70,7 +99,6 @@
 
     self.profileImage.layer.borderWidth = 1.0f;
     self.profileImage.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    
 }
 
 - (void)setSideMenuController:(DBSideMenuController *)sideMenuController

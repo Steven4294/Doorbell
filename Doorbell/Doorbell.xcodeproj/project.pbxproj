@@ -53,6 +53,17 @@
 		D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = D45BFC7E1CE2BFEC007EEF66 /* Logout.png */; };
 		D45BFC821CE2CF37007EEF66 /* DBSearchUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */; };
 		D45FC8C81D0F3BD20099BCD6 /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC8C71D0F3BD20099BCD6 /* KILabel.m */; };
+		D45FC8CC1D10D12E0099BCD6 /* compose.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8CB1D10D12E0099BCD6 /* compose.png */; };
+		D45FC8D01D10FD250099BCD6 /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8CF1D10FD250099BCD6 /* reply.png */; };
+		D45FC8D81D1100EE0099BCD6 /* circle-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8D71D1100EE0099BCD6 /* circle-filled.png */; };
+		D45FC8DE1D111A4B0099BCD6 /* bubble_custom@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8DD1D111A4B0099BCD6 /* bubble_custom@3x.png */; };
+		D45FC8E01D111D580099BCD6 /* bubble_custom1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8DF1D111D580099BCD6 /* bubble_custom1@3x.png */; };
+		D45FC8E21D111F420099BCD6 /* bubble_custom2.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8E11D111F420099BCD6 /* bubble_custom2.png */; };
+		D45FC8E41D11E1BD0099BCD6 /* bubble_custom3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8E31D11E1BD0099BCD6 /* bubble_custom3@3x.png */; };
+		D45FC8E71D11E4210099BCD6 /* DBBuildingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC8E61D11E4210099BCD6 /* DBBuildingSettingsViewController.m */; };
+		D45FC8E91D122AA80099BCD6 /* back-button.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8E81D122AA80099BCD6 /* back-button.png */; };
+		D45FC8EB1D122B060099BCD6 /* back-button2.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8EA1D122B060099BCD6 /* back-button2.png */; };
+		D45FC8EE1D122B6C0099BCD6 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */; };
 		D487E8E01CFD481F009CEA01 /* event1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DB1CFD481F009CEA01 /* event1.png */; };
 		D487E8E11CFD481F009CEA01 /* home1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DC1CFD481F009CEA01 /* home1.png */; };
 		D487E8E21CFD481F009CEA01 /* notification1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DD1CFD481F009CEA01 /* notification1.png */; };
@@ -179,6 +190,19 @@
 		D45BFC811CE2CF37007EEF66 /* DBSearchUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSearchUserViewController.m; sourceTree = "<group>"; };
 		D45FC8C61D0F3BD20099BCD6 /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		D45FC8C71D0F3BD20099BCD6 /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
+		D45FC8CB1D10D12E0099BCD6 /* compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose.png; sourceTree = "<group>"; };
+		D45FC8CF1D10FD250099BCD6 /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
+		D45FC8D71D1100EE0099BCD6 /* circle-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle-filled.png"; sourceTree = "<group>"; };
+		D45FC8DD1D111A4B0099BCD6 /* bubble_custom@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_custom@3x.png"; sourceTree = "<group>"; };
+		D45FC8DF1D111D580099BCD6 /* bubble_custom1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_custom1@3x.png"; sourceTree = "<group>"; };
+		D45FC8E11D111F420099BCD6 /* bubble_custom2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_custom2.png; sourceTree = "<group>"; };
+		D45FC8E31D11E1BD0099BCD6 /* bubble_custom3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble_custom3@3x.png"; sourceTree = "<group>"; };
+		D45FC8E51D11E4210099BCD6 /* DBBuildingSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBuildingSettingsViewController.h; sourceTree = "<group>"; };
+		D45FC8E61D11E4210099BCD6 /* DBBuildingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBuildingSettingsViewController.m; sourceTree = "<group>"; };
+		D45FC8E81D122AA80099BCD6 /* back-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-button.png"; sourceTree = "<group>"; };
+		D45FC8EA1D122B060099BCD6 /* back-button2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-button2.png"; sourceTree = "<group>"; };
+		D45FC8EC1D122B6C0099BCD6 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
+		D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
 		D487E8DB1CFD481F009CEA01 /* event1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event1.png; sourceTree = "<group>"; };
 		D487E8DC1CFD481F009CEA01 /* home1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home1.png; sourceTree = "<group>"; };
 		D487E8DD1CFD481F009CEA01 /* notification1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification1.png; sourceTree = "<group>"; };
@@ -264,13 +288,22 @@
 		D42A04441CD9522D00E141C1 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				D45FC8EA1D122B060099BCD6 /* back-button2.png */,
+				D45FC8E81D122AA80099BCD6 /* back-button.png */,
+				D45FC8DF1D111D580099BCD6 /* bubble_custom1@3x.png */,
+				D45FC8E31D11E1BD0099BCD6 /* bubble_custom3@3x.png */,
+				D45FC8D71D1100EE0099BCD6 /* circle-filled.png */,
+				D45FC8CB1D10D12E0099BCD6 /* compose.png */,
+				D45FC8E11D111F420099BCD6 /* bubble_custom2.png */,
 				D43E34AF1D037F4100F8CFB6 /* message_bubble.png */,
+				D45FC8DD1D111A4B0099BCD6 /* bubble_custom@3x.png */,
 				D43E34A71D02879F00F8CFB6 /* pencil.png */,
 				D43E34A31D0281D700F8CFB6 /* add.png */,
 				D487E8FA1CFF8611009CEA01 /* heart_large@2x.png */,
 				D487E8EE1CFF4D17009CEA01 /* newyork.jpg */,
 				D487E8E81CFE65BC009CEA01 /* heart.png */,
 				D44D02231CFCFC000039A187 /* menu_icon1.png */,
+				D45FC8CF1D10FD250099BCD6 /* reply.png */,
 				433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */,
 				D44417351CF269230044CBFD /* GothamRoundedBook.ttf */,
 				D44417371CF26B060044CBFD /* GothamRoundedLight.ttf */,
@@ -366,6 +399,8 @@
 				D44D026D1CFD3A300039A187 /* DBNotificationSettingsViewController.m */,
 				D487E8E51CFD4F92009CEA01 /* DBFeedbackViewController.h */,
 				D487E8E61CFD4F92009CEA01 /* DBFeedbackViewController.m */,
+				D45FC8E51D11E4210099BCD6 /* DBBuildingSettingsViewController.h */,
+				D45FC8E61D11E4210099BCD6 /* DBBuildingSettingsViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -407,9 +442,9 @@
 				D4F951DB1CB5B6CA009B6057 /* jsq_messages_sample.m4a */,
 				D45FC8C61D0F3BD20099BCD6 /* KILabel.h */,
 				D45FC8C71D0F3BD20099BCD6 /* KILabel.m */,
+				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D43E348A1D022AD500F8CFB6 /* Dependencies */,
 				D42A04441CD9522D00E141C1 /* icons */,
-				D458A7F31C5C36B200F47581 /* Main.storyboard */,
 				D487E90A1D00F0A9009CEA01 /* Categories */,
 				D4F951DC1CB72352009B6057 /* Model */,
 				D42A04461CD9526100E141C1 /* Views */,
@@ -545,6 +580,8 @@
 				D43E34B51D05311100F8CFB6 /* NSString+Utils.m */,
 				D487E9071D00F0A1009CEA01 /* UIImageView+Profile.h */,
 				D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */,
+				D45FC8EC1D122B6C0099BCD6 /* UIViewController+Utils.h */,
+				D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -704,34 +741,43 @@
 				D487E8E31CFD481F009CEA01 /* profile1.png in Resources */,
 				D45BFC7B1CE2B1B6007EEF66 /* envelope2.png in Resources */,
 				D458A7F71C5C36B200F47581 /* Assets.xcassets in Resources */,
+				D45FC8E01D111D580099BCD6 /* bubble_custom1@3x.png in Resources */,
 				433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */,
 				D43B16DF1CEFF6ED00E32348 /* warning_icon.png in Resources */,
 				D45BFC7F1CE2BFEC007EEF66 /* Logout.png in Resources */,
 				D4F951DE1CB726C4009B6057 /* kanye.jpg in Resources */,
 				D43B16DD1CEFF66100E32348 /* message_icon.png in Resources */,
+				D45FC8D01D10FD250099BCD6 /* reply.png in Resources */,
 				D458A7F51C5C36B200F47581 /* Main.storyboard in Resources */,
+				D45FC8CC1D10D12E0099BCD6 /* compose.png in Resources */,
 				D45BFC721CE2A59A007EEF66 /* Close_blue.png in Resources */,
 				D45BFC711CE2A59A007EEF66 /* Chat_white.png in Resources */,
 				D4EE0BEB1CA24FB9004A5A9F /* profile_icon.png in Resources */,
+				D45FC8E21D111F420099BCD6 /* bubble_custom2.png in Resources */,
 				D4EE0BF41CA4CD6B004A5A9F /* DBhigh_white.png in Resources */,
 				D487E8E91CFE65BC009CEA01 /* heart.png in Resources */,
 				D487E8E01CFD481F009CEA01 /* event1.png in Resources */,
 				D44417391CF26B0A0044CBFD /* GothamRoundedMedium.ttf in Resources */,
+				D45FC8EB1D122B060099BCD6 /* back-button2.png in Resources */,
 				D44D02171CFB79D60039A187 /* DBLeftMenuCell.xib in Resources */,
 				D45BFC791CE2B111007EEF66 /* bell.png in Resources */,
 				D487E8E21CFD481F009CEA01 /* notification1.png in Resources */,
 				D45BFC731CE2A59A007EEF66 /* User_Profile_white.png in Resources */,
+				D45FC8D81D1100EE0099BCD6 /* circle-filled.png in Resources */,
 				D43E34A81D02879F00F8CFB6 /* pencil.png in Resources */,
 				D4EE0BE91CA21BE6004A5A9F /* boston.png in Resources */,
 				D487E8E41CFD481F009CEA01 /* settings1.png in Resources */,
 				D444173A1CF26B0C0044CBFD /* GothamRoundedLight.ttf in Resources */,
 				D44D02241CFCFC000039A187 /* menu_icon1.png in Resources */,
 				D43E34A41D0281D700F8CFB6 /* add.png in Resources */,
+				D45FC8E41D11E1BD0099BCD6 /* bubble_custom3@3x.png in Resources */,
 				D4EE0BF81CA4CF89004A5A9F /* DBhigh_white2.png in Resources */,
 				D44417361CF26A2C0044CBFD /* GothamRoundedBook.ttf in Resources */,
 				D487E8FB1CFF8611009CEA01 /* heart_large@2x.png in Resources */,
 				D4EE0BF21CA4CA00004A5A9F /* loginBackgroundImage.png in Resources */,
+				D45FC8E91D122AA80099BCD6 /* back-button.png in Resources */,
 				D487E8E11CFD481F009CEA01 /* home1.png in Resources */,
+				D45FC8DE1D111A4B0099BCD6 /* bubble_custom@3x.png in Resources */,
 				D4EE0BF61CA4CEB0004A5A9F /* mountainLake.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -828,10 +874,12 @@
 				D44D026E1CFD3A300039A187 /* DBNotificationSettingsViewController.m in Sources */,
 				D487E8FF1CFFEAA6009CEA01 /* NextGrowingInternalTextView.swift in Sources */,
 				D4EE0BFE1CAED26E004A5A9F /* DBChatViewCell.m in Sources */,
+				D45FC8E71D11E4210099BCD6 /* DBBuildingSettingsViewController.m in Sources */,
 				D458A7EC1C5C36B200F47581 /* main.m in Sources */,
 				D44D02081CF95B4B0039A187 /* DBGenericProfileViewController.m in Sources */,
 				D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */,
 				D4EE0BFB1CAED008004A5A9F /* DBChatTableViewController.m in Sources */,
+				D45FC8EE1D122B6C0099BCD6 /* UIViewController+Utils.m in Sources */,
 				D487E9091D00F0A1009CEA01 /* UIImageView+Profile.m in Sources */,
 				D44D02211CFBE7290039A187 /* DBBlockedUsersViewController.m in Sources */,
 				D44D021A1CFBD6DA0039A187 /* DBSettingsViewController.m in Sources */,

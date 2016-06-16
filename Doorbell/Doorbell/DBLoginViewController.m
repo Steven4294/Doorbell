@@ -41,6 +41,8 @@
     alertConfig.defaultTextConfirm = @"OK";
     
     PFUser *currentUser = [PFUser currentUser];
+    
+    NSLog(@"current User: %@", currentUser);
     /*if (currentUser.isNew == NO)
     {
         NSLog(@"old user has been shown loginflow");
@@ -76,9 +78,8 @@
 
 - (void)loginUser
 {
-    NSLog(@"attempting to login user...");
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
-    
+ 
     // Login PFUser using Facebook
     [PFFacebookUtils logInInBackgroundWithReadPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user)
@@ -87,16 +88,20 @@
         }
         else
         {
-            if ([FBSDKAccessToken currentAccessToken]) {
+            
+            
+            if ([FBSDKAccessToken currentAccessToken])
+            {
                 [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
-                 startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                 startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error)
+                 {
                      if (!error)
                      {
                          PFUser *currentUser = [PFUser currentUser];
                          
-                          currentUser[@"facebookId"] = result[@"id"];
-                          currentUser[@"facebookName"] = result[@"name"];
-                    
+                         currentUser[@"facebookId"] = result[@"id"];
+                         currentUser[@"facebookName"] = result[@"name"];
+                         
                          [currentUser saveInBackground];
                      }
                  }];
@@ -146,11 +151,13 @@
                                        {
                                            NSString *codeString = codeObject[@"codeString"];
                                            
-                                           if ([text caseInsensitiveCompare:codeString] == NSOrderedSame) {
+                                           if ([text caseInsensitiveCompare:codeString] == NSOrderedSame)
+                                           {
                                                correctCode = YES;
 
                                                PFUser *currentUser = [PFUser currentUser];
                                                currentUser[@"verifiedCode"] = [NSNumber numberWithBool:YES];
+                                               currentUser[@"building"] = codeObject[@"building"];
                                                [currentUser saveInBackground];
                                                [self presentFeed];
                                            }

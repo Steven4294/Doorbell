@@ -72,6 +72,7 @@ DBObjectManager *objectManager;
     NSDate *createdDate = [requestObject createdAt];
     self.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:createdDate];
     [self.messageLabel sizeToFit];
+    [self.nameLabel addLinkClassifier:[self classifier]];
     
     // pass in weak-self
     [objectManager fetchLikersForRequest:self.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
@@ -175,6 +176,26 @@ DBObjectManager *objectManager;
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
         return attrStr;
     }
+}
+
+- (KILabelLinkClassifier *)classifier
+{
+    if (_classifier == nil)
+    {
+        NSString *fullName = self.user[@"facebookName"];
+        NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:fullName options:0 error:nil];
+        KILabelLinkClassifier *classifier = [KILabelLinkClassifier linkClassifierWithRegex:regex];
+        
+        classifier.linkAttributes = @{NSForegroundColorAttributeName: [UIColor darkTextColor],
+                                      NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-Medium" size:16]};
+        
+        classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
+        {
+            NSLog(@"tapped");
+        };
+        _classifier = classifier;
+    }
+    return _classifier;
 }
 
 @end

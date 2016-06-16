@@ -10,6 +10,7 @@
 #import "DBMessageViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DBObjectManager.h"
+#import "UIViewController+Utils.h"
 
 @interface DBMessageViewController ()
 {
@@ -44,8 +45,8 @@
     self.inputToolbar.contentView.textView.font = font;
     self.inputToolbar.contentView.rightBarButtonItem.titleLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:17];
     //[self.inputToolbar.contentView.rightBarButtonItem setImage:your_image forState:UIControlStateNormal];
-        
     
+    [self configureCustomBackButton];
 }
 
 - (void)configureNavigationBar
@@ -92,6 +93,11 @@
                                              selector:@selector(recievedNewMessages)
                                                  name:@"messagesLoaded"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(recievedMessageRemotely:)
+                                                 name:@"pushNotificationRecievedForMessage"
+                                               object:nil];
 }
 
 
@@ -111,6 +117,28 @@
     
 }
 
+- (void)recievedMessageRemotely:(NSNotification *)notification
+{
+    
+    PFObject *messageObject = [notification userInfo][@"message"];
+    
+    if ([self.userReciever[@"username"] isEqualToString:messageObject[@"sender"][@"username"]])
+    {
+        // recieved message from same person who we are currently talking to!
+        
+        JSQMessage *message = [[JSQMessage alloc] initWithSenderId:self.userReciever.objectId
+                                                 senderDisplayName:self.userReciever[@"facebookName"]
+                                                              date:[NSDate date]
+                                                              text:messageObject[@"message"]];
+        
+        [self.chatData.messages addObject:message];
+        [self finishReceivingMessageAnimated:YES];
+        
+        
+        
+    }
+
+}
 
 #pragma mark - JSQMessagesViewController method overrides
 
@@ -166,38 +194,6 @@
     
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        [self.inputToolbar.contentView.textView becomeFirstResponder];
-        return;
-    }
-    
-    switch (buttonIndex) {
-        case 0:
-            [self.chatData addPhotoMediaMessage];
-            break;
-            
-        case 1:
-        {
-            __weak UICollectionView *weakView = self.collectionView;
-            
-            [self.chatData addLocationMediaMessageCompletion:^{
-                [weakView reloadData];
-            }];
-        }
-            break;
-            
-        case 2:
-            [self.chatData addVideoMediaMessage];
-            break;
-    }
-    
-    [JSQSystemSoundPlayer jsq_playMessageSentSound];
-    
-    [self finishSendingMessageAnimated:YES];
-}
-
 - (void)recievedNewMessages
 {
     [self.collectionView reloadData];
@@ -231,7 +227,6 @@
     if ([message.senderId isEqualToString:self.senderId]) {
         return self.chatData.outgoingBubbleImageData;
     }
-    
     return self.chatData.incomingBubbleImageData;
 }
 
@@ -352,10 +347,10 @@
     if (!msg.isMediaMessage) {
         
         if ([msg.senderId isEqualToString:self.senderId]) {
-            cell.textView.textColor = [UIColor blackColor];
+            cell.textView.textColor = [UIColor whiteColor];
         }
         else {
-            cell.textView.textColor = [UIColor whiteColor];
+            cell.textView.textColor = [UIColor darkGrayColor];
         }
         
         cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,

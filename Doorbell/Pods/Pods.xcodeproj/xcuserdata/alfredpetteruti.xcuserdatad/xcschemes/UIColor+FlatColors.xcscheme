@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4886C76F62CA8612DC1BD6C4'
+               BlueprintIdentifier = '82D4AD557280954D72AD65C2'
                BlueprintName = 'UIColor+FlatColors'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libUIColor+FlatColors.a'>

@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) DBLeftMenuViewController *leftViewController;
 
+- (void)transitionToMenuItem:(NSString *)menuItem;
+
 @end

@@ -38,6 +38,7 @@
     PFObject *requestObject = [PFObject objectWithClassName:@"Request"];
     requestObject[@"poster"] = [PFUser currentUser];
     requestObject[@"message"] = self.textView.text;
+    requestObject[@"building"] = [PFUser currentUser][@"building"];
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         
@@ -57,8 +58,6 @@
     }];
 }
 
-
-
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50.0)];
@@ -75,7 +74,9 @@
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if([text isEqualToString:@"\n"])
-        [textView resignFirstResponder];
+    {
+        //  [textView resignFirstResponder];
+    }
     return YES;
 }
 

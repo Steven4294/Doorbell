@@ -10,6 +10,7 @@
 #import "DBCustomAcObject.h"
 #import "Parse.h"
 #import "DBMessageViewController.h"
+#import "UIViewController+Utils.h"
 
 @interface DBSearchUserViewController ()
 
@@ -20,7 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     
     [self.acTextField setBorderStyle:UITextBorderStyleNone];
     [self.acTextField setAutoCompleteTableCornerRadius:0.0f];
@@ -31,6 +31,8 @@
     self.acTextField.applyBoldEffectToAutoCompleteSuggestions = NO;
     self.acTextField.maximumNumberOfAutoCompleteRows = 12;
     self.acTextField.autoCompleteTableCellTextColor = [UIColor darkGrayColor];
+    
+    [self configureCustomBackButton];
 }
 
 

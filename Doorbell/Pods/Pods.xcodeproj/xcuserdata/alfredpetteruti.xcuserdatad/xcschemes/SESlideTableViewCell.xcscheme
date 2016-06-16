@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7A3666FDF90635FD09F0CFB3'
+               BlueprintIdentifier = 'CA3C9425779765291040AD11'
                BlueprintName = 'SESlideTableViewCell'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libSESlideTableViewCell.a'>

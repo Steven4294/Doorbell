@@ -58,6 +58,7 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.0)
   - FRHyperLabel (1.0.2)
   - FTAssetRenderer (0.1.1)
+  - JElasticPullToRefresh (1.0.3)
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -70,6 +71,7 @@ PODS:
   - MLPAutoCompleteTextField (1.5)
   - MMPopupView (1.7.2):
     - Masonry
+  - MobileDeepLinking-iOS (0.2.0)
   - MOOMaskedIconView (0.1.0)
   - Parse (1.12.0):
     - Bolts/Tasks (~> 1.5)
@@ -105,6 +107,7 @@ DEPENDENCIES:
   - FormatterKit
   - FRHyperLabel
   - FTAssetRenderer
+  - JElasticPullToRefresh
   - JSQMessagesViewController
   - JTHamburgerButton (~> 1.0)
   - JTSImageViewController (~> 1.5)
@@ -113,6 +116,7 @@ DEPENDENCIES:
   - LRTextField
   - MLPAutoCompleteTextField (~> 1.5)
   - MMPopupView
+  - MobileDeepLinking-iOS (~> 0.2)
   - MOOMaskedIconView (~> 0.1)
   - Parse (~> 1.4)
   - ParseFacebookUtilsV4
@@ -141,6 +145,7 @@ SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   FRHyperLabel: 967b8b7ffdd86b9f2d44f2981a5688c4d3faa9ac
   FTAssetRenderer: 034cc3dff8e0f9f10176179b6ccf8934841d2370
+  JElasticPullToRefresh: 63b15bfbb96ea476dce3df9460509d59473b1e94
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   JTHamburgerButton: 9a41c7d051c72590a9d2c18416d84d1b912f12e3
@@ -151,6 +156,7 @@ SPEC CHECKSUMS:
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MLPAutoCompleteTextField: ba4d507bbff2bd4f139d4197814fc8dd39caf77e
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
+  MobileDeepLinking-iOS: a30631723cc6b5b7fdca52909e2681d69e0f744a
   MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
   Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
   ParseFacebookUtilsV4: 216e03bd560404eed09a4875c75f0c1cdf758070

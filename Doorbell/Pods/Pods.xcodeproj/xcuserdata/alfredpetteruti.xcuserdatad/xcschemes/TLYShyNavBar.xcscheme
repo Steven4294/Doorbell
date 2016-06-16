@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '56EF568C6261A1BC0BE7CABC'
+               BlueprintIdentifier = 'BC81C94B7728FFD3E0F913AC'
                BlueprintName = 'TLYShyNavBar'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libTLYShyNavBar.a'>

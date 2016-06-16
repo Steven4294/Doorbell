@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C17595C1BD41CB50F3BF3A35'
+               BlueprintIdentifier = 'A389834982E1B45E6921C8FA'
                BlueprintName = 'LGSideMenuController'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLGSideMenuController.a'>

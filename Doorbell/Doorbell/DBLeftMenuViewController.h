@@ -16,5 +16,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *profileImage;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) DBSideMenuController *sideMenuController;
+@property (nonatomic, strong) IBOutlet UIView *headerView;
 
 @end

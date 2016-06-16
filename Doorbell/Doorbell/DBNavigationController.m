@@ -33,6 +33,8 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBFeedTableViewController *feed = [storyboard instantiateViewControllerWithIdentifier:@"DBFeedTableViewController"];
     feed.sideMenuController = self.sideMenuController;
+    self.navigationBar.shadowImage = [UIImage new];
+    [self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     
     [self pushViewController:feed animated:nil];
 
