@@ -61,7 +61,7 @@
     requestOrderedSet = [[NSMutableOrderedSet alloc] init];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
+    self.tableView.separatorInset = UIEdgeInsetsZero;
     userDict = [[NSMutableDictionary alloc] init];
     NSLog(@"view did load");
     
@@ -214,7 +214,8 @@
 
 - (void)cellImageViewTapped:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
         CGPoint swipeLocation = [gestureRecognizer locationInView:self.tableView];
         NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:swipeLocation];
         DBTableViewCell* tappedCell = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
@@ -228,7 +229,6 @@
         [vc setModalPresentationStyle:UIModalPresentationFullScreen];
         [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self.navigationController pushViewController:vc animated:YES];
-        
     }
 }
 
@@ -274,10 +274,21 @@
         PFUser *poster = object[@"poster"];
         cell.requestObject = object;
         cell.layoutMargins = UIEdgeInsetsZero;
-        
+        //cell.separatorInset = UIEdgeInsetsZero;
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
         [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
         [cell.profileImageView addGestureRecognizer:tapRecognizer];
+        
+        cell.classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+            vc.user = poster;
+            
+            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+            [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self.navigationController pushViewController:vc animated:YES];
+        };
         
         UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
         commentGesture.minimumPressDuration = 0.0f;

@@ -38,7 +38,7 @@ pod 'UIImage+ImageCompress'
 pod 'FRHyperLabel'
 pod 'JElasticPullToRefresh'
 pod 'MobileDeepLinking-iOS', '~> 0.2'
-
+pod 'CSNotificationView', '~> 0.5'
 
 
 

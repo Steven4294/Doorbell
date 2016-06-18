@@ -12,13 +12,11 @@
 #import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
 #import "RKSwipeBetweenViewControllers.h"
 
-
 #import "DBNavigationController.h"
 #import "DBLoginViewController.h"
 #import "DBFeedTableViewController.h"
 #import "LGSideMenuController.h"
 #import "DBSideMenuController.h"
-
 
 @interface AppDelegate ()
 
@@ -31,7 +29,6 @@
     // Override point for customization after application launch.
     // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios/guide#local-datastore
-    NSLog(@"app delegated called");
     [Parse enableLocalDatastore];
     
     // Initialize Parse.
@@ -76,15 +73,16 @@
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"recieved a push");
-
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation saveInBackground];
     
     if ([[userInfo objectForKey:@"type"] isEqualToString:@"message"])
     {
-        //[PFPush handlePush:userInfo];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"pushNotificationRecievedForMessage" object:nil userInfo:userInfo];
+    }
+    else if ([[userInfo objectForKey:@"type"] isEqualToString:@"comment"])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"pushNotificationRecievedForComment" object:nil userInfo:userInfo];
     }
     else
     {

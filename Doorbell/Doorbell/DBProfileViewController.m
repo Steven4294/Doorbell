@@ -42,6 +42,8 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
     self.title = @"profile";
     
     if (currentUser[@"facebookName"] != nil)
@@ -142,27 +144,8 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
-- (void)logoutButton:(id)sender
-{
-    NSLog(@"logging out");
-    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-        if (error == nil) {
-            [FBSDKAccessToken setCurrentAccessToken:nil];
-            
-            NSLog(@"logged out!");
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            DBLoginViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
-            [self presentViewController:vc animated:NO completion:nil];
-            
-        }
-        
-    }];
-    
-}
-
 - (void)profileImageTapped:(id)sender
 {
-    
     // Light Box the profile image
     JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
     imageInfo.image = self.profileImage.image;

@@ -14,8 +14,9 @@
 #import "DBFeedTableViewController.h"
 #import "DBSideMenuController.h"
 #import "MOOMaskedIconView.h"
-
+#import "CSNotificationView.h"
 #import <JTHamburgerButton.h>
+#import "UIColor+FlatColors.h"
 
 @interface DBNavigationController ()
 
@@ -43,19 +44,32 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willShowLeftView:) name:kLGSideMenuControllerWillShowLeftViewNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissLeftView:) name:kLGSideMenuControllerWillDismissLeftViewNotification object:nil];
 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messagePushRecieved:) name:@"pushNotificationRecievedForMessage" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentPushRecieved:) name:@"pushNotificationRecievedForComment" object:nil];
+
+}
+
+- (void)commentPushRecieved:(NSNotification *)notification
+{
+    NSString *message = [notification userInfo][@"aps"][@"alert"];
+
+    [CSNotificationView showInViewController:self
+                                   tintColor:[[UIColor flatTurquoiseColor] colorWithAlphaComponent:.8f]
+                                        font:[UIFont fontWithName:@"AvenirNext-Medium" size:16.0f]
+                               textAlignment:NSTextAlignmentCenter
+                                       image:nil
+                                     message:message
+                                    duration:3.0f];
+}
+
+- (void)messagePushRecieved:(NSNotification *)notification
+{
+   // TODO: badging
 }
 
 - (UIBarButtonItem *)leftBarButton
 {
-    
-    
-    /*UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 20, 20);
-    [button setImage:[UIImage imageNamed:@"User_Profile_white.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [button addSubview:iconView];*/
-    
-    
     self.button = [[JTHamburgerButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     [self.button addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     

@@ -91,6 +91,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib"
   install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib"
   install_resource "Parse/Parse/Resources/en.lproj"
+  install_resource "${BUILT_PRODUCTS_DIR}/CSNotificationView.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "FormatterKit/Localizations/ca.lproj"
@@ -126,6 +127,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib"
   install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib"
   install_resource "Parse/Parse/Resources/en.lproj"
+  install_resource "${BUILT_PRODUCTS_DIR}/CSNotificationView.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

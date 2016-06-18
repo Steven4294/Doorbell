@@ -28,6 +28,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.6.0)
   - CNPPopupController (0.3.1)
+  - CSNotificationView (0.5.4)
   - DRCellSlideGestureRecognizer (1.0.0)
   - EstimoteSDK (3.8.2)
   - FBSDKCoreKit (4.9.1):
@@ -98,6 +99,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - Bohr
   - CNPPopupController
+  - CSNotificationView (~> 0.5)
   - DRCellSlideGestureRecognizer
   - EstimoteSDK
   - FBSDKCoreKit
@@ -136,6 +138,7 @@ SPEC CHECKSUMS:
   Bohr: 17b150766e54e1fb8ff417d85b830c7caafa8b4a
   Bolts: f52a250053bb517ca874523c3913776359ab3def
   CNPPopupController: 67dc2ca5a3f88cd49a27bb1b0aeb78a24d423d79
+  CSNotificationView: 0792f5220163c2befaf1a9716aa3d5a7d6bd4fb1
   DRCellSlideGestureRecognizer: c7213100aa8b1a54b3388c2e73894039058c7795
   EstimoteSDK: 5e36b596f9f28161bff35b086d9f70282be5f513
   FBSDKCoreKit: aee20b6d9855f15b618d4fddd1a5ad45f5a4a59d

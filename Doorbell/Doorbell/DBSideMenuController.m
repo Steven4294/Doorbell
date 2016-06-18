@@ -123,13 +123,11 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+    DBLeftMenuCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *menuItem = cell.itemLabel.text;
     
-        DBLeftMenuCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        NSString *menuItem = cell.itemLabel.text;
-        
-        [self transitionToMenuItem:menuItem];
- 
+    [self transitionToMenuItem:menuItem];
+    
     return indexPath;
 }
 
@@ -144,6 +142,12 @@
 
 - (void)transitionToMenuItem:(NSString *)menuItem
 {
+    NSUInteger number = [self.titlesArray indexOfObject:menuItem];
+    
+    [self.leftViewController.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:number inSection:0]
+                                                   animated:YES
+                                             scrollPosition:UITableViewScrollPositionNone];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     DBNavigationController *navigationController = (DBNavigationController *) self.rootViewController;

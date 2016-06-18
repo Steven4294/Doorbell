@@ -58,6 +58,7 @@ DBObjectManager *objectManager;
 
 - (void)setRequestObject:(PFObject *)requestObject
 {
+    self.classifier = nil;
     _requestObject = requestObject;
     PFUser *user = requestObject[@"poster"];
     self.user = user;
@@ -83,7 +84,7 @@ DBObjectManager *objectManager;
             [self configureLikeLabelWithInteger:numberOfLikers.intValue];
         }
     }];
-    
+    self.classifier = [self classifier];
     [self configureCommentLabel];
 }
 
@@ -167,8 +168,8 @@ DBObjectManager *objectManager;
     {
         NSString *messageBody = [NSString stringWithFormat:@"%@", text];
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%d", messageBody, integer]];
-        
-        [attrStr addAttributes:dict range:NSMakeRange(messageBody.length, 1)];
+        // make the numbers attributed (which is located at the end of the string)
+        [attrStr addAttributes:dict range:NSMakeRange(messageBody.length, attrStr.length - messageBody.length)];
         return [attrStr copy];
     }
     else
@@ -183,16 +184,16 @@ DBObjectManager *objectManager;
     if (_classifier == nil)
     {
         NSString *fullName = self.user[@"facebookName"];
+        if (fullName == nil)
+        {
+            fullName = @"RRRRRRRRRRRR";
+            NSLog(@"crash potentiallly");
+        }
         NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:fullName options:0 error:nil];
         KILabelLinkClassifier *classifier = [KILabelLinkClassifier linkClassifierWithRegex:regex];
         
         classifier.linkAttributes = @{NSForegroundColorAttributeName: [UIColor darkTextColor],
                                       NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-Medium" size:16]};
-        
-        classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
-        {
-            NSLog(@"tapped");
-        };
         _classifier = classifier;
     }
     return _classifier;

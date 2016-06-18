@@ -279,6 +279,7 @@
 {
     PFRelation *relation = conversation[@"messages"];
     PFQuery *query = [relation query];
+    query.limit = 1000; // fix this later to only query the most recent!
     [query orderByAscending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         

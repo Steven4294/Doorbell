@@ -17,6 +17,7 @@
 #import "NSString+Utils.h"
 #import "UIColor+FlatColors.h"
 #import "DBGenericProfileViewController.h"
+#import "UIViewController+Utils.h"
 
 @interface DBCommentViewController ()
 {
@@ -42,7 +43,7 @@
     
     [self.sendButton addTarget:self action:@selector(sendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.sendButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
-    
+    [self configureCustomBackButton];
 }
 
 - (void)setLikersArray:(NSMutableArray *)likersArray

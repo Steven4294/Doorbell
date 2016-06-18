@@ -21,6 +21,7 @@
 
 #import "UIImageView+Profile.h"
 #import "DBCommentViewController.h"
+#import "UIViewController+Utils.h"
 
 @interface DBGenericProfileViewController ()
 {
@@ -46,6 +47,9 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self configureCustomBackButton];
 
     [self.profileImage setProfileImageViewForUser:self.user isCircular:YES];
     
