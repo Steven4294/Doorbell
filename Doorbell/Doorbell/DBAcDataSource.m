@@ -8,6 +8,7 @@
 
 #import "DBAcDataSource.h"
 #import "DBCustomAcObject.h"
+#import "DBObjectManager.h"
 #import "Parse.h"
 
 @interface DBAcDataSource ()
@@ -44,15 +45,19 @@
             
             NSMutableArray *allUserNames = [[NSMutableArray alloc] init];
             PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+            [query whereKey:@"building" equalTo:[PFUser currentUser][@"building"]];
             query.limit = 1000;
             [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                for ( PFUser *user in objects) {
-                    
+                for ( PFUser *user in objects)
+                {
                     NSString *name = user[@"facebookName"];
-                    
-                    DBCustomAcObject *customObject = [[DBCustomAcObject alloc] initWithUsername:name objectId:user.objectId];
-                    
-                    [allUserNames addObject:customObject];
+                    [[[DBObjectManager alloc] init] fetchImageForUser:user withBlock:^(BOOL success, UIImage *image)
+                     {
+                        DBCustomAcObject *customObject = [[DBCustomAcObject alloc] initWithUsername:name objectId:user.objectId image:image];
+                        [allUserNames addObject:customObject];
+                        
+                    }];
+                
 
                 }
                 handler([allUserNames copy]);

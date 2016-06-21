@@ -64,6 +64,9 @@
 		D45FC8E91D122AA80099BCD6 /* back-button.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8E81D122AA80099BCD6 /* back-button.png */; };
 		D45FC8EB1D122B060099BCD6 /* back-button2.png in Resources */ = {isa = PBXBuildFile; fileRef = D45FC8EA1D122B060099BCD6 /* back-button2.png */; };
 		D45FC8EE1D122B6C0099BCD6 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */; };
+		D45FC9111D1704610099BCD6 /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC9101D1704610099BCD6 /* UIImage+Utils.m */; };
+		D45FC9141D19B86A0099BCD6 /* DBNotificationCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC9131D19B86A0099BCD6 /* DBNotificationCenterViewController.m */; };
+		D45FC9181D19BB600099BCD6 /* DBNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D45FC9171D19BB600099BCD6 /* DBNotificationCell.m */; };
 		D487E8E01CFD481F009CEA01 /* event1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DB1CFD481F009CEA01 /* event1.png */; };
 		D487E8E11CFD481F009CEA01 /* home1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DC1CFD481F009CEA01 /* home1.png */; };
 		D487E8E21CFD481F009CEA01 /* notification1.png in Resources */ = {isa = PBXBuildFile; fileRef = D487E8DD1CFD481F009CEA01 /* notification1.png */; };
@@ -203,6 +206,12 @@
 		D45FC8EA1D122B060099BCD6 /* back-button2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-button2.png"; sourceTree = "<group>"; };
 		D45FC8EC1D122B6C0099BCD6 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
 		D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
+		D45FC90F1D1704610099BCD6 /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
+		D45FC9101D1704610099BCD6 /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
+		D45FC9121D19B86A0099BCD6 /* DBNotificationCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNotificationCenterViewController.h; sourceTree = "<group>"; };
+		D45FC9131D19B86A0099BCD6 /* DBNotificationCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBNotificationCenterViewController.m; sourceTree = "<group>"; };
+		D45FC9161D19BB600099BCD6 /* DBNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBNotificationCell.h; sourceTree = "<group>"; };
+		D45FC9171D19BB600099BCD6 /* DBNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBNotificationCell.m; sourceTree = "<group>"; };
 		D487E8DB1CFD481F009CEA01 /* event1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event1.png; sourceTree = "<group>"; };
 		D487E8DC1CFD481F009CEA01 /* home1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home1.png; sourceTree = "<group>"; };
 		D487E8DD1CFD481F009CEA01 /* notification1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification1.png; sourceTree = "<group>"; };
@@ -337,6 +346,7 @@
 		D42A04451CD9524300E141C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D45FC9151D19B87F0099BCD6 /* Notifications */,
 				D487E8ED1CFE8BA9009CEA01 /* Comments */,
 				D44D02721CFD3E960039A187 /* Events */,
 				D44D020F1CFB70660039A187 /* Menu */,
@@ -550,6 +560,17 @@
 			name = Root;
 			sourceTree = "<group>";
 		};
+		D45FC9151D19B87F0099BCD6 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D45FC9121D19B86A0099BCD6 /* DBNotificationCenterViewController.h */,
+				D45FC9131D19B86A0099BCD6 /* DBNotificationCenterViewController.m */,
+				D45FC9161D19BB600099BCD6 /* DBNotificationCell.h */,
+				D45FC9171D19BB600099BCD6 /* DBNotificationCell.m */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
 		D487E8ED1CFE8BA9009CEA01 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +601,8 @@
 				D43E34B51D05311100F8CFB6 /* NSString+Utils.m */,
 				D487E9071D00F0A1009CEA01 /* UIImageView+Profile.h */,
 				D487E9081D00F0A1009CEA01 /* UIImageView+Profile.m */,
+				D45FC90F1D1704610099BCD6 /* UIImage+Utils.h */,
+				D45FC9101D1704610099BCD6 /* UIImage+Utils.m */,
 				D45FC8EC1D122B6C0099BCD6 /* UIViewController+Utils.h */,
 				D45FC8ED1D122B6C0099BCD6 /* UIViewController+Utils.m */,
 			);
@@ -851,7 +874,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D45FC9181D19BB600099BCD6 /* DBNotificationCell.m in Sources */,
 				433AFB5C1C9A07CC007A9C3D /* DBRequestFormViewController.m in Sources */,
+				D45FC9141D19B86A0099BCD6 /* DBNotificationCenterViewController.m in Sources */,
 				D45BFC6D1CE2950A007EEF66 /* DBBulletinFormViewController.m in Sources */,
 				D44D02711CFD3E8C0039A187 /* DBEventsViewController.m in Sources */,
 				D487E9031D00B6CC009CEA01 /* DBObjectManager.m in Sources */,
@@ -890,6 +915,7 @@
 				D487E8F51CFF725E009CEA01 /* DBCommentChatCell.m in Sources */,
 				D44D020E1CFB6B3E0039A187 /* DBLeftMenuViewController.m in Sources */,
 				D4EE0BEE1CA36D4F004A5A9F /* DBNavigationController.m in Sources */,
+				D45FC9111D1704610099BCD6 /* UIImage+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

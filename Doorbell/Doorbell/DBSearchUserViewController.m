@@ -11,6 +11,8 @@
 #import "Parse.h"
 #import "DBMessageViewController.h"
 #import "UIViewController+Utils.h"
+#import "DBCustomAcObject.h"
+#import "UIImage+Utils.h"
 
 @interface DBSearchUserViewController ()
 
@@ -29,7 +31,7 @@
     self.acTextField.autoCompleteFontSize = 16.0f;
     self.acTextField.autoCompleteBoldFontName = @"Avenir"  ;
     self.acTextField.applyBoldEffectToAutoCompleteSuggestions = NO;
-    self.acTextField.maximumNumberOfAutoCompleteRows = 12;
+    self.acTextField.maximumNumberOfAutoCompleteRows = 6;
     self.acTextField.autoCompleteTableCellTextColor = [UIColor darkGrayColor];
     
     [self configureCustomBackButton];
@@ -46,12 +48,15 @@
         forAutoCompleteObject:(id<MLPAutoCompletionObject>)autocompleteObject
             forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    //This is your chance to customize an autocomplete tableview cell before it appears in the autocomplete tableview
-    // NSString *filename = [autocompleteString stringByAppendingString:@".png"];
-    // filename = [filename stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    // filename = [filename stringByReplacingOccurrencesOfString:@"&" withString:@"and"];
-    // [cell.imageView setImage:[UIImage imageNamed:filename]];
+    DBCustomAcObject *object = (DBCustomAcObject *) autocompleteObject;
     
+    // TODO: set-up the image to return
+    /*cell.imageView.clipsToBounds = YES;
+
+    [cell.imageView setImage:object.image];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
+
+    [cell layoutIfNeeded];*/
     return YES;
 }
 
@@ -111,6 +116,19 @@
     return YES;
 }
 
+- (UIImage *)imageByCroppingImage:(UIImage *)image toSize:(CGSize)size
+{
+    double x = (image.size.width - size.width) / 2.0;
+    double y = (image.size.height - size.height) / 2.0;
+    
+    CGRect cropRect = CGRectMake(x, y, size.height, size.width);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+    
+    UIImage *cropped = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    return cropped;
+}
 
 
 

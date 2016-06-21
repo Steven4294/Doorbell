@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 #import "MLPAutoCompletionObject.h"
 
 @interface DBCustomAcObject : NSObject <MLPAutoCompletionObject>
-@property (strong) NSString *objectId;
+@property (strong, nonatomic) NSString *objectId;
+@property (strong, nonatomic) UIImage *image;
 
-- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId;
+- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId image:(UIImage *)image;
 
 @end

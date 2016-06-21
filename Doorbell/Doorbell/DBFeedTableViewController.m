@@ -31,6 +31,7 @@
 #import "DBObjectManager.h"
 #import "LMPullToBounceWrapper.h"
 #import "UIScrollView+JElasticPullToRefresh.h"
+#import "FTImageAssetRenderer.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
@@ -76,10 +77,14 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont fontWithName:@"Black Rose" size:27]}];
     
+    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:@"compose" withExtension:@"png"];
+    renderer1.targetColor = [UIColor whiteColor];
+    UIImage *image= [renderer1 imageWithCacheIdentifier:@"white"];
+    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.frame = CGRectMake(0, 0, 22, 22);
-    [rightButton setImage:[UIImage imageNamed:@"Chat_white.png"] forState:UIControlStateNormal];
-    [rightButton addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [rightButton setImage:image forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
     [rightButtonItem setCustomView:rightButton];

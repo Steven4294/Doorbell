@@ -167,6 +167,7 @@
 
 - (void)fetchImageForUser:(PFUser *)user withBlock:(void (^)(BOOL, UIImage *))block
 {
+    // returns the cropped image (square)
     if (user[@"profileImage"] != nil)
     {
         // use custom profile image
@@ -362,7 +363,19 @@
         if (block) block(success, recentMessages);
     }];
 }
-# pragma mark - Internal Methods
+
+- (void)fetchAllNotificationsForUser:(PFUser *)user withCompletion:(void (^)(NSError *error, NSArray *notifications))block
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Notification"];
+    [query whereKey:@"user" equalTo:user];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+    {
+        block(error, objects);
+    }];
+}
+
+
+# pragma mark - Private Methods
 
 - (void)likeRequest:(PFObject *)request withCompletion:(void (^)(BOOL success, BOOL wasLiked, int numberOfLikers, NSError *error))block withLikers:(int)numberOfLikers
 {

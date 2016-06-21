@@ -8,13 +8,17 @@
 
 #import "DBSideMenuController.h"
 #import "DBNavigationController.h"
-#import "DBProfileViewController.h"
 #import "DBLeftMenuViewController.h"
 #import "DBLeftMenuCell.h"
+
+// menu view controllers
+#import "DBProfileViewController.h"
 #import "DBFeedTableViewController.h"
 #import "DBSettingsViewController.h"
 #import "DBEventsViewController.h"
 #import "DBChatTableViewController.h"
+#import "DBNotificationCenterViewController.h"
+
 #import "FTImageAssetRenderer.h"
 
 @interface DBSideMenuController()
@@ -31,12 +35,14 @@
     _titlesArray = @[@"Home",
                      @"Profile",
                      @"Messages",
+                     @"Notifications",
                      @"Events",
                      @"Settings"];
     
     _imagesArray = @[@"home1",
                      @"profile1",
                      @"message_bubble",
+                     @"notification1",
                      @"event1",
                      @"settings1"];
     
@@ -198,6 +204,10 @@
     else if ([menuItem isEqualToString:@"Events"])
     {
         return @"DBEventsViewController";
+    }
+    else if ([menuItem isEqualToString:@"Notifications"])
+    {
+        return @"DBNotificationCenterViewController";
     }
     else if ([menuItem isEqualToString:@"Settings"])
     {

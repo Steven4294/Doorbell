@@ -16,13 +16,13 @@
 @implementation DBCustomAcObject
 
 
-- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId
+- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId image:(UIImage *)image
 {
     self = [super init];
     if (self) {
         [self setUserName:name];
         [self setObjectId:objectId];
-
+        [self setImage:image];
     }
     return self;
 }
