@@ -40,7 +40,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"chat table loaded");
-    objectManager = [[DBObjectManager alloc] init];
+    objectManager = [DBObjectManager sharedInstance];
 
     self.title = @"messages";
     self.tableView.delegate = self;
@@ -185,6 +185,7 @@
             }
         }
         
+        cell.isUserActive = [objectManager isUserActive:user];
         
         cell.messageLabel.text = @"";
         //cell.backgroundColor = [UIColor whiteColor];

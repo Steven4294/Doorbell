@@ -33,16 +33,16 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     _titlesArray = @[@"Home",
-                     @"Profile",
-                     @"Messages",
                      @"Notifications",
+
+                     @"Messages",
                      @"Events",
                      @"Settings"];
     
     _imagesArray = @[@"home1",
-                     @"profile1",
-                     @"message_bubble",
                      @"notification1",
+
+                     @"message_bubble",
                      @"event1",
                      @"settings1"];
     
@@ -52,7 +52,7 @@
 
     self = [super initWithRootViewController:navigationController];
 
-
+    // configuration    
     self.leftViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBLeftMenuViewController"];
     self.leftViewController.sideMenuController = self;
     
@@ -69,7 +69,7 @@
     
     self.rightViewStatusBarStyle = UIStatusBarStyleDefault;
     self.rightViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnAll;
-    
+
     [self.leftView addSubview:self.leftViewController.view];
 
     

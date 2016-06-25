@@ -11,6 +11,11 @@
 
 @interface DBObjectManager : NSObject
 
+/*
+ *  class methods
+ */
+
++ (id)sharedInstance;
 //
 //  Posting APIs
 //
@@ -33,6 +38,9 @@
         withBlock:(void (^)(BOOL success, NSError *error))block;
 
 - (void)postMessage:(NSString *)string toUser:(PFUser *)user withCompletion:(void (^)(BOOL success))block;
+
+- (void)closeOutRequest:(PFObject *)request withCompletion:(void (^)(BOOL success))block;
+
 
 //
 //  Fetching APIs
@@ -58,6 +66,16 @@
 - (void)fetchAllMostRecentMessagesWithCompletion:(void (^)(BOOL success, NSArray *messages))block;
 
 - (void)fetchAllNotificationsForUser:(PFUser *)user withCompletion:(void (^)(NSError *error, NSArray *notifications))block;
+
+- (void)fetchAllEvents:(void (^)(NSError *error, NSArray *events))block;
+
+- (void)fetchAllActiveUsers:(void (^)(NSError *error, NSArray *users))block;
+
+//
+// convenience methods
+//
+
+- (BOOL)isUserActive:(PFUser *)user;
 
 @end
 

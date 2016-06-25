@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'CA12B8CD1CF57D3AA8633D1B'
+               BlueprintIdentifier = '67188C4ECF9035236DC86E57'
                BlueprintName = 'FRHyperLabel'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libFRHyperLabel.a'>

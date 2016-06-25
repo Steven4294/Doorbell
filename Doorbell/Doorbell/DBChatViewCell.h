@@ -21,4 +21,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *iconImageView;
 
+@property (nonatomic, strong) IBOutlet UIView *onlineView;
+
+@property (nonatomic) BOOL isUserActive;
+
 @end

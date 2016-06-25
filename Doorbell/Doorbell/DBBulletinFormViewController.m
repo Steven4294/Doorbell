@@ -39,6 +39,7 @@
     requestObject[@"poster"] = [PFUser currentUser];
     requestObject[@"message"] = self.textView.text;
     requestObject[@"building"] = [PFUser currentUser][@"building"];
+    requestObject[@"complete"] = [NSNumber numberWithBool:NO];
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         

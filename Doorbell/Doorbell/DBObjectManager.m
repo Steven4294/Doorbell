@@ -11,6 +11,7 @@
 @interface DBObjectManager ()
 
 @property (strong, nonatomic) PFUser *currentUser;
+@property (strong, nonatomic) NSArray *activeUsers;
 
 @end
 
@@ -22,8 +23,28 @@
     if (self)
     {
         _currentUser = [self currentUser];
+        [self fetchAllActiveUsers:^(NSError *error, NSArray *users) {
+            _activeUsers = users;
+        }];
     }
     return self;
+}
+
++ (id)sharedInstance
+{
+    // structure used to test whether the block has completed or not
+    static dispatch_once_t p = 0;
+    
+    // initialize sharedObject as nil (first call only)
+    __strong static id _sharedObject = nil;
+    
+    // executes a block object once and only once for the lifetime of an application
+    dispatch_once(&p, ^{
+        _sharedObject = [[self alloc] init];
+    });
+    
+    // returns the same object each time
+    return _sharedObject;
 }
 
 - (PFUser *)currentUser
@@ -368,12 +389,61 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Notification"];
     [query whereKey:@"user" equalTo:user];
+    [query includeKey:@"comment"];
+    [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
     {
         block(error, objects);
     }];
 }
 
+- (void)closeOutRequest:(PFObject *)request withCompletion:(void (^)(BOOL success))block
+{
+    request[@"complete"] = [NSNumber numberWithBool:YES];
+    [request saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (block) block(succeeded);
+    }];
+}
+
+- (void)fetchAllEvents:(void (^)(NSError *error, NSArray *events))block
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Event"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+    {
+        if (block) block(error, objects);
+    }];
+}
+
+- (void)fetchAllActiveUsers:(void (^)(NSError *error, NSArray *users))block
+{
+    [PFCloud callFunctionInBackground:@"getOnlineUsers"
+                       withParameters:nil
+                                block:^(NSArray *objects, NSError * _Nullable error)
+     {
+         block(error, objects);
+     }];
+    
+}
+
+- (BOOL)isUserActive:(PFUser *)user
+{
+    NSLog(@"active user count: %d", self.activeUsers.count);
+    if (self.activeUsers == nil)
+    {
+        [self fetchAllActiveUsers:^(NSError *error, NSArray *users)
+        {
+        
+            self.activeUsers = [[NSArray alloc] initWithArray:users];
+            NSLog(@"fetched and found: %d active users", self.activeUsers.count);
+
+        }];
+    }
+    if ([self.activeUsers containsObject:user])
+    {
+        return YES;
+    }
+    return NO;
+}
 
 # pragma mark - Private Methods
 

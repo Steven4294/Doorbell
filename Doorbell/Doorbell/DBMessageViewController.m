@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DBObjectManager.h"
 #import "UIViewController+Utils.h"
+#import "UINavigationController+M13ProgressViewBar.h"
 
 @interface DBMessageViewController ()
 {
@@ -25,7 +26,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    objectManager = [[DBObjectManager alloc] init];
+   // objectManager = [[DBObjectManager alloc] init];
+    objectManager = [DBObjectManager sharedInstance];
     fontTitle = [UIFont fontWithName:@"HelveticaNeue" size:17.0f];
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:16.0f];
     
@@ -68,6 +70,13 @@
     self.navigationItem.titleView = label; // some UILabel with the desired formatting
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+        
+    [self.navigationController finishProgress];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -103,7 +112,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"view did appear");
     [super viewDidAppear:animated];
     
     /**
@@ -157,12 +165,15 @@
      */
     NSString *trimmedString = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     BOOL blank = [trimmedString isEqualToString:@""];
-    
+    [self.navigationController showProgress];
+    [self.navigationController setProgress:.2 animated:YES];
+
     if ((isSendingMessage == NO)&&(blank == NO))
     {
         isSendingMessage = YES;
         [objectManager postMessage:text toUser:self.userReciever withCompletion:^(BOOL success)
          {
+             [self.navigationController finishProgress];
              isSendingMessage = NO;
              
              if (success)
@@ -184,7 +195,6 @@
                   block:nil];*/
              }
          }];
-        
     }
 }
 

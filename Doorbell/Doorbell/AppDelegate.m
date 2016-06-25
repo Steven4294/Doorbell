@@ -62,7 +62,24 @@
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
     
+
+    
+    [NSTimer scheduledTimerWithTimeInterval:90.0f
+                                     target:self
+                                   selector:@selector(registerActivity)
+                                   userInfo:nil
+                                    repeats:YES];
+    
     return YES;
+}
+
+- (void)registerActivity
+{
+    NSLog(@"register activity");
+
+    [PFCloud callFunctionInBackground:@"registerActivity"
+                       withParameters:nil
+                                block:nil];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

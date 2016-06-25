@@ -15,7 +15,8 @@
 - (void)setProfileImageViewForUser:(PFUser *)user isCircular:(BOOL)circle
 {
     self.clipsToBounds = YES;
-    
+    self.contentMode = UIViewContentModeScaleAspectFill;
+
     if (circle == YES)
     {
         self.layer.cornerRadius =  self.frame.size.width/2;
@@ -27,7 +28,6 @@
         [user[@"profileImage"] getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error)
          {
              [self setImage:[UIImage imageWithData:data]];
-             self.contentMode = UIViewContentModeScaleAspectFill;
           
          }];
     }

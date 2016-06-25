@@ -59,10 +59,22 @@
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(headerViewTapped:)];
     gesture.minimumPressDuration = 0.0f;
     [self.headerView addGestureRecognizer:gesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableViewWasTapped:)];
+    tapGesture.cancelsTouchesInView = NO;
+    [self.tableView addGestureRecognizer:tapGesture];
 }
+
+- (void)tableViewWasTapped:(UITapGestureRecognizer *)gesture
+{
+    // delay for a short time just for animation's sake
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+                   {
+                       [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
+                   });}
+
 - (void)headerViewTapped:(UILongPressGestureRecognizer *)gesture
 {
-    NSLog(@"header view tapped");
     if (gesture.state == UIGestureRecognizerStateBegan )
     {
         UIColor *darkBlueColor = self.headerView.backgroundColor;

@@ -46,6 +46,17 @@
     [self configureCustomBackButton];
 }
 
+- (void)setRequest:(PFObject *)request
+{
+    _request = request;
+    [[[DBObjectManager alloc] init] fetchLikersForRequest:request withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+        if (error == nil)
+        {
+            self.likersArray = [objects mutableCopy];
+        }
+    }];
+}
+
 - (void)setLikersArray:(NSMutableArray *)likersArray
 {
     _likersArray = likersArray;
@@ -54,11 +65,9 @@
 
     for (PFObject *user in likersArray)
     {
-        NSLog(@"%@", user[@"facebookName"]);
         [nameAndUserDictionary setValue:user forKey:user[@"facebookName"]];
     }
     [nameAndUserDictionary setValue:[PFUser currentUser] forKey:[PFUser currentUser][@"facebookName"]];
-    NSLog(@"likers array set: %lu", (unsigned long)nameAndUserDictionary.count);
 }
 
 - (void)sendButtonPressed
@@ -70,29 +79,18 @@
         [objectManager postCommentWithString:self.NextGrowingTextView.text toRequest:self.request fromUser:[PFUser currentUser] withCompletion:^(BOOL success, PFObject *comment) {
             if (success)
             {
-               
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-                NSLog(@"before:%d", commentsArray.count);
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:commentsArray.count+2 inSection:0];
                 [self.tableView beginUpdates];
-                [commentsArray insertObject:comment atIndex:0];
-                NSLog(@"after:%d", commentsArray.count);
-
-                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+                [commentsArray insertObject:comment atIndex:commentsArray.count];
+                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 [self.tableView endUpdates];
                 
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 self.NextGrowingTextView.text = @"";
-                
                 [self.sendButton setEnabled:YES];
-                // insert comment to the top of the table
             }
-            
         }];
     }
-}
-
--(void)textViewDidBeginEditing:(UITextView *)textView
-{
-    NSLog(@"began editing");
 }
 
 - (void)keyboardWillShowNotification:(NSNotification *)sender
@@ -115,7 +113,7 @@
 {
     PFRelation *relation = [self.request relationForKey:@"comments"];
     PFQuery *query = [relation query];
-    [query orderByDescending:@"createdAt"];
+    [query orderByAscending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         
         if (error == nil)

@@ -272,51 +272,66 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    if ([requests count] > indexPath.row)
+    DBTableViewCell *cell;
+    
+    PFObject *object = [requests objectAtIndex:indexPath.row];
+    BOOL isComplete = [object[@"complete"] boolValue];
+    
+    if (isComplete == YES)
     {
-        PFObject *object = [requests objectAtIndex:indexPath.row];
-        PFUser *poster = object[@"poster"];
-        cell.requestObject = object;
-        cell.layoutMargins = UIEdgeInsetsZero;
-        //cell.separatorInset = UIEdgeInsetsZero;
-        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-        [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
-        [cell.profileImageView addGestureRecognizer:tapRecognizer];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"fulfilledCell" forIndexPath:indexPath];
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
+    }
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
+    PFUser *poster = object[@"poster"];
+    cell.requestObject = object;
+    cell.layoutMargins = UIEdgeInsetsZero;
+    //cell.separatorInset = UIEdgeInsetsZero;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+    [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
+    [cell.profileImageView addGestureRecognizer:tapRecognizer];
+    
+    cell.classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+        vc.user = poster;
         
-        cell.classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
+        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+        [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+        [self.navigationController pushViewController:vc animated:YES];
+    };
+    
+    UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
+    commentGesture.minimumPressDuration = 0.0f;
+    [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
+    [cell.commentLabel addGestureRecognizer:commentGesture];
+    
+    cell.delegate = self;
+    
+    [cell removeAllLeftButtons];
+    [cell removeAllRightButtons];
+    
+    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
+    if (poster != [PFUser currentUser])
+    {
+        [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+        [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
+    }
+    else
+    {
+        [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+        
+        if (isComplete == NO)
         {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
-            vc.user = poster;
-            
-            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-            [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-            [self.navigationController pushViewController:vc animated:YES];
-        };
-        
-        UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
-        commentGesture.minimumPressDuration = 0.0f;
-        [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
-        [cell.commentLabel addGestureRecognizer:commentGesture];
-        
-        cell.delegate = self;
-        
-        [cell removeAllLeftButtons];
-        [cell removeAllRightButtons];
-        
-        UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
-        if (poster != [PFUser currentUser])
-        {
-            [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
-            [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
-        }
-        else
-        {
-            [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+            [cell addLeftButtonWithText:@"Close" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatEmeraldColor] font:font];
         }
     }
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
 
@@ -360,7 +375,6 @@
 {
     DBTableViewCell *feedCell = (DBTableViewCell *) cell;
     
-    NSLog(@"%@", feedCell.user);
     if (feedCell.user == [PFUser currentUser])
     {
         switch (buttonIndex)
@@ -390,6 +404,28 @@
     }
 }
 
+- (void)slideTableViewCell:(SESlideTableViewCell *)cell didTriggerLeftButton:(NSInteger)buttonIndex
+{
+    DBTableViewCell *feedCell = (DBTableViewCell *) cell;
+
+    if (feedCell.user == [PFUser currentUser])
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+                // close out the request
+                [objectManager closeOutRequest:feedCell.requestObject withCompletion:nil];
+                
+                // update the UI
+                [cell setSlideState:SESlideTableViewCellSlideStateCenter animated:YES];
+          
+                [self.tableView reloadRowsAtIndexPaths:@[[self.tableView indexPathForCell:feedCell]] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+        }
+    }
+
+
+}
 #pragma mark - UIViewControllerTransitioningDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented

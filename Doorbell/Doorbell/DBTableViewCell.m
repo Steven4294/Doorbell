@@ -84,6 +84,17 @@ DBObjectManager *objectManager;
             [self configureLikeLabelWithInteger:numberOfLikers.intValue];
         }
     }];
+    
+    if ([requestObject[@"complete"] boolValue] == YES)
+    {
+        [self setShowsLeftSlideIndicator:NO];
+        [self setShowsRightSlideIndicator:NO];
+    }
+    else
+    {
+        [self setShowsLeftSlideIndicator:YES];
+        [self setShowsRightSlideIndicator:YES];
+    }
     self.classifier = [self classifier];
     [self configureCommentLabel];
 }

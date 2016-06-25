@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBEventsViewController : UIViewController
+@interface DBEventsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @end
