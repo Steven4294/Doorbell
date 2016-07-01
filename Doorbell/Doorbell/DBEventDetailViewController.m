@@ -11,6 +11,7 @@
 #import "DBEventTopCell.h"
 #import "DBEventMiddleCell.h"
 #import "DBEventBottomCell.h"
+#import "Parse.h"
 
 @implementation DBEventDetailViewController
 
@@ -55,6 +56,8 @@
         DBEventBottomCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"bottomCell" forIndexPath:indexPath];
         cell.event = self.event;
         cell.mapView.delegate = self;
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewTapped:)];
+        [cell.mapView addGestureRecognizer:tapGesture];
         return cell;
     }
     else
@@ -94,6 +97,27 @@
 {
     NSLog(@"title label tapped URL");
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.doorbell.me/#!events/dxtmc"]];
+
+}
+
+- (void)mapViewTapped:(id)sender
+
+{
+    PFGeoPoint *location = self.event[@"location"];
+    CLLocation *locationCL = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longitude];
+
+    
+    [[[CLGeocoder alloc]init] reverseGeocodeLocation:locationCL completionHandler:^(NSArray *placemarks, NSError *error) {
+        CLPlacemark *placemark = placemarks[0];
+        NSArray *lines = placemark.addressDictionary[ @"FormattedAddressLines"];
+        NSString *addressString = [lines componentsJoinedByString:@"\n"];
+        
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude);
+        MKPlacemark *placemarkToDisplay = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:placemark.addressDictionary];
+        MKMapItem *item = [[MKMapItem alloc] initWithPlacemark:placemarkToDisplay];
+        [item openInMapsWithLaunchOptions:nil];
+    }];
+    
 
 }
 

@@ -112,7 +112,6 @@
             installation[@"user"] = [PFUser currentUser];
             [installation saveInBackground];
             
-            NSLog(@"%@", user[@"verifiedCode"]);
             BOOL isVerified = [user[@"verifiedCode"] boolValue];
           
             if (isVerified == NO)
@@ -122,7 +121,6 @@
             else
             {
                 [self presentFeed];
-                NSLog(@"user already verified");
             }
         }
         
@@ -142,35 +140,27 @@
  
     MMAlertView *alertView = [[MMAlertView alloc] initWithInputTitle:@"Building Code" detail:@"Input Dialog" placeholder:@"enter building code" handler:^(NSString *text)
                               {
+                                  
+                                  NSLog(@"text: %@", text);
                                   PFQuery *query = [PFQuery queryWithClassName:@"BuildingCode"];
                                   query.limit = 1000;
                                   [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
                                    {
-                                       BOOL correctCode = NO;
-                                       for (PFObject *codeObject in objects)
+                                       
+                                       BOOL correctCode = [self isCorrectCode:text forArray:objects];
+                                       
+                                       if (correctCode == YES)
                                        {
-                                           NSString *codeString = codeObject[@"codeString"];
-                                           
-                                           if ([text caseInsensitiveCompare:codeString] == NSOrderedSame)
-                                           {
-                                               correctCode = YES;
-
-                                               PFUser *currentUser = [PFUser currentUser];
-                                               currentUser[@"verifiedCode"] = [NSNumber numberWithBool:YES];
-                                               currentUser[@"building"] = codeObject[@"building"];
-                                               [currentUser saveInBackground];
-                                               [self presentFeed];
-                                           }
-                                         
-                                           
+                                           [self presentFeed];
                                        }
-                                       if (correctCode == NO) {
+                                       else
+                                       {
                                            [self showIncorrectCodeAlert];
                                        }
                                    }];
                               }];
     alertView.attachedView = self.view;
-    alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+    alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
     alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleExtraLight;
     [alertView showWithBlock:nil];
 }
@@ -179,16 +169,13 @@
 {
     MMPopupItemHandler block = ^(NSInteger index)
     {
-        if (index == 1) {
-            // retry
-            [self promptUserForCode];
-        
-        }
+        [self promptUserForCode];
+
     };
     
     NSArray *items =
     @[
-      MMItemMake(@"Cancel", MMItemTypeHighlight, block),
+      //MMItemMake(@"Cancel", MMItemTypeHighlight, block),
       MMItemMake(@"Retry", MMItemTypeNormal, block)];
     
     MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"invalid code"
@@ -200,4 +187,26 @@
     [alertView show];
 }
 
+- (BOOL)isCorrectCode:(NSString *)codeText forArray:(NSArray *)codes
+{
+    for (PFObject *codeObject in codes)
+    {
+        NSString *codeString = codeObject[@"codeString"];
+        
+        NSString *trimmedText = [codeText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *trimmedCode = [codeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+        if (([codeText caseInsensitiveCompare:codeString] == NSOrderedSame) || ([trimmedText caseInsensitiveCompare:trimmedCode] == NSOrderedSame))
+        {
+            // update user on the backend
+            PFUser *currentUser = [PFUser currentUser];
+            currentUser[@"verifiedCode"] = [NSNumber numberWithBool:YES];
+            currentUser[@"building"] = codeObject[@"building"];
+            [currentUser saveInBackground];
+            
+            return YES;
+        }
+    }
+    return NO;
+}
 @end

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '2A2C6B2F81A58A4850FBBFA7'
+               BlueprintIdentifier = '4EF257BE7A8F894195284735'
                BlueprintName = 'JElasticPullToRefresh'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libJElasticPullToRefresh.a'>

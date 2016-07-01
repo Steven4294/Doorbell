@@ -80,13 +80,17 @@
     DBNotificationCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell.notificationObject)
     {
-        PFObject *request = cell.notificationObject[@"comment"][@"request"];
+        PFObject *request = cell.notificationObject[@"request"];
     
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
-        vc.request = request;
-        
-        [self.navigationController pushViewController:vc animated:YES];
+
+        // make sure request fetched
+        if (request != nil)
+        {
+            vc.request = request;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

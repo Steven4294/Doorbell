@@ -17,6 +17,7 @@
 #import "CSNotificationView.h"
 #import <JTHamburgerButton.h>
 #import "UIColor+FlatColors.h"
+#import "RKNotificationHub.h"
 
 @interface DBNavigationController ()
 
@@ -75,6 +76,12 @@
     
     UIBarButtonItem *barButton=[[UIBarButtonItem alloc] init];
     [barButton setCustomView:self.button];
+    /*
+    RKNotificationHub *hub = [[RKNotificationHub alloc] initWithView:self.button];
+    [hub scaleCircleSizeBy:.75f];
+    [hub moveCircleByX:9.0f Y:-5.0f];
+    [hub increment];
+     */
 
     return barButton;
 }
@@ -105,11 +112,15 @@
 - (void)willShowLeftView:(id)sender
 {
     [self.button setCurrentModeWithAnimation:JTHamburgerButtonModeCross];
+    self.topViewController.view.userInteractionEnabled = NO;
+    self.topViewController.view.backgroundColor = [UIColor yellowColor];
 }
 
 - (void)willDismissLeftView:(id)sender
 {
     [self.button setCurrentModeWithAnimation:JTHamburgerButtonModeHamburger];
+    self.topViewController.view.userInteractionEnabled = YES;
+
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:

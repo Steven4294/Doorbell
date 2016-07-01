@@ -54,7 +54,7 @@
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.messageButton addTarget:self action:@selector(newMessageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:@"compose" withExtension:@"png"];
+    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:@"search" withExtension:@"png"];
     renderer1.targetColor = [UIColor whiteColor];
     UIImage *image= [renderer1 imageWithCacheIdentifier:@"white"];
 
@@ -135,7 +135,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DBChatViewCell *cell = [DBChatViewCell new];
-    //cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     
     if ([mostRecentMessages count] > indexPath.row)
     {
@@ -160,7 +159,7 @@
                 // display a green circle!
                 cell = [tableView dequeueReusableCellWithIdentifier:@"withIcon" forIndexPath:indexPath];
                 FTImageAssetRenderer *renderer = [FTAssetRenderer rendererForImageNamed:@"circle-filled" withExtension:@"png"];
-                renderer.targetColor = [UIColor flatAlizarinColor];
+                renderer.targetColor = [UIColor flatEmeraldColor];
                 UIImage *image = [renderer imageWithCacheIdentifier:@"red"];
                 [cell.iconImageView setImage:image];
             }
@@ -188,9 +187,7 @@
         cell.isUserActive = [objectManager isUserActive:user];
         
         cell.messageLabel.text = @"";
-        //cell.backgroundColor = [UIColor whiteColor];
         
-        //PFUser *user = message[@"sender"];
         cell.nameLabel.text = user[@"facebookName"];
         cell.user = (PFUser *) user;
         [cell.profileImageView setProfileImageViewForUser:user isCircular:YES];
@@ -201,8 +198,7 @@
         [timeIntervalFormatter setUsesIdiomaticDeicticExpressions:YES];
         [timeIntervalFormatter setUsesAbbreviatedCalendarUnits:YES];
         cell.timeLabel.text = [timeIntervalFormatter stringForTimeIntervalFromDate:[NSDate date] toDate:date];
-        
-        //cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     
     

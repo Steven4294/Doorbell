@@ -84,11 +84,13 @@ PODS:
     - FBSDKLoginKit (~> 4.9.0-beta)
     - FBSDKTVOSKit (~> 4.9.0-beta)
     - Parse (~> 1.11)
+  - RKNotificationHub (2.0.1)
   - RKSwipeBetweenViewControllers (0.1.4)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SESlideTableViewCell (0.7.0)
+  - SLExpandableTableView (1.3.1)
   - SVPullToRefresh (0.4.1)
   - TLYShyNavBar (1.0.0)
   - TTTAttributedLabel (2.0.0)
@@ -127,9 +129,11 @@ DEPENDENCIES:
   - MOOMaskedIconView (~> 0.1)
   - Parse (~> 1.4)
   - ParseFacebookUtilsV4
+  - RKNotificationHub
   - RKSwipeBetweenViewControllers
   - SDWebImage (~> 3.7)
   - SESlideTableViewCell
+  - SLExpandableTableView
   - SVPullToRefresh
   - TLYShyNavBar
   - TTTAttributedLabel (~> 2.0)
@@ -171,9 +175,11 @@ SPEC CHECKSUMS:
   MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
   Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
   ParseFacebookUtilsV4: 216e03bd560404eed09a4875c75f0c1cdf758070
+  RKNotificationHub: d80905a948c79c11673345f807133a0bfd17e320
   RKSwipeBetweenViewControllers: 2236038119d6f7eb64ff589eb423fcda80cbe962
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SESlideTableViewCell: 1487a6aedc84b480a888fc33b8d1c58fa5026f99
+  SLExpandableTableView: ff63a4bb4b71c6c3ae2b7cb1cde6a36c1645f23c
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656

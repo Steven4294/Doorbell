@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SLExpandableTableView.h"
 
 @class DBSideMenuController;
 
-@interface DBLeftMenuViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface DBLeftMenuViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SLExpandableTableViewDelegate, SLExpandableTableViewDatasource>
 
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet SLExpandableTableView *tableView;
 @property (nonatomic, strong) IBOutlet UIImageView *profileImage;
 @property (nonatomic, strong) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) DBSideMenuController *sideMenuController;

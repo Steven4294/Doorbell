@@ -31,11 +31,11 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"comment view controller did load");
     [super viewDidLoad];
     commentsArray = [[NSMutableArray alloc] init];
     objectManager = [[DBObjectManager alloc] init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self loadComments];
     self.inputContainerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.inputContainerView.layer.borderWidth =1.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
@@ -49,10 +49,14 @@
 - (void)setRequest:(PFObject *)request
 {
     _request = request;
-    [[[DBObjectManager alloc] init] fetchLikersForRequest:request withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
+    
+    self.likersArray = [[NSMutableArray alloc] init];
+    [[DBObjectManager sharedInstance] fetchLikersForRequest:request withBlock:^(BOOL isLiked, NSArray *objects, NSError *error) {
         if (error == nil)
         {
             self.likersArray = [objects mutableCopy];
+            NSLog(@"fetched likers");
+            [self loadComments];
         }
     }];
 }
@@ -60,14 +64,18 @@
 - (void)setLikersArray:(NSMutableArray *)likersArray
 {
     _likersArray = likersArray;
-    
     nameAndUserDictionary = [[NSMutableDictionary alloc] init];
 
-    for (PFObject *user in likersArray)
-    {
-        [nameAndUserDictionary setValue:user forKey:user[@"facebookName"]];
-    }
-    [nameAndUserDictionary setValue:[PFUser currentUser] forKey:[PFUser currentUser][@"facebookName"]];
+    
+        for (PFObject *user in likersArray)
+        {
+            [nameAndUserDictionary setValue:user forKey:user[@"facebookName"]];
+        }
+        [nameAndUserDictionary setValue:[PFUser currentUser] forKey:[PFUser currentUser][@"facebookName"]];
+  
+    
+    NSLog(@"reached end of set likers");
+  //  [self.tableView reloadData]; // only at indexPath.row == 1
 }
 
 - (void)sendButtonPressed
@@ -111,11 +119,14 @@
 }
 - (void)loadComments
 {
+    NSLog(@"loading comments");
     PFRelation *relation = [self.request relationForKey:@"comments"];
     PFQuery *query = [relation query];
     [query orderByAscending:@"createdAt"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        
+    [query includeKey:@"poster"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+
         if (error == nil)
         {
             commentsArray = [objects mutableCopy];
@@ -124,7 +135,6 @@
         }
         else
         {
-            NSLog(@"error loading comments: %@", error);
         }
     }];
 }
@@ -152,15 +162,6 @@
         cell.layoutMargins = UIEdgeInsetsZero;
         cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
         
-        [objectManager fetchLikersForRequest:cell.requestObject withBlock:^(BOOL isLiked, NSArray *objects, NSError *error)
-        {
-            if (error == nil)
-            {
-                cell.likersArray = [objects mutableCopy];
-                [cell configureLikeLabel];
-            }
-        }];
-        
         [cell.nameLabel addLinkClassifier:[self createUserLinkClassifierTopCell:self.request[@"poster"]]];
         [cell.nameLabel setLinkDetectionTypes:KILinkTypeOptionNone];
 
@@ -174,13 +175,15 @@
         
         cell.layoutMargins = UIEdgeInsetsZero;
         cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
-        cell.likersArray = self.likersArray;
-        [cell configureLikeLabel];
-        [cell.likeLabel addLinkClassifier:[self createLikerLabelClassifier]];
-        [cell.likeLabel setLinkDetectionTypes:KILinkTypeOptionNone];
-
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
+        if (self.likersArray != nil)
+        {
+            cell.likersArray = self.likersArray;
+            [cell configureLikeLabel];
+            [cell.likeLabel addLinkClassifier:[self createLikerLabelClassifier]];
+            [cell.likeLabel setLinkDetectionTypes:KILinkTypeOptionNone];
+        }
         return cell;
     }
     else
@@ -223,9 +226,7 @@
 
 - (KILabelLinkClassifier *)createLikerLabelClassifier
 {
-    NSLog(@"now creating the regex");
     NSArray *names = [nameAndUserDictionary allKeys];
-    NSLog(@"%@", names);
     NSDataDetector *dateDetector = [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypePhoneNumber error:nil];
     NSString *regexString = [self regexForArray:names];
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexString options:0 error:nil];

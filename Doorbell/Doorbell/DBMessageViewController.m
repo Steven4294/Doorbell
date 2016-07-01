@@ -166,7 +166,7 @@
     NSString *trimmedString = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     BOOL blank = [trimmedString isEqualToString:@""];
     [self.navigationController showProgress];
-    [self.navigationController setProgress:.2 animated:YES];
+    [self.navigationController setProgress:.75 animated:YES];
 
     if ((isSendingMessage == NO)&&(blank == NO))
     {

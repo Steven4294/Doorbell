@@ -10,15 +10,7 @@
 #import "DBNavigationController.h"
 #import "DBLeftMenuViewController.h"
 #import "DBLeftMenuCell.h"
-
-// menu view controllers
-#import "DBProfileViewController.h"
-#import "DBFeedTableViewController.h"
-#import "DBSettingsViewController.h"
-#import "DBEventsViewController.h"
-#import "DBChatTableViewController.h"
-#import "DBNotificationCenterViewController.h"
-
+#import "DBSecondaryMenuViewController.h"
 #import "FTImageAssetRenderer.h"
 
 @interface DBSideMenuController()
@@ -32,20 +24,6 @@
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    _titlesArray = @[@"Home",
-                     @"Notifications",
-
-                     @"Messages",
-                     @"Events",
-                     @"Settings"];
-    
-    _imagesArray = @[@"home1",
-                     @"notification1",
-
-                     @"message_bubble",
-                     @"event1",
-                     @"settings1"];
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBNavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"DBNavigationController"];
     navigationController.sideMenuController = self;
@@ -54,24 +32,23 @@
 
     // configuration    
     self.leftViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBLeftMenuViewController"];
-    self.leftViewController.sideMenuController = self;
     
-    DBChatTableViewController *rightViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBChatTableViewController"];
-
-    // remove this later
-    rightViewController.view.backgroundColor = [UIColor yellowColor];
-    
-    [self setLeftViewEnabledWithWidth:250.0f presentationStyle:LGSideMenuPresentationStyleSlideBelow alwaysVisibleOptions:0];
+    // default width: 270.0f
+    [self setLeftViewEnabledWithWidth:270.0f presentationStyle:LGSideMenuPresentationStyleSlideBelow alwaysVisibleOptions:0];
 
     // some properties for the side menu
     self.leftViewStatusBarStyle = UIStatusBarStyleDefault;
-    self.leftViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnAll;
+    self.leftViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnNone;
     
-    self.rightViewStatusBarStyle = UIStatusBarStyleDefault;
-    self.rightViewStatusBarVisibleOptions = LGSideMenuStatusBarVisibleOnAll;
+    DBSecondaryMenuViewController *secondVC = [storyboard instantiateViewControllerWithIdentifier:@"DBSecondaryMenuViewController"];
+    secondVC.sideMenuController = self;
 
-    [self.leftView addSubview:self.leftViewController.view];
+    self.swipeViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSwipeBetweenViewController"];
 
+    self.swipeViewController.view.frame = CGRectMake(0, 0, 270.0f, self.swipeViewController.view.frame.size.height);
+    
+    self.swipeViewController.viewControllers = @[self.leftViewController, secondVC];
+    [self.leftView addSubview:self.swipeViewController.view];
     
     return self;
 }
@@ -82,141 +59,9 @@
 
     self.leftViewController.sideMenuController = self;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0]; // set to whatever you want to be selected first
-    [self.leftViewController.tableView selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionNone];
 
 }
 
-#pragma mark - UITableView Datasource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.titlesArray count];
-}
-
-#pragma mark - UITableView Delegate
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DBLeftMenuCell" owner:self options:nil];
-    DBLeftMenuCell *cell = [topLevelObjects objectAtIndex:0];
-    cell.itemLabel.text = [self.titlesArray objectAtIndex:indexPath.row];
-    
-    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
-    renderer1.targetColor = [UIColor whiteColor];
-    UIImage *image_unhighlighted = [renderer1 imageWithCacheIdentifier:@"white"];
-    
-    FTImageAssetRenderer *renderer2 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
-    renderer2.targetColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
-    UIImage *image_highlighted = [renderer2 imageWithCacheIdentifier:@"render2"];
-
-   // cell.unhighlightedImage = image_unhighlighted;
-    //cell.highlightedImage = image_highlighted;
-    
-    [cell.iconImageView setImage:image_unhighlighted];
-    [cell.iconImageView setHighlightedImage:image_highlighted];
-        
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [cell setSelected:YES animated:YES];
-    
-    return cell;
-}
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DBLeftMenuCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    NSString *menuItem = cell.itemLabel.text;
-    
-    [self transitionToMenuItem:menuItem];
-    
-    return indexPath;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 60;
-}
-
-- (void)transitionToMenuItem:(NSString *)menuItem
-{
-    NSUInteger number = [self.titlesArray indexOfObject:menuItem];
-    
-    [self.leftViewController.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:number inSection:0]
-                                                   animated:YES
-                                             scrollPosition:UITableViewScrollPositionNone];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    DBNavigationController *navigationController = (DBNavigationController *) self.rootViewController;
-    
-    NSString *currentClass = NSStringFromClass([[navigationController.viewControllers lastObject] class]);
-    
-    NSString *newClass = [self classNameForMenuItem:menuItem];
-    
-    if ([currentClass isEqualToString:newClass] == FALSE)
-    {
-        if ([newClass isEqualToString:@"DBSettingsViewController"])
-        {
-            DBSettingsViewController *viewController = [[DBSettingsViewController alloc] init];
-            [navigationController setViewControllers:@[viewController] animated:NO];
-        }
-        else
-        {
-            id viewController = [storyboard instantiateViewControllerWithIdentifier:newClass];
-            if ([viewController respondsToSelector:@selector(sideMenuController)])
-            {
-                [viewController setSideMenuController:self];
-            }
-            [navigationController setViewControllers:@[viewController] animated:NO];
-        }
-    }
-    
-    // delay for a short time just for animation's sake
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^
-    {
-        [self hideLeftViewAnimated:YES completionHandler:nil];
-    });
-}
-
-- (NSString *)classNameForMenuItem:(NSString *)menuItem
-{
-    if ([menuItem isEqualToString:@"Home"])
-    {
-        return @"DBFeedTableViewController";
-    }
-    else if ([menuItem isEqualToString:@"Profile"])
-    {
-        return @"DBProfileViewController";
-    }
-    else if ([menuItem isEqualToString:@"Messages"])
-    {
-        return @"DBChatTableViewController";
-    }
-    else if ([menuItem isEqualToString:@"Events"])
-    {
-        return @"DBEventsViewController";
-    }
-    else if ([menuItem isEqualToString:@"Notifications"])
-    {
-        return @"DBNotificationCenterViewController";
-    }
-    else if ([menuItem isEqualToString:@"Settings"])
-    {
-        return @"DBSettingsViewController";
-    }
-    else
-    {
-        return @"Unknown Menu";
-    }
-}
 
 @end

@@ -79,17 +79,24 @@
 
 - (void)fetchLikersForRequest:(PFObject *)request withBlock:(void (^)(BOOL isLiked, NSArray *objects, NSError *error))block
 {
-    PFRelation *relation = request[@"likers"];
-    PFQuery *query = [relation query];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
-     {
-         if (block != nil)
+    [request fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        
+        NSLog(@"fetched request");
+        PFObject *fetchedRequest = object;
+        
+        PFRelation *relation = fetchedRequest[@"likers"];
+        PFQuery *query = [relation query];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
          {
-             BOOL doesLike = [objects containsObject:[PFUser currentUser]];
-             if (block) block(doesLike, objects, error);
-         }
-         
-     }];
+             if (block != nil)
+             {
+                 BOOL doesLike = [objects containsObject:[PFUser currentUser]];
+                 if (block) block(doesLike, objects, error);
+             }
+             
+         }];
+        
+    }];   
 }
 
 - (void)toggleLike:(PFObject *)request
@@ -390,6 +397,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Notification"];
     [query whereKey:@"user" equalTo:user];
     [query includeKey:@"comment"];
+    [query includeKey:@"request"];
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
     {
@@ -408,6 +416,7 @@
 - (void)fetchAllEvents:(void (^)(NSError *error, NSArray *events))block
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Event"];
+    [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
     {
         if (block) block(error, objects);
@@ -444,6 +453,80 @@
     }
     return NO;
 }
+
+- (void)fetchMessagesForChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success, NSArray *messages))block
+{
+    PFRelation *relation = [channel relationForKey:@"messages"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (error == nil)
+        {
+            if (block) block(YES, objects);
+        }
+    }];
+}
+
+- (void)fetchUsersForChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success, NSArray *users))block
+{
+    PFRelation *relation = [channel relationForKey:@"users"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (error == nil)
+        {
+            if (block) block(YES, objects);
+        }
+    }];
+}
+
+- (void)fetchChannelWithName:(NSString *)channelName withCompletion:(void (^)(BOOL success, PFObject *channel))block
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Channel"];
+    [query whereKey:@"channelName" equalTo:channelName];
+    [query whereKey:@"building" equalTo:[PFUser currentUser][@"building"]];
+    query.limit = 1;
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (error == nil)
+        {
+            PFObject *channel = [objects firstObject];
+            if (block) block(YES, channel);
+        }
+    }];
+
+}
+
+- (void)postMessage:(NSString *)string toChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success))block
+{
+    NSLog(@"posting message to channel: %@", channel );
+
+    PFObject *message = [PFObject objectWithClassName:@"Message"];
+    message[@"sender"] = [PFUser currentUser];
+    message[@"message"] = string;
+    PFRelation *relation = [channel relationForKey:@"messages"];
+    [relation addObject:message];
+    
+    PFRelation *userRelation = [channel relationForKey:@"users"];
+    [userRelation addObject:[PFUser currentUser]];
+
+    [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [channel saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
+         {
+             if (block) block(succeeded);
+         }];
+    }];
+}
+
+- (void)fetchAllChannelsWithCompletion:(void (^)(BOOL success, NSArray *channels))block;
+{
+    NSLog(@"calling fetch all channel");
+    PFQuery *query = [PFQuery queryWithClassName:@"Channel"];
+    [query whereKey:@"building" equalTo:[PFUser currentUser][@"building"]];
+    [query orderByDescending:@"createdAt"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         if (block) block(error, objects);
+     }];
+}
+
 
 # pragma mark - Private Methods
 

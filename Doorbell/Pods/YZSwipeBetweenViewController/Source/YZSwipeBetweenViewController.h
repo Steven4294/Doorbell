@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) NSUInteger currentIndex;
+@property (nonatomic, strong) UIPageControl *pageControl;
 
 - (void)setCurrentIndex:(NSUInteger)currentIndex animated:(BOOL)animated;
 

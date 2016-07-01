@@ -31,7 +31,7 @@
     {
         self.onlineView.layer.cornerRadius = self.onlineView.frame.size.width/2;
         self.onlineView.clipsToBounds = YES;
-        self.onlineView.backgroundColor = [UIColor flatPeterRiverColor];
+        self.onlineView.backgroundColor = [UIColor flatAlizarinColor];
      
         CGFloat borderWidth = 5.0f;
         CALayer * externalBorder = [CALayer layer];

@@ -64,7 +64,6 @@
     self.tableView.dataSource = self;
     self.tableView.separatorInset = UIEdgeInsetsZero;
     userDict = [[NSMutableDictionary alloc] init];
-    NSLog(@"view did load");
     
     [[PFUser currentUser] fetchIfNeeded];
     
@@ -89,17 +88,13 @@
     UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"requestPosted" object:nil];
 }
 
 - (void)setupRefreshControl
 {
     __weak typeof(self) welf = self;
-   /* [self.tableView addPullToRefreshWithActionHandler:^
-     {
-         // prepend data to dataSource, insert cells at top of table view
-         [welf refreshTableView];
-         
-     }];*/
     
     
     JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
@@ -107,8 +102,10 @@
     
     [self.tableView addJElasticPullToRefreshViewWithActionHandler:^
      {
-         [welf refreshTableView];
+         //[welf refreshTableView];
+         [welf loadTableView];
      }
+     
                                                       LoadingView:loadingViewCircle];
     
     [self.tableView setJElasticPullToRefreshFillColor:self.navigationController.navigationBar.barTintColor];
@@ -122,18 +119,26 @@
             requests = [objects mutableCopy];
             [requestOrderedSet addObjectsFromArray:objects];
             [self.tableView reloadData];
-            [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+            //[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+            [self.tableView stopLoading];
         }
     }];
 }
 
 - (void)refreshTableView
 {
-    int countInitial = (int) requestOrderedSet.count;
-    int countBefore = (int)requests.count;
+    /*
+     *  TODO: this sometimes breaks :(
+     */
+    int countBefore = 0;
     
-    [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
-        
+    if (requests != nil)
+    {
+        countBefore = (int) requests.count;
+    }
+    
+    [objectManager fetchAllRequests:^(NSError *error, NSArray *objects)
+    {
         if (error == nil)
         {
                  requests = [objects mutableCopy];
@@ -161,11 +166,7 @@
                      [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
                      [self.tableView endUpdates];
                  }
-                 else if (amountToInsert < 0)
-                 {
-                     requests = [objects mutableCopy];
-                     [self.tableView reloadData];
-                 }
+            
                  else
                  {
                      requests = [objects mutableCopy];
@@ -183,16 +184,13 @@
 
 -(void)requestButtonPressed
 {
-    NSLog(@"request button pressed: %d", self.sideMenuController.leftViewShowing);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIViewController *bulletinForm = [storyboard instantiateViewControllerWithIdentifier:@"DBBulletinFormViewController"];
-    
     
     bulletinForm.transitioningDelegate = self;
     [bulletinForm setModalPresentationStyle:UIModalPresentationFullScreen];
     if (self.sideMenuController.leftViewShowing == YES)
     {
-        NSLog(@"request button pressed: %@", self.sideMenuController);
         [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
         [self.sideMenuController presentViewController:bulletinForm animated:YES completion:nil];
     }
@@ -349,14 +347,18 @@
 {
     DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
     [self openCommentsViewController:cell];
+    
+    
 }
 
 - (void)openCommentsViewController:(DBTableViewCell *)cell
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
-    vc.likersArray = cell.likersArray;
-    vc.request = cell.requestObject;
+    PFObject *request = [requests objectAtIndex:[self.tableView indexPathForCell:cell].row];
+
+   // vc.likersArray = cell.likersArray;
+    vc.request = request;
   
     [self.navigationController pushViewController:vc animated:YES];
 }

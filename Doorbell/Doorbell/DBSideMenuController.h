@@ -7,13 +7,14 @@
 //
 
 #import <LGSideMenuController/LGSideMenuController.h>
+#import "YZSwipeBetweenViewController.h"
 
 @class DBLeftMenuViewController;
 
 @interface DBSideMenuController : LGSideMenuController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) DBLeftMenuViewController *leftViewController;
-
-- (void)transitionToMenuItem:(NSString *)menuItem;
+@property (nonatomic, strong) YZSwipeBetweenViewController *swipeViewController;
+@property (nonatomic, strong) UIPageControl *pageControl;
 
 @end

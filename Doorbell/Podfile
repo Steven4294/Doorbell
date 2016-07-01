@@ -42,7 +42,7 @@ pod 'CSNotificationView', '~> 0.5'
 pod 'DateTools'
 pod 'M13ProgressSuite', '~> 1.2'
 pod 'YZSwipeBetweenViewController'
-
-
+pod 'RKNotificationHub'
+pod 'SLExpandableTableView'
 
 

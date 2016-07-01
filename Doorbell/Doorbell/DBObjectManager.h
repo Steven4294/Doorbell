@@ -41,6 +41,7 @@
 
 - (void)closeOutRequest:(PFObject *)request withCompletion:(void (^)(BOOL success))block;
 
+- (void)postMessage:(NSString *)string toChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success))block;
 
 //
 //  Fetching APIs
@@ -70,6 +71,15 @@
 - (void)fetchAllEvents:(void (^)(NSError *error, NSArray *events))block;
 
 - (void)fetchAllActiveUsers:(void (^)(NSError *error, NSArray *users))block;
+
+- (void)fetchMessagesForChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success, NSArray *messages))block;
+
+- (void)fetchChannelWithName:(NSString *)channelName withCompletion:(void (^)(BOOL success, PFObject *channel))block;
+
+- (void)fetchUsersForChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success, NSArray *users))block;
+
+- (void)fetchAllChannelsWithCompletion:(void (^)(BOOL success, NSArray *channels))block;
+
 
 //
 // convenience methods

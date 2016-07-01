@@ -49,6 +49,7 @@
             PFRelation *requestRelation = [currentUser relationForKey:@"requests"];
             [requestRelation addObject:requestObject];
             [currentUser saveInBackground];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"requestPosted" object:nil];
             
             [self dismissViewControllerAnimated:YES completion:nil];
         }

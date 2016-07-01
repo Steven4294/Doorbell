@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '979F9FEC00915759476FAC6B'
+               BlueprintIdentifier = '935FE2A93EE11F5B08F9B139'
                BlueprintName = 'LMPullToBounce'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLMPullToBounce.a'>
