@@ -10,6 +10,7 @@
 #import "DBBuildingViewController.h"
 #import "DBBuildingCell.h"
 #import "Parse.h"
+#import "UIViewController+Utils.h"
 
 @implementation DBBuildingViewController
 {
@@ -21,7 +22,8 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
+    self.tableView.tableFooterView = [UIView new];
+
     NSString *buildingName = [PFUser currentUser][@"building"];
     self.title = [buildingName lowercaseString];
     
@@ -37,6 +39,15 @@
     {
         buildingArray = objects;
         [self.tableView reloadData];
+        
+        if (buildingArray.count == 0) {
+            [self displayEmptyView:YES withText:@"No building information" andSubText:@"information for your building (such as doorman contact information, etc...) will be displayed here"];
+        }
+        else
+        {
+            [self displayEmptyView:NO withText:@"" andSubText:@""];
+            
+        }
     }];
     
 }

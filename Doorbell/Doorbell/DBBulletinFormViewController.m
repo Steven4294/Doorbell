@@ -9,6 +9,7 @@
 
 #import "DBBulletinFormViewController.h"
 #import "Parse.h"
+#import "DBLocationManager.h"
 
 @interface DBBulletinFormViewController ()
 
@@ -23,6 +24,9 @@
     [self.cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.textView.delegate = self;
     self.textView.autocorrectionType = UITextAutocorrectionTypeYes;
+    
+    [DBLocationManager sharedInstance];
+    
 }
 
 - (void)cancelButtonPressed
@@ -40,6 +44,22 @@
     requestObject[@"message"] = self.textView.text;
     requestObject[@"building"] = [PFUser currentUser][@"building"];
     requestObject[@"complete"] = [NSNumber numberWithBool:NO];
+
+    if (![[PFUser currentUser][@"building"] isEqualToString:@""])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Building"];
+        [query whereKey:@"buildingName" equalTo:[PFUser currentUser][@"building"] ];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            
+            PFObject *building = [objects firstObject];
+            requestObject[@"location"] = building[@"location"];
+            [requestObject saveInBackground];
+        }];
+    }
+    else
+    {
+        requestObject[@"location"] = [PFGeoPoint geoPointWithLocation:[[DBLocationManager sharedInstance] currentLocation]];
+    }
     
     [requestObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         

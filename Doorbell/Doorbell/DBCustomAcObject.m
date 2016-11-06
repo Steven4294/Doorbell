@@ -7,6 +7,7 @@
 //
 
 #import "DBCustomAcObject.h"
+#import "Parse.h"
 
 @interface DBCustomAcObject ()
 @property (strong) NSString *userName;
@@ -16,13 +17,12 @@
 @implementation DBCustomAcObject
 
 
-- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId image:(UIImage *)image
+- (id)initWithUsername:(NSString *)name user:(PFUser *)user
 {
     self = [super init];
     if (self) {
         [self setUserName:name];
-        [self setObjectId:objectId];
-        [self setImage:image];
+        [self setUser:user];
     }
     return self;
 }

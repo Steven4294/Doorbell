@@ -11,5 +11,7 @@
 @interface UIViewController (Utils)
 
 - (void)configureCustomBackButton;
+- (void)configureBackButtonOnView;
+- (void)displayEmptyView:(BOOL)displayed withText:(NSString *)text andSubText:(NSString *)subText;
 
 @end

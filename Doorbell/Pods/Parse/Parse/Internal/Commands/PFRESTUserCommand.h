@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL revocableSessionEnabled;
 
 ///--------------------------------------
-#pragma mark - Log In
+/// @name Log In
 ///--------------------------------------
 
 + (instancetype)logInUserCommandWithUsername:(NSString *)username
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
                                          sessionToken:(nullable NSString *)sessionToken;
 
 ///--------------------------------------
-#pragma mark - Sign Up
+/// @name Sign Up
 ///--------------------------------------
 
 + (instancetype)signUpUserCommandWithParameters:(NSDictionary *)parameters
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    sessionToken:(nullable NSString *)sessionToken;
 
 ///--------------------------------------
-#pragma mark - Current User
+/// @name Current User
 ///--------------------------------------
 
 + (instancetype)getCurrentUserCommandWithSessionToken:(NSString *)sessionToken;
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)logOutUserCommandWithSessionToken:(NSString *)sessionToken;
 
 ///--------------------------------------
-#pragma mark - Password Rest
+/// @name Password Rest
 ///--------------------------------------
 
 + (instancetype)resetPasswordCommandForUserWithEmail:(NSString *)email;

@@ -10,6 +10,9 @@
 #import "DBEventTableCell.h"
 #import "DBObjectManager.h"
 #import "DBEventDetailViewController.h"
+#import "FTImageAssetRenderer.h"
+#import "DBEventCreateController.h"
+#import "UIViewController+Utils.h"
 
 @interface DBEventsViewController ()
 {
@@ -23,13 +26,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    
     self.title = @"events";
     
     eventsArray = [[NSMutableArray alloc] init];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
+    self.tableView.tableFooterView = [UIView new];
+
     [self fetchEvents];
+    
+    FTImageAssetRenderer *renderer = [FTAssetRenderer rendererForImageNamed:@"compose" withExtension:@"png"];
+    renderer.targetColor = [UIColor whiteColor];
+    UIImage *image= [renderer imageWithCacheIdentifier:@"white"];
+    
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.frame = CGRectMake(0, 0, 22, 22);
+    [rightButton setImage:image forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(composeEventButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *rightButtonItem=[[UIBarButtonItem alloc] init];
+    [rightButtonItem setCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightButtonItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDeleted) name:@"eventDelete" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchEvents) name:@"eventPosted" object:nil];
+
+}
+
+- (void)eventDeleted
+{
+    [self fetchEvents];
+}
+
+- (void)composeEventButtonPressed
+{
+    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //DBEventCreateViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBEventCreateViewController"];
+   // [self.navigationController pushViewController:vc animated:YES];
+  
+    
+    
+    DBEventCreateController *vc = [[DBEventCreateController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 - (void)fetchEvents
@@ -40,6 +80,15 @@
         {
             eventsArray = [events mutableCopy];
             [self.tableView reloadData];
+            
+            if (events.count == 0)
+            {
+                [self displayEmptyView:YES withText:@"No events" andSubText:@"You can find events for your building here."];
+            }
+            else
+            {
+                [self displayEmptyView:NO withText:@"No events" andSubText:@"You can find events for your building here."];
+            }
         }
     }];
 }

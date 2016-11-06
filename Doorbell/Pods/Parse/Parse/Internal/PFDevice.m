@@ -9,13 +9,9 @@
 
 #import "PFDevice.h"
 
-#import <Parse/PFConstants.h>
-
-#if TARGET_OS_WATCH
-#import <WatchKit/WatchKit.h>
-#elif TARGET_OS_IOS || TARGET_OS_TV
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#elif PF_TARGET_OS_OSX
+#elif TARGET_OS_MAC
 #import <CoreServices/CoreServices.h>
 #endif
 
@@ -24,32 +20,20 @@
 #include <dirent.h>
 
 static NSString *PFDeviceSysctlByName(NSString *name) {
-    const char *charName = name.UTF8String;
-    NSString *string = nil;
-    size_t size = 0;
-    char *answer = NULL;
+    const char *charName = [name UTF8String];
 
-    do {
-        if (sysctlbyname(charName, NULL, &size, NULL, 0) != 0) {
-            break;
-        }
-        answer = (char*)malloc(size);
+    size_t size;
+    sysctlbyname(charName, NULL, &size, NULL, 0);
+    char *answer = (char*)malloc(size);
 
-        if (answer == NULL) {
-            break;
-        }
+    if (answer == NULL) {
+        return nil;
+    }
 
-        if (sysctlbyname(charName, answer, &size, NULL, 0) != 0) {
-            break;
-        }
-
-        // We need to check if the string is null-terminated or not.
-        // Documentation is silent on this fact, but in practice it actually is usually null-terminated.
-        size_t length = size - (answer[size - 1] == '\0');
-        string = [[NSString alloc] initWithBytes:answer length:length encoding:NSASCIIStringEncoding];
-    } while(0);
-
+    sysctlbyname(charName, answer, &size, NULL, 0);
+    NSString *string = [NSString stringWithUTF8String:answer];
     free(answer);
+
     return string;
 }
 
@@ -75,9 +59,7 @@ static NSString *PFDeviceSysctlByName(NSString *name) {
 - (NSString *)detailedModel {
     NSString *name = PFDeviceSysctlByName(@"hw.machine");
     if (!name) {
-#if TARGET_OS_WATCH
-        name = [WKInterfaceDevice currentDevice].model;
-#elif TARGET_OS_IOS
+#if TARGET_OS_IPHONE
         name = [UIDevice currentDevice].model;
 #elif TARGET_OS_MAC
         name = @"Mac";
@@ -95,15 +77,9 @@ static NSString *PFDeviceSysctlByName(NSString *name) {
     return version;
 }
 - (NSString *)operatingSystemVersion {
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     return [UIDevice currentDevice].systemVersion;
-#elif TARGET_OS_WATCH || TARGET_OS_TV
-    NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
-    return [NSString stringWithFormat:@"%d.%d.%d",
-            (int)version.majorVersion,
-            (int)version.minorVersion,
-            (int)version.patchVersion];
-#elif PF_TARGET_OS_OSX
+#elif TARGET_OS_MAC
     NSProcessInfo *info = [NSProcessInfo processInfo];
     if ([info respondsToSelector:@selector(operatingSystemVersion)]) {
         NSOperatingSystemVersion version = info.operatingSystemVersion;
@@ -133,7 +109,7 @@ static NSString *PFDeviceSysctlByName(NSString *name) {
 
 - (BOOL)isJailbroken {
     BOOL jailbroken = NO;
-#if TARGET_OS_IOS && !TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
     DIR *dir = opendir("/");
     if (dir != NULL) {
         jailbroken = YES;

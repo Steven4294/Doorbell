@@ -51,13 +51,9 @@
                 for ( PFUser *user in objects)
                 {
                     NSString *name = user[@"facebookName"];
-                    [[[DBObjectManager alloc] init] fetchImageForUser:user withBlock:^(BOOL success, UIImage *image)
-                     {
-                        DBCustomAcObject *customObject = [[DBCustomAcObject alloc] initWithUsername:name objectId:user.objectId image:image];
-                        [allUserNames addObject:customObject];
-                        
-                    }];
-                
+                    
+                    DBCustomAcObject *customObject = [[DBCustomAcObject alloc] initWithUsername:name user:user];
+                    [allUserNames addObject:customObject];
 
                 }
                 handler([allUserNames copy]);

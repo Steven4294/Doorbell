@@ -22,19 +22,23 @@
 
 ///--------------------------------------
 #pragma mark - Init
-///--------------------------------------s
+///--------------------------------------
 
-- (instancetype)initWithDataSource:(id<PFCommandRunnerProvider>)dataSource {
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
+- (instancetype)initWithCommandRunner:(id<PFCommandRunning>)commandRunner {
     self = [super init];
     if (!self) return nil;
 
-    _dataSource = dataSource;
+    _commandRunner = commandRunner;
 
     return self;
 }
 
-+ (instancetype)controllerWithDataSource:(id<PFCommandRunnerProvider>)dataSource {
-    return [[self alloc] initWithDataSource:dataSource];
++ (instancetype)controllerWithCommandRunner:(id<PFCommandRunning>)commandRunner {
+    return [[self alloc] initWithCommandRunner:commandRunner];
 }
 
 ///--------------------------------------
@@ -51,7 +55,7 @@
         PFRESTCloudCommand *command = [PFRESTCloudCommand commandForFunction:functionName
                                                               withParameters:encodedParameters
                                                                 sessionToken:sessionToken];
-        return [self.dataSource.commandRunner runCommandAsync:command withOptions:PFCommandRunningOptionRetryIfFailed];
+        return [self.commandRunner runCommandAsync:command withOptions:PFCommandRunningOptionRetryIfFailed];
     }] continueWithSuccessBlock:^id(BFTask *task) {
         return ((PFCommandResult *)(task.result)).result[@"result"];
     }] continueWithSuccessBlock:^id(BFTask *task) {

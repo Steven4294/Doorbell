@@ -19,7 +19,10 @@
     // configure the view
     self.titleLabel.text = event[@"eventTitle"];
     self.titleLabel.userInteractionEnabled = YES;
-    self.creatorLabel.text = [NSString stringWithFormat:@"Created by %@", event[@"creator"][@"facebookName"]];
+   // self.creatorLabel.text = [NSString stringWithFormat:@"Created by %@", event[@"creator"][@"facebookName"]];
+    
+    PFUser *creator = event[@"creator"];
+    
     self.locationLabel.text = event[@"locationString"];
     
     NSDate *startTime = event[@"startTime"];

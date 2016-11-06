@@ -9,17 +9,13 @@
 
 #import "PFRESTCommand.h"
 
-#import <Parse/PFConstants.h>
-
 extern NSUInteger const PFRESTObjectBatchCommandSubcommandsLimit;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PFRESTObjectBatchCommand : PFRESTCommand
 
-+ (instancetype)batchCommandWithCommands:(NSArray<PFRESTCommand *> *)commands
-                            sessionToken:(nullable NSString *)sessionToken
-                               serverURL:(NSURL *)serverURL;
++ (instancetype)batchCommandWithCommands:(NSArray *)commands sessionToken:(nullable NSString *)sessionToken;
 
 @end
 

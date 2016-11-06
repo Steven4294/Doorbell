@@ -21,8 +21,6 @@
 #import "PFRole.h"
 #import "PFUser.h"
 #import "PFUserPrivate.h"
-#import "Parse_Private.h"
-#import "PFCoreManager.h"
 
 static NSString *const PFACLPublicKey_ = @"*";
 static NSString *const PFACLUnresolvedKey_ = @"*unresolved";
@@ -71,15 +69,12 @@ static NSString *const PFACLCodingDataKey_ = @"ACL";
 }
 
 + (PFACL *)defaultACL {
-    PFDefaultACLController *controller = [Parse _currentManager].coreManager.defaultACLController;
-    return [[controller getDefaultACLAsync] waitForResult:NULL withMainThreadWarning:NO];
+    return [[[PFDefaultACLController defaultController] getDefaultACLAsync] waitForResult:NULL
+                                                                    withMainThreadWarning:NO];
 }
 
 + (void)setDefaultACL:(PFACL *)acl withAccessForCurrentUser:(BOOL)currentUserAccess {
-    PFDefaultACLController *controller = [Parse _currentManager].coreManager.defaultACLController;
-    // TODO: (nlutsenko) Remove this in favor of assert on `_currentManager`.
-    PFConsistencyAssert(controller, @"Can't set default ACL before Parse is initialized.");
-    [controller setDefaultACLAsync:acl withCurrentUserAccess:currentUserAccess];
+    [[PFDefaultACLController defaultController] setDefaultACLAsync:acl withCurrentUserAccess:currentUserAccess];
 }
 
 - (void)setShared:(BOOL)newShared {
@@ -275,7 +270,7 @@ static NSString *const PFACLCodingDataKey_ = @"ACL";
 - (void)setReadAccess:(BOOL)allowed forUser:(PFUser *)user {
     NSString *objectId = user.objectId;
     if (!objectId) {
-        if (user._lazy) {
+        if ([user isLazy]) {
             [self setUnresolvedReadAccess:allowed forUser:user];
             return;
         }
@@ -301,7 +296,7 @@ static NSString *const PFACLCodingDataKey_ = @"ACL";
 - (void)setWriteAccess:(BOOL)allowed forUser:(PFUser *)user {
     NSString *objectId = user.objectId;
     if (!objectId) {
-        if (user._lazy) {
+        if ([user isLazy]) {
             [self setUnresolvedWriteAccess:allowed forUser:user];
             return;
         }
@@ -341,7 +336,7 @@ static NSString *const PFACLCodingDataKey_ = @"ACL";
 }
 
 - (NSUInteger)hash {
-    return self.state.hash ^ unresolvedUser.hash;
+    return [self.state hash] ^ [unresolvedUser hash];
 }
 
 ///--------------------------------------

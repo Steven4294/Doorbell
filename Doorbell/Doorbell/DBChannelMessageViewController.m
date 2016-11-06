@@ -8,9 +8,12 @@
 
 #import "DBChannelMessageViewController.h"
 #import "DBObjectManager.h"
+#import "DBGenericProfileViewController.h"
+
 @interface DBChannelMessageViewController ()
 {
     BOOL isSendingMessage;
+    BOOL isPushingViewController;
     DBObjectManager *objectManager;
 }
 
@@ -42,6 +45,7 @@
 - (void)setChannel:(PFObject *)channel
 {
     _channel = channel;
+    self.title = channel[@"channelName"];
     self.chatData = [[DBChannelData alloc] init];
 
     self.chatData.channel = channel;
@@ -55,6 +59,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    isPushingViewController = NO;
+
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(recievedNewMessages)
@@ -369,7 +375,27 @@
 
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Tapped avatar!");
+    if (isPushingViewController == NO) {
+        isPushingViewController = YES;
+        JSQMessage *message = [self.chatData.messages objectAtIndex:indexPath.row];
+        NSString *objectId = [message senderId];
+        
+        PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+        [query whereKey:@"objectId" equalTo:objectId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            
+            PFUser *user = [objects firstObject];
+            
+            NSLog(@"Tapped avatar! %@", user);
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+            vc.user = user;
+            [self.navigationController pushViewController:vc animated:YES];
+            isPushingViewController = NO;
+        }];
+    }
+
 }
 
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didTapMessageBubbleAtIndexPath:(NSIndexPath *)indexPath

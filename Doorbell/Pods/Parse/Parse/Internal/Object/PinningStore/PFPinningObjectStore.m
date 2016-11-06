@@ -17,7 +17,7 @@
 #import "PFQueryPrivate.h"
 
 @interface PFPinningObjectStore () {
-    NSMapTable<NSString *, BFTask<PFPin *> *> *_pinCacheTable;
+    NSMapTable *_pinCacheTable;
     dispatch_queue_t _pinCacheAccessQueue;
     BFExecutor *_pinCacheAccessExecutor;
 }
@@ -29,6 +29,10 @@
 ///--------------------------------------
 #pragma mark - Init
 ///--------------------------------------
+
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
 
 - (instancetype)initWithDataSource:(id<PFOfflineStoreProvider>)dataSource {
     self = [super init];
@@ -51,7 +55,7 @@
 #pragma mark - Pin
 ///--------------------------------------
 
-- (BFTask<PFPin *> *)fetchPinAsyncWithName:(NSString *)name {
+- (BFTask *)fetchPinAsyncWithName:(NSString *)name {
     @weakify(self);
     return [BFTask taskFromExecutor:_pinCacheAccessExecutor withBlock:^id{
         BFTask *cachedTask = [_pinCacheTable objectForKey:name] ?: [BFTask taskWithResult:nil];
@@ -75,13 +79,13 @@
     }];
 }
 
-- (BFTask<PFVoid> *)pinObjectsAsync:(NSArray *)objects withPinName:(NSString *)name includeChildren:(BOOL)includeChildren {
+- (BFTask *)pinObjectsAsync:(NSArray *)objects withPinName:(NSString *)name includeChildren:(BOOL)includeChildren {
     if (objects.count == 0) {
-        return [BFTask taskWithResult:nil];
+        return [BFTask taskWithResult:@YES];
     }
 
     @weakify(self);
-    return [[self fetchPinAsyncWithName:name] continueWithSuccessBlock:^id(BFTask *task) {
+    return [[[self fetchPinAsyncWithName:name] continueWithSuccessBlock:^id(BFTask *task) {
         @strongify(self);
         PFPin *pin = task.result;
         PFOfflineStore *store = self.dataSource.offlineStore;
@@ -109,26 +113,26 @@
             saveTask = [store saveObjectLocallyAsync:pin withChildren:pin.objects];
         }
         return saveTask;
-    }];
+    }] continueWithSuccessResult:@YES];
 }
 
 ///--------------------------------------
 #pragma mark - Unpin
 ///--------------------------------------
 
-- (BFTask<PFVoid> *)unpinObjectsAsync:(NSArray *)objects withPinName:(NSString *)name {
+- (BFTask *)unpinObjectsAsync:(NSArray *)objects withPinName:(NSString *)name {
     if (objects.count == 0) {
-        return [BFTask taskWithResult:nil];
+        return [BFTask taskWithResult:@YES];
     }
 
     @weakify(self);
-    return [[self fetchPinAsyncWithName:name] continueWithSuccessBlock:^id(BFTask *task) {
+    return [[[self fetchPinAsyncWithName:name] continueWithSuccessBlock:^id(BFTask *task) {
         @strongify(self);
         PFPin *pin = task.result;
         NSMutableArray *modified = pin.objects;
         if (!modified) {
             // Nothing to unpin
-            return nil;
+            return task;
         }
 
         //TODO (hallucinogen): some stuff @grantland mentioned can't be done maybe needs to be done here
@@ -144,14 +148,15 @@
         pin.objects = modified;
 
         return [store saveObjectLocallyAsync:pin includeChildren:YES];
-    }];
+    }] continueWithSuccessResult:@YES];
 }
 
-- (BFTask<PFVoid> *)unpinAllObjectsAsyncWithPinName:(NSString *)name {
+- (BFTask *)unpinAllObjectsAsyncWithPinName:(NSString *)name {
     @weakify(self);
     return [[self fetchPinAsyncWithName:name] continueWithSuccessBlock:^id(BFTask *task) {
         @strongify(self);
-        return [self.dataSource.offlineStore unpinObjectAsync:task.result];
+        PFPin *pin = task.result;
+        return [[self.dataSource.offlineStore unpinObjectAsync:pin] continueWithSuccessResult:@YES];
     }];
 }
 

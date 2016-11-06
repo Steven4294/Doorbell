@@ -10,11 +10,12 @@
 #import <UIKit/UIKit.h>
 
 #import "MLPAutoCompletionObject.h"
+@class PFUser;
 
 @interface DBCustomAcObject : NSObject <MLPAutoCompletionObject>
 @property (strong, nonatomic) NSString *objectId;
-@property (strong, nonatomic) UIImage *image;
+@property (strong, nonatomic) PFUser *user;
 
-- (id)initWithUsername:(NSString *)name objectId:(NSString *)objectId image:(UIImage *)image;
+- (id)initWithUsername:(NSString *)name user:(PFUser *)user;
 
 @end

@@ -32,17 +32,19 @@
 #import "LMPullToBounceWrapper.h"
 #import "UIScrollView+JElasticPullToRefresh.h"
 #import "FTImageAssetRenderer.h"
+#import "DBEventTableCell.h"
+#import "DBEventDetailViewController.h"
 
 @interface DBFeedTableViewController ()  <UIViewControllerTransitioningDelegate>
 {
-    NSMutableArray *requests;
+    NSMutableArray *feedObjects;
+    
     NSMutableDictionary *userDict;
     NSMutableArray *flaggedUsers;
     NSMutableOrderedSet *requestOrderedSet;
     int currentSelection;
     DBObjectManager *objectManager;
-    LMPullToBounceWrapper *pullToBounce;
-
+    JElasticPullToRefreshLoadingViewCircle *pullToRefresh;
 }
 
 @property (nonatomic, strong) DBTableViewCell *prototypeCell;
@@ -57,7 +59,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[PFUser currentUser] fetch];
+    
     objectManager = [[DBObjectManager alloc] init];
+    feedObjects = [[NSMutableArray alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     requestOrderedSet = [[NSMutableOrderedSet alloc] init];
     self.tableView.delegate = self;
@@ -68,7 +73,7 @@
     [[PFUser currentUser] fetchIfNeeded];
     
     [self loadTableView];
-
+    
     [self setupRefreshControl];
     [self.requestButton addTarget:self action:@selector(requestButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
@@ -89,7 +94,9 @@
     [rightButtonItem setCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:@"requestPosted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"requestPosted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"eventDelete" object:nil];
+
 }
 
 - (void)setupRefreshControl
@@ -97,32 +104,40 @@
     __weak typeof(self) welf = self;
     
     
-    JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
-    loadingViewCircle.tintColor = [UIColor whiteColor];
+    pullToRefresh = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
+    pullToRefresh.tintColor = [UIColor whiteColor];
     
     [self.tableView addJElasticPullToRefreshViewWithActionHandler:^
      {
-         //[welf refreshTableView];
          [welf loadTableView];
      }
      
-                                                      LoadingView:loadingViewCircle];
+                                                      LoadingView:pullToRefresh];
     
     [self.tableView setJElasticPullToRefreshFillColor:self.navigationController.navigationBar.barTintColor];
     [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor whiteColor]];
 }
 - (void)loadTableView
 {
-    [objectManager fetchAllRequests:^(NSError *error, NSArray *objects) {
-        
-        if (!error) {
-            requests = [objects mutableCopy];
-            [requestOrderedSet addObjectsFromArray:objects];
-            [self.tableView reloadData];
-            //[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
-            [self.tableView stopLoading];
-        }
-    }];
+    [objectManager fetchAllFeedObjects:^(NSError *error, NSArray *objects)
+     {
+         if (!error)
+         {
+             feedObjects = [objects mutableCopy];
+             if ([[[feedObjects firstObject] parseClassName] isEqualToString:@"Event"])
+             {
+                 [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+             }
+             else
+             {
+                 [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor whiteColor]];
+             }
+             [self.tableView reloadData];
+            
+         }
+         [self.tableView stopLoading];
+
+     }];
 }
 
 - (void)refreshTableView
@@ -130,6 +145,7 @@
     /*
      *  TODO: this sometimes breaks :(
      */
+    /*
     int countBefore = 0;
     
     if (requests != nil)
@@ -138,48 +154,48 @@
     }
     
     [objectManager fetchAllRequests:^(NSError *error, NSArray *objects)
-    {
-        if (error == nil)
-        {
+     {
+         if (error == nil)
+         {
+             requests = [objects mutableCopy];
+             [requestOrderedSet addObjectsFromArray:objects];
+             int amountToInsert = (int)requests.count - countBefore;
+             
+             if (amountToInsert > 0)
+             {
+                 NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+                 
+                 for (int i = 0; i < amountToInsert; i++)
+                 {
+                     [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                 }
+                 
+                 NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+                 
+                 for (PFObject *object in objects)
+                 {
+                     object[@"createdAt"] = [object createdAt];
+                 }
+                 [requests sortUsingDescriptors:@[sortDescriptor]];
+                 
+                 [self.tableView beginUpdates];
+                 [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+                 [self.tableView endUpdates];
+             }
+             
+             else
+             {
                  requests = [objects mutableCopy];
-                 [requestOrderedSet addObjectsFromArray:objects];
-                 int amountToInsert = (int)requests.count - countBefore;
-        
-                 if (amountToInsert > 0)
-                 {
-                     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-                     
-                     for (int i = 0; i < amountToInsert; i++)
-                     {
-                         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                     }
-                     
-                     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
-                     
-                     for (PFObject *object in objects)
-                     {
-                         object[@"createdAt"] = [object createdAt];
-                     }
-                     [requests sortUsingDescriptors:@[sortDescriptor]];
-                     
-                     [self.tableView beginUpdates];
-                     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-                     [self.tableView endUpdates];
-                 }
-            
-                 else
-                 {
-                     requests = [objects mutableCopy];
-                     [self.tableView reloadData];
-                 }
-        }
-        else
-        {
-            NSLog(@"error refreshing: %@", error);
-        }
-        [self.tableView.pullToRefreshView stopAnimating];
-        [self.tableView stopLoading];
-    }];
+                 [self.tableView reloadData];
+             }
+         }
+         else
+         {
+             NSLog(@"error refreshing: %@", error);
+         }
+         [self.tableView.pullToRefreshView stopAnimating];
+         [self.tableView stopLoading];
+     }];*/
 }
 
 -(void)requestButtonPressed
@@ -265,76 +281,95 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [requests count];
+    return [feedObjects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DBTableViewCell *cell;
+    PFObject *object = [feedObjects objectAtIndex:indexPath.row];
     
-    PFObject *object = [requests objectAtIndex:indexPath.row];
-    BOOL isComplete = [object[@"complete"] boolValue];
-    
-    if (isComplete == YES)
+    if ([object.parseClassName isEqualToString:@"Request"])
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"fulfilledCell" forIndexPath:indexPath];
-    }
-    else
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    }
-    
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-
-    PFUser *poster = object[@"poster"];
-    cell.requestObject = object;
-    cell.layoutMargins = UIEdgeInsetsZero;
-    //cell.separatorInset = UIEdgeInsetsZero;
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-    [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
-    [cell.profileImageView addGestureRecognizer:tapRecognizer];
-    
-    cell.classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
-    {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
-        vc.user = poster;
+        DBTableViewCell *cell;
+        BOOL isComplete = [object[@"complete"] boolValue];
         
-        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-        [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-        [self.navigationController pushViewController:vc animated:YES];
-    };
-    
-    UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
-    commentGesture.minimumPressDuration = 0.0f;
-    [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
-    [cell.commentLabel addGestureRecognizer:commentGesture];
-    
-    cell.delegate = self;
-    
-    [cell removeAllLeftButtons];
-    [cell removeAllRightButtons];
-    
-    UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
-    if (poster != [PFUser currentUser])
-    {
-        [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
-        [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
-    }
-    else
-    {
-        [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
-        
-        if (isComplete == NO)
+        if (isComplete == YES)
         {
-            [cell addLeftButtonWithText:@"Close" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatEmeraldColor] font:font];
+            cell = [tableView dequeueReusableCellWithIdentifier:@"fulfilledCell" forIndexPath:indexPath];
         }
+        else
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
+        }
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        PFUser *poster = object[@"poster"];
+        cell.requestObject = object;
+        cell.layoutMargins = UIEdgeInsetsZero;
+        //cell.separatorInset = UIEdgeInsetsZero;
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+        [tapRecognizer addTarget:self action:@selector(cellImageViewTapped:)];
+        [cell.profileImageView addGestureRecognizer:tapRecognizer];
+        
+        cell.classifier.tapHandler = ^(KILabel *label, NSString *string, NSRange range)
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DBGenericProfileViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBGenericProfileViewController"];
+            vc.user = poster;
+            
+            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+            [vc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        
+        UILongPressGestureRecognizer *commentGesture = [[UILongPressGestureRecognizer alloc] init];
+        commentGesture.minimumPressDuration = 0.0f;
+        [commentGesture addTarget:self action:@selector(commentLabelWasTapped:)];
+        [cell.commentLabel addGestureRecognizer:commentGesture];
+        
+        cell.delegate = self;
+        
+        [cell removeAllLeftButtons];
+        [cell removeAllRightButtons];
+        
+        UIFont *font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0];
+        if (poster != [PFUser currentUser])
+        {
+            [cell addRightButtonWithText:@"Block" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+            [cell addRightButtonWithText:@"Chat" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatPeterRiverColor] font:font];
+        }
+        else
+        {
+            [cell addRightButtonWithText:@"Delete" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatAlizarinColor] font:font];
+            
+            if (isComplete == NO)
+            {
+                [cell addLeftButtonWithText:@"Close" textColor:[UIColor whiteColor] backgroundColor:[UIColor flatEmeraldColor] font:font];
+            }
+        }
+        return cell;
     }
-    return cell;
+    else
+    {
+        DBEventTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
+        cell.event = object;
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+        
+        return cell;
+    }
+    
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PFObject *object = [feedObjects objectAtIndex:indexPath.row];
+    if ([object.parseClassName isEqualToString:@"Event"])
+    {
+        return 484;
+    }
     return UITableViewAutomaticDimension;
 }
 
@@ -345,24 +380,40 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DBTableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    [self openCommentsViewController:cell];
-    
-    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[DBTableViewCell class]]) {
+        DBTableViewCell *DBCell = (DBTableViewCell *) cell;
+        [self openCommentsViewController:DBCell];
+        
+    }
+    else if ([cell isKindOfClass:[DBEventTableCell class]])
+    {
+        DBTableViewCell *DBCell = (DBEventTableCell *) cell;
+        [self openEventDetailViewController:DBCell];
+    }
 }
 
 - (void)openCommentsViewController:(DBTableViewCell *)cell
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DBCommentViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBCommentViewController"];
-    PFObject *request = [requests objectAtIndex:[self.tableView indexPathForCell:cell].row];
-
-   // vc.likersArray = cell.likersArray;
+    PFObject *request = [feedObjects objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    
     vc.request = request;
-  
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)openEventDetailViewController:(DBEventTableCell *)cell
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DBEventDetailViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBEventDetailViewController"];
+    PFObject *event = [feedObjects objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    
+    vc.event = event;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 -(CGFloat)paddingForString:(NSString *)string
 {
     CGFloat kNumberOfCharsPerLine = 30.0f;
@@ -409,7 +460,7 @@
 - (void)slideTableViewCell:(SESlideTableViewCell *)cell didTriggerLeftButton:(NSInteger)buttonIndex
 {
     DBTableViewCell *feedCell = (DBTableViewCell *) cell;
-
+    
     if (feedCell.user == [PFUser currentUser])
     {
         switch (buttonIndex)
@@ -420,13 +471,13 @@
                 
                 // update the UI
                 [cell setSlideState:SESlideTableViewCellSlideStateCenter animated:YES];
-          
+                
                 [self.tableView reloadRowsAtIndexPaths:@[[self.tableView indexPathForCell:feedCell]] withRowAnimation:UITableViewRowAnimationFade];
                 break;
         }
     }
-
-
+    
+    
 }
 #pragma mark - UIViewControllerTransitioningDelegate
 
@@ -501,13 +552,10 @@
 
 - (void)blockUser:(PFUser *)user
 {
-    
-    NSLog(@"blocking user");
     PFUser *userToFlag = user;
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flagRelation =  [currentUser relationForKey:@"flaggedUsers"];
     [flagRelation addObject:userToFlag];
-    
 }
 
 - (void)chatWithUser:(PFUser *)user
@@ -529,7 +577,7 @@
     
     // TODO: protect against crashing here
     [self.tableView beginUpdates];
-    [requests removeObject:cell.requestObject];
+    [feedObjects removeObject:cell.requestObject];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     [self.tableView endUpdates];
 }

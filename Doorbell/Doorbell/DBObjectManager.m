@@ -7,6 +7,8 @@
 //
 
 #import "DBObjectManager.h"
+#import "DBLocationManager.h"
+
 #import <SDWebImage/SDWebImageManager.h>
 @interface DBObjectManager ()
 
@@ -52,6 +54,45 @@
     return [PFUser currentUser];
 }
 
+- (void)updateUsersCurrentLocation
+{
+    if (self.currentUser != nil)
+    {
+        CLLocation *currentLocation = [[DBLocationManager sharedInstance] currentLocation];
+        PFGeoPoint *location;
+        location = [PFGeoPoint geoPointWithLocation:currentLocation];
+        
+        
+        if (location != nil && ([location distanceInMilesTo:[[PFGeoPoint alloc] init]] > 2.0))
+        {
+            NSLog(@"setting location to actual user's current location");
+            self.currentUser[@"location"] = location;
+            [self.currentUser saveInBackground];
+            
+        }
+        else
+        {
+            
+            PFQuery *query = [PFQuery queryWithClassName:@"Building"];
+            [query whereKey:@"buildingName" equalTo:self.currentUser[@"building"]];
+            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+                
+                PFObject *building = [objects firstObject];
+                self.currentUser[@"location"] = building[@"location"];
+                NSLog(@"should set current locaiton to building: %@", building[@"location"]);
+                
+                [self.currentUser saveInBackground];
+                
+            }];
+            
+        }
+        /*else
+         {
+         self.currentUser[@"location"] = self.currentUser[@"building"][@"]
+         }*/
+    }
+}
+
 - (void)postCommentWithString:(NSString *)commentString toRequest:(PFObject *)request fromUser:(PFUser *)poster withCompletion:(void(^)(BOOL success, PFObject *comment))block;
 {
     PFObject *comment = [PFObject objectWithClassName:@"Comment"];
@@ -79,11 +120,9 @@
 
 - (void)fetchLikersForRequest:(PFObject *)request withBlock:(void (^)(BOOL isLiked, NSArray *objects, NSError *error))block
 {
-    [request fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-        
-        NSLog(@"fetched request");
+    [request fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error)
+     {
         PFObject *fetchedRequest = object;
-        
         PFRelation *relation = fetchedRequest[@"likers"];
         PFQuery *query = [relation query];
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
@@ -93,10 +132,8 @@
                  BOOL doesLike = [objects containsObject:[PFUser currentUser]];
                  if (block) block(doesLike, objects, error);
              }
-             
          }];
-        
-    }];   
+    }];
 }
 
 - (void)toggleLike:(PFObject *)request
@@ -174,18 +211,50 @@
 
 - (void)fetchAllRequests:(void (^)(NSError *error, NSArray *requests))block
 {
+    if ([[PFUser currentUser][@"building"] isEqualToString:@""])
+    {
+        [self fetchAllNearbyRequests:^(NSError *error, NSArray *requests)
+        {
+            if (block) block(error, requests);
+        }];
+    }
+    else
+    {
+        PFUser *currentUser = [PFUser currentUser];
+        PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
+        PFQuery *relationQuery = [flaggedUserRelation query];
+        [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+         {
+             // objects = all the flagged users
+             PFQuery *query = [PFQuery queryWithClassName:@"Request"];
+             [query orderByDescending:@"createdAt"];
+             [query includeKey:@"poster"];
+             [query whereKey:@"building" equalTo:currentUser[@"building"]];
+             
+             [query whereKey:@"poster" notContainedIn:objects   ];
+             [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+              {
+                  if (block) block(error, objects);
+              }];
+         }];
+    }
+}
+
+- (void)fetchAllNearbyRequests:(void (^)(NSError *error, NSArray *requests))block
+{
     PFUser *currentUser = [PFUser currentUser];
     PFRelation *flaggedUserRelation = [currentUser relationForKey:@"flaggedUsers"];
     PFQuery *relationQuery = [flaggedUserRelation query];
     [relationQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
      {
          // objects = all the flagged users
+         PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLocation:[[DBLocationManager sharedInstance] currentLocation]];
          PFQuery *query = [PFQuery queryWithClassName:@"Request"];
          [query orderByDescending:@"createdAt"];
          [query includeKey:@"poster"];
-         [query whereKey:@"building" equalTo:currentUser[@"building"]];
+         [query whereKey:@"location" nearGeoPoint:geoPoint withinMiles:5.0f];
+         [query whereKey:@"poster" notContainedIn:objects];
          
-         [query whereKey:@"poster" notContainedIn:objects   ];
          [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
           {
               if (block) block(error, objects);
@@ -195,7 +264,7 @@
 
 - (void)fetchImageForUser:(PFUser *)user withBlock:(void (^)(BOOL, UIImage *))block
 {
-    // returns the cropped image (square)
+    
     if (user[@"profileImage"] != nil)
     {
         // use custom profile image
@@ -205,7 +274,7 @@
              {
                  UIImage *image = [UIImage imageWithData:data];
                  CGFloat size = MIN(image.size.width, image.size.height);
-                 image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
+                 //image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
                  if (block) block(YES, image);
              }
          }];
@@ -213,22 +282,31 @@
     else
     {
         // use FB provided profile picture
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
-        
-        NSURL *url = [NSURL URLWithString:URLString];
-        
-        SDWebImageManager *manager = [SDWebImageManager sharedManager  ];
-        [manager downloadImageWithURL:url options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-         {
-             if (error == nil)
+        if (user[@"facebookId"] != nil)
+        {
+            NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
+            
+            NSURL *url = [NSURL URLWithString:URLString];
+            
+            SDWebImageManager *manager = [SDWebImageManager sharedManager  ];
+            [manager downloadImageWithURL:url options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
              {
-                 CGFloat size = MIN(image.size.width, image.size.height);
-                 UIImage *cropped_image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
-                 if (block) block(YES, cropped_image);
-             }
-         }];
-    }
+                 if (error == nil)
+                 {
+                     CGFloat size = MIN(image.size.width, image.size.height);
+                     UIImage *cropped_image = [self imageByCroppingImage:image toSize:CGSizeMake(size,size)];
+                   //  if (block) block(YES, cropped_image);
+                     if (block) block(YES, image);
 
+                 }
+             }];
+        }
+        else
+        {
+            // use the placeholder (created from email account)
+            block(YES, [UIImage imageNamed:@"placeholder.png"]);
+        }
+    }
 }
 
 - (void)postMessage:(NSString *)string toUser:(PFUser *)user withCompletion:(void (^)(BOOL success))block
@@ -397,6 +475,8 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Notification"];
     [query whereKey:@"user" equalTo:user];
     [query includeKey:@"comment"];
+    [query includeKey:@"comment.poster"];
+
     [query includeKey:@"request"];
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
@@ -416,11 +496,33 @@
 - (void)fetchAllEvents:(void (^)(NSError *error, NSArray *events))block
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Event"];
-    [query orderByDescending:@"createdAt"];
+    [query orderByDescending:@"startTime"];
+    [query includeKey:@"creator"];
+    [query whereKey:@"building" equalTo:[PFUser currentUser][@"building"]];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
     {
         if (block) block(error, objects);
     }];
+}
+
+- (void)fetchAllFeedObjects:(void (^)(NSError *error, NSArray *objects))block
+{
+    [self fetchAllEvents:^(NSError *error, NSArray *events) {
+            [self fetchAllRequests:^(NSError *error, NSArray *requests) {
+                
+                NSMutableArray *objects = [[NSMutableArray alloc] init];
+                [objects addObjectsFromArray:events];
+                [objects addObjectsFromArray:requests];
+                
+                NSSortDescriptor *sortDescriptor;
+                sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt"
+                                                             ascending:NO];
+                NSArray *sortedArray = [objects sortedArrayUsingDescriptors:@[sortDescriptor]];
+                
+                if (block) block(error, sortedArray);
+            }];
+    }];
+    
 }
 
 - (void)fetchAllActiveUsers:(void (^)(NSError *error, NSArray *users))block
@@ -458,6 +560,7 @@
 {
     PFRelation *relation = [channel relationForKey:@"messages"];
     PFQuery *query = [relation query];
+    [query orderByAscending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         if (error == nil)
         {
@@ -496,8 +599,6 @@
 
 - (void)postMessage:(NSString *)string toChannel:(PFObject *)channel withCompletion:(void (^)(BOOL success))block
 {
-    NSLog(@"posting message to channel: %@", channel );
-
     PFObject *message = [PFObject objectWithClassName:@"Message"];
     message[@"sender"] = [PFUser currentUser];
     message[@"message"] = string;
@@ -517,7 +618,6 @@
 
 - (void)fetchAllChannelsWithCompletion:(void (^)(BOOL success, NSArray *channels))block;
 {
-    NSLog(@"calling fetch all channel");
     PFQuery *query = [PFQuery queryWithClassName:@"Channel"];
     [query whereKey:@"building" equalTo:[PFUser currentUser][@"building"]];
     [query orderByDescending:@"createdAt"];
@@ -527,6 +627,44 @@
      }];
 }
 
+- (void)fetchAllBuildings:(void (^)(NSError *error, NSArray *buildings))block
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Building"];
+    [query includeKey:@"codes"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         if (block) block(error, objects);
+     }];
+}
+
+- (void)fetchAllDeals:(void (^)(NSError *error, NSArray *deals))block
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Deal"];
+    NSLog(@"near %@", [PFUser currentUser][@"location"]);
+    [query whereKey:@"location" nearGeoPoint:[PFUser currentUser][@"location"] withinMiles:3000.0f];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error)
+     {
+         NSArray* reversedArray = [[objects reverseObjectEnumerator] allObjects];
+
+         if (block) block(error, reversedArray);
+     }];
+}
+
+- (BOOL)isCodeValid:(NSString *)code forBuilding:(PFObject *)building
+{
+    for (NSString *actualCode in building[@"codes"])
+    {
+        NSString *trimmedActualCode = [actualCode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *trimmedCode = [code stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if (([actualCode caseInsensitiveCompare:code] == NSOrderedSame) || ([trimmedActualCode caseInsensitiveCompare:trimmedCode] == NSOrderedSame))
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 # pragma mark - Private Methods
 

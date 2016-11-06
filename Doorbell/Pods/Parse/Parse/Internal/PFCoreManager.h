@@ -22,8 +22,7 @@ PFKeychainStoreProvider,
 PFFileManagerProvider,
 PFOfflineStoreProvider,
 PFKeyValueCacheProvider,
-PFInstallationIdentifierStoreProvider,
-PFPersistenceControllerProvider>
+PFInstallationIdentifierStoreProvider>
 
 @property (nonatomic, strong, readonly) PFInstallationIdentifierStore *installationIdentifierStore;
 
@@ -40,42 +39,36 @@ PFPersistenceControllerProvider>
 
 @interface PFCoreManager : NSObject
 <PFLocationManagerProvider,
-PFDefaultACLControllerProvider,
 PFObjectControllerProvider,
 PFObjectBatchController,
 PFObjectFilePersistenceControllerProvider,
 PFPinningObjectStoreProvider,
 PFObjectLocalIdStoreProvider,
 PFUserAuthenticationControllerProvider,
-#if !TARGET_OS_TV && !TARGET_OS_WATCH
-PFInstallationControllerProvider,
 PFCurrentInstallationControllerProvider,
-#endif
 PFCurrentUserControllerProvider,
-PFUserControllerProvider
->
+PFInstallationControllerProvider,
+PFUserControllerProvider>
 
 @property (nonatomic, weak, readonly) id<PFCoreManagerDataSource> dataSource;
 
-@property (null_resettable, nonatomic, strong) PFQueryController *queryController;
-@property (null_resettable, nonatomic, strong) PFFileController *fileController;
-@property (null_resettable, nonatomic, strong) PFCloudCodeController *cloudCodeController;
-@property (null_resettable, nonatomic, strong) PFConfigController *configController;
-@property (null_resettable, nonatomic, strong) PFSessionController *sessionController;
+@property (nonatomic, strong) PFQueryController *queryController;
+@property (nonatomic, strong) PFFileController *fileController;
+@property (nonatomic, strong) PFCloudCodeController *cloudCodeController;
+@property (nonatomic, strong) PFConfigController *configController;
+@property (nonatomic, strong) PFSessionController *sessionController;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithDataSource:(id<PFCoreManagerDataSource>)dataSource NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)managerWithDataSource:(id<PFCoreManagerDataSource>)dataSource;
 
 ///--------------------------------------
-#pragma mark - ObjectFilePersistenceController
+/// @name ObjectFilePersistenceController
 ///--------------------------------------
 
 - (void)unloadObjectFilePersistenceController;

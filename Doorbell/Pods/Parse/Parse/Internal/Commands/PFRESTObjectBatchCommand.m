@@ -11,26 +11,22 @@
 
 #import "PFAssert.h"
 #import "PFHTTPRequest.h"
-#import "PFURLConstructor.h"
 
 NSUInteger const PFRESTObjectBatchCommandSubcommandsLimit = 50;
 
 @implementation PFRESTObjectBatchCommand
 
-+ (nonnull instancetype)batchCommandWithCommands:(nonnull NSArray<PFRESTCommand *> *)commands
-                                    sessionToken:(nullable NSString *)sessionToken
-                                       serverURL:(nonnull NSURL *)serverURL {
-    PFParameterAssert(commands.count <= PFRESTObjectBatchCommandSubcommandsLimit,
++ (nonnull instancetype)batchCommandWithCommands:(NSArray *)commands
+                                    sessionToken:(NSString *)sessionToken {
+    PFParameterAssert([commands count] <= PFRESTObjectBatchCommandSubcommandsLimit,
                       @"Max of %d commands are allowed in a single batch command",
                       (int)PFRESTObjectBatchCommandSubcommandsLimit);
 
-    NSMutableArray *requests = [NSMutableArray arrayWithCapacity:commands.count];
+    NSMutableArray *requests = [NSMutableArray arrayWithCapacity:[commands count]];
     for (PFRESTCommand *command in commands) {
-        NSURL *commandURL = [PFURLConstructor URLFromAbsoluteString:serverURL.absoluteString
-                                                               path:command.httpPath
-                                                              query:nil];
         NSMutableDictionary *requestDictionary = [@{ @"method" : command.httpMethod,
-                                                     @"path" : commandURL.path } mutableCopy];
+                                                     @"path" : [NSString stringWithFormat:@"/1/%@", command.httpPath]
+                                                     } mutableCopy];
         if (command.parameters) {
             requestDictionary[@"body"] = command.parameters;
         }

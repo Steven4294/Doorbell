@@ -11,6 +11,7 @@
 
 #import "BFTask+Private.h"
 #import "PFAsyncTaskQueue.h"
+#import "PFFileManager.h"
 #import "PFInstallationIdentifierStore.h"
 #import "PFInstallationPrivate.h"
 #import "PFMacros.h"
@@ -47,7 +48,7 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
 ///--------------------------------------
 
 - (instancetype)initWithStorageType:(PFCurrentObjectStorageType)storageType
-                   commonDataSource:(id<PFInstallationIdentifierStoreProvider>)commonDataSource
+                   commonDataSource:(id<PFFileManagerProvider, PFInstallationIdentifierStoreProvider>)commonDataSource
                      coreDataSource:(id<PFObjectFilePersistenceControllerProvider>)coreDataSource {
     self = [super init];
     if (!self) return nil;
@@ -63,7 +64,7 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
 }
 
 + (instancetype)controllerWithStorageType:(PFCurrentObjectStorageType)storageType
-                         commonDataSource:(id<PFInstallationIdentifierStoreProvider>)commonDataSource
+                         commonDataSource:(id<PFFileManagerProvider, PFInstallationIdentifierStoreProvider>)commonDataSource
                            coreDataSource:(id<PFObjectFilePersistenceControllerProvider>)coreDataSource {
     return [[self alloc] initWithStorageType:storageType
                             commonDataSource:commonDataSource
@@ -90,7 +91,7 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
                         // If there is no objectId, but there is some data
                         // it means that the data wasn't yet saved to the server
                         // so we should mark everything as dirty
-                        if (!installation.objectId && installation.allKeys.count) {
+                        if (!installation.objectId && [[installation allKeys] count]) {
                             [installation _markAllFieldsDirty];
                         }
                     }
@@ -105,9 +106,8 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
             }
 
             PFInstallation *installation = task.result;
-            //TODO: (nlutsenko) Make it not terrible aka actually use task chaining here.
-            NSString *installationId = [[self.installationIdentifierStore getInstallationIdentifierAsync] waitForResult:nil];
-            installationId = installationId.lowercaseString;
+            NSString *installationId = self.installationIdentifierStore.installationIdentifier;
+            installationId = [installationId  lowercaseString];
             if (!installation || ![installationId isEqualToString:installation.installationId]) {
                 // If there's no installation object, or the object's installation
                 // ID doesn't match this device's installation ID, create a new
@@ -141,9 +141,7 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
     }];
 }
 
-- (BFTask *)saveCurrentObjectAsync:(PFObject *)object {
-    PFInstallation *installation = (PFInstallation *)object;
-
+- (BFTask *)saveCurrentObjectAsync:(PFInstallation *)installation {
     @weakify(self);
     return [_dataTaskQueue enqueue:^BFTask *(BFTask *unused) {
         @strongify(self);
@@ -182,7 +180,8 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
             [tasks addObject:unpinTask];
         }
 
-        BFTask *fileTask = [self.coreDataSource.objectFilePersistenceController removePersistentObjectAsyncForKey:PFCurrentInstallationFileName];
+        NSString *path = [self.fileManager parseDataItemPathForPathComponent:PFCurrentInstallationFileName];
+        BFTask *fileTask = [PFFileManager removeItemAtPathAsync:path];
         [tasks addObject:fileTask];
 
         return [BFTask taskForCompletionOfAllTasks:tasks];
@@ -210,9 +209,9 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
 
         return [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task) {
             NSArray *results = task.result;
-            if (results.count == 1) {
-                return [BFTask taskWithResult:results.firstObject];
-            } else if (results.count != 0) {
+            if ([results count] == 1) {
+                return [BFTask taskWithResult:[results firstObject]];
+            } else if ([results count] != 0) {
                 return [[PFObject unpinAllObjectsInBackgroundWithName:PFCurrentInstallationPinName]
                         continueWithSuccessResult:nil];
             }
@@ -244,6 +243,10 @@ NSString *const PFCurrentInstallationPinName = @"_currentInstallation";
 ///--------------------------------------
 #pragma mark - Accessors
 ///--------------------------------------
+
+- (PFFileManager *)fileManager {
+    return self.commonDataSource.fileManager;
+}
 
 - (PFObjectFilePersistenceController *)objectFilePersistenceController {
     return self.coreDataSource.objectFilePersistenceController;

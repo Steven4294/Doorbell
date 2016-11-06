@@ -11,7 +11,7 @@
 
 #import <Parse/PFConstants.h>
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFFileManager;
 @class PFSQLiteDatabase;
 
@@ -22,21 +22,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) PFFileManager *fileManager;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithFileManager:(PFFileManager *)fileManager NS_DESIGNATED_INITIALIZER;
 + (instancetype)controllerWithFileManager:(PFFileManager *)fileManager;
 
 ///--------------------------------------
-#pragma mark - Opening
+/// @name Opening
 ///--------------------------------------
 
-/**
- Asynchronously opens a database connection to the database with the name specified.
+/*!
+ @abstract Asynchronously opens a database connection to the database with the name specified.
  @note Only one database can be actively open at a time.
 
  @param name The name of the database to open.

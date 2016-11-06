@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Parse.h"
+#import "PFObject+Properties.h"
 
 @interface DBObjectManager : NSObject
 
@@ -19,6 +20,8 @@
 //
 //  Posting APIs
 //
+
+- (void)updateUsersCurrentLocation;
 
 - (void)postCommentWithString:(NSString *)commentString
                     toRequest:(PFObject *)request
@@ -46,11 +49,16 @@
 //
 //  Fetching APIs
 //
+- (void)fetchAllDeals:(void (^)(NSError *error, NSArray *deals))block;
+
+- (void)fetchAllFeedObjects:(void (^)(NSError *error, NSArray *objects))block;
 
 - (void)fetchLikersForRequest:(PFObject *)request
                     withBlock:(void (^)(BOOL isLiked, NSArray *objects, NSError *error))block;
 
-- (void)fetchAllRequests:(void (^)(NSError *error, NSArray *requests))block;
+- (void)fetchAllRequests:(void (^)(NSError *error, NSArray *requests))block; // fetches all the requests for a specific building
+
+- (void)fetchAllNearbyRequests:(void (^)(NSError *error, NSArray *requests))block; // fetches all the nearby requests
 
 - (void)fetchImageForUser:(PFUser *)user withBlock:(void (^)(BOOL success, UIImage *image))block;
 
@@ -80,12 +88,17 @@
 
 - (void)fetchAllChannelsWithCompletion:(void (^)(BOOL success, NSArray *channels))block;
 
+- (void)fetchAllBuildings:(void (^)(NSError *error, NSArray *buildings))block;
+
+
 
 //
 // convenience methods
 //
 
 - (BOOL)isUserActive:(PFUser *)user;
+- (BOOL)isCodeValid:(NSString *)code forBuilding:(PFObject *)building;
+
 
 @end
 

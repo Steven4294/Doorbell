@@ -12,6 +12,7 @@
 #import "DBEventMiddleCell.h"
 #import "DBEventBottomCell.h"
 #import "Parse.h"
+#import "DBEventCreateController.h"
 
 @implementation DBEventDetailViewController
 
@@ -22,6 +23,47 @@
     self.collectionView.delegate = self;
     
     [self configureCustomBackButton];
+    [self configureRightButton];
+}
+
+- (void)configureRightButton
+{
+    if ([self.event[@"creator"] isEqual:[PFUser currentUser]])
+    {
+        UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonPressed)];
+        self.navigationItem.rightBarButtonItem = rightButton;
+    }
+}
+
+- (void)editButtonPressed
+{
+    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"Select:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:
+                            
+                            nil];
+    [popup showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex)
+    {
+        case 0:
+            [self deleteEvent];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)deleteEvent
+{
+
+    [self.event deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"eventDelete" object:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 # pragma mark - CollectionView Datasource Methods

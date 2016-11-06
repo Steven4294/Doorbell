@@ -30,6 +30,10 @@
 #pragma mark - Init
 ///--------------------------------------
 
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
 - (instancetype)initWithDataSource:(id<PFCommandRunnerProvider>)dataSource {
     self = [super init];
     if (!self) return nil;
@@ -113,16 +117,12 @@
         NSArray *objectBatches = [PFInternalUtils arrayBySplittingArray:objects
                                         withMaximumComponentsPerSegment:PFRESTObjectBatchCommandSubcommandsLimit];
         NSMutableArray *tasks = [NSMutableArray arrayWithCapacity:objectBatches.count];
-
-        id<PFCommandRunning> commandRunner = self.dataSource.commandRunner;
-        NSURL *serverURL = commandRunner.serverURL;
         for (NSArray *batch in objectBatches) {
-
-            PFRESTCommand *command = [self _deleteCommandForObjects:batch withSessionToken:sessionToken serverURL:serverURL];
-            BFTask *task = [[commandRunner runCommandAsync:command
-                                               withOptions:PFCommandRunningOptionRetryIfFailed] continueWithSuccessBlock:^id(BFTask *task) {
+            PFRESTCommand *command = [self _deleteCommandForObjects:batch withSessionToken:sessionToken];
+            BFTask *task = [[self.dataSource.commandRunner runCommandAsync:command
+                                                              withOptions:PFCommandRunningOptionRetryIfFailed] continueWithSuccessBlock:^id(BFTask *task) {
                 PFCommandResult *result = task.result;
-                return [self _processDeleteResultsAsync:result.result forObjects:batch];
+                return [self _processDeleteResultsAsync:[result result] forObjects:batch];
             }];
             [tasks addObject:task];
         }
@@ -147,16 +147,14 @@
     }] continueWithSuccessResult:objects];
 }
 
-- (PFRESTCommand *)_deleteCommandForObjects:(NSArray *)objects
-                           withSessionToken:(NSString *)sessionToken
-                                  serverURL:(NSURL *)serverURL {
+- (PFRESTCommand *)_deleteCommandForObjects:(NSArray *)objects withSessionToken:(NSString *)sessionToken {
     NSMutableArray *commands = [NSMutableArray arrayWithCapacity:objects.count];
     for (PFObject *object in objects) {
         PFRESTCommand *deleteCommand = [PFRESTObjectCommand deleteObjectCommandForObjectState:object._state
                                                                              withSessionToken:sessionToken];
         [commands addObject:deleteCommand];
     }
-    return [PFRESTObjectBatchCommand batchCommandWithCommands:commands sessionToken:sessionToken serverURL:serverURL];
+    return [PFRESTObjectBatchCommand batchCommandWithCommands:commands sessionToken:sessionToken];
 }
 
 - (BFTask *)_processDeleteResultsAsync:(NSArray *)results forObjects:(NSArray *)objects {
@@ -188,11 +186,11 @@
         return objects;
     }
 
-    NSMutableSet *set = [NSMutableSet setWithCapacity:objects.count];
+    NSMutableSet *set = [NSMutableSet setWithCapacity:[objects count]];
     NSString *className = [objects.firstObject parseClassName];
     for (PFObject *object in objects) {
         @synchronized (object.lock) {
-            if (omitFetched && object.dataAvailable) {
+            if (omitFetched && [object isDataAvailable]) {
                 continue;
             }
 
@@ -205,7 +203,7 @@
             [set addObject:object];
         }
     }
-    return set.allObjects;
+    return [set allObjects];
 }
 
 + (NSArray *)uniqueObjectsArrayFromArray:(NSArray *)objects usingFilter:(BOOL (^)(PFObject *object))filter {
@@ -225,7 +223,7 @@
             uniqueObjects[objectIdentifier] = object;
         }
     }
-    return uniqueObjects.allValues;
+    return [uniqueObjects allValues];
 }
 
 @end

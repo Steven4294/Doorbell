@@ -113,7 +113,6 @@
 {
     [self.button setCurrentModeWithAnimation:JTHamburgerButtonModeCross];
     self.topViewController.view.userInteractionEnabled = NO;
-    self.topViewController.view.backgroundColor = [UIColor yellowColor];
 }
 
 - (void)willDismissLeftView:(id)sender

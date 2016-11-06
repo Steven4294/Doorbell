@@ -9,6 +9,8 @@
 
 #import "PFNetworkActivityIndicatorManager.h"
 
+#import <Parse/PFConstants.h>
+
 #import "PFApplication.h"
 #import "PFCommandRunningConstants.h"
 
@@ -33,11 +35,11 @@ static NSTimeInterval const PFNetworkActivityIndicatorVisibilityDelay = 0.17;
 #pragma mark - Init
 ///--------------------------------------
 
-+ (PFNetworkActivityIndicatorManager *)sharedManager {
++ (instancetype)sharedManager {
     static PFNetworkActivityIndicatorManager *manager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        manager = [[PFNetworkActivityIndicatorManager alloc] init];
+        manager = [[self alloc] init];
         manager.enabled = YES;
     });
     return manager;
@@ -121,7 +123,7 @@ static NSTimeInterval const PFNetworkActivityIndicatorVisibilityDelay = 0.17;
 - (void)_updateNetworkActivityIndicatorVisibilityAfterDelay {
     if (self.enabled) {
         // Delay hiding of activity indicator for a short interval, to avoid flickering
-        if (!self.networkActivityIndicatorVisible) {
+        if (![self isNetworkActivityIndicatorVisible]) {
             [self.activityIndicatorVisibilityTimer invalidate];
 
             NSTimeInterval timeInterval = PFNetworkActivityIndicatorVisibilityDelay;
@@ -144,7 +146,7 @@ static NSTimeInterval const PFNetworkActivityIndicatorVisibilityDelay = 0.17;
 
 - (void)_updateNetworkActivityIndicatorVisibility NS_EXTENSION_UNAVAILABLE_IOS("") {
     if (![PFApplication currentApplication].extensionEnvironment) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = self.networkActivityIndicatorVisible;
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:self.networkActivityIndicatorVisible];
     }
 }
 

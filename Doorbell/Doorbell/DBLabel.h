@@ -11,5 +11,6 @@
 @interface DBLabel : UILabel
 
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
+@property (nonatomic, assign) UIControlContentVerticalAlignment verticalAlignment;
 
 @end

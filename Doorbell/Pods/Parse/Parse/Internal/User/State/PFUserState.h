@@ -9,10 +9,6 @@
 
 #import "PFObjectState.h"
 
-@class PFMutableUserState;
-
-typedef void(^PFUserStateMutationBlock)(PFMutableUserState *state);
-
 @interface PFUserState : PFObjectState
 
 @property (nonatomic, copy, readonly) NSString *sessionToken;
@@ -21,17 +17,10 @@ typedef void(^PFUserStateMutationBlock)(PFMutableUserState *state);
 @property (nonatomic, assign, readonly) BOOL isNew;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)initWithState:(PFUserState *)state;
-- (instancetype)initWithState:(PFUserState *)state mutatingBlock:(PFUserStateMutationBlock)block;
 + (instancetype)stateWithState:(PFUserState *)state;
-
-///--------------------------------------
-#pragma mark - Mutating
-///--------------------------------------
-
-- (PFUserState *)copyByMutatingWithBlock:(PFUserStateMutationBlock)block;
 
 @end

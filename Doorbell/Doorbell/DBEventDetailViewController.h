@@ -11,7 +11,7 @@
 
 @class PFObject;
 
-@interface DBEventDetailViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MKMapViewDelegate>
+@interface DBEventDetailViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MKMapViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) PFObject *event;
 

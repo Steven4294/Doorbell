@@ -21,7 +21,7 @@
     PFObject *message = conversation[@"mostRecentMessage"];
     
     PFUser *user = [self otherUser:message[@"sender"] andUser:message[@"recipient"]];
-    
+
     //self.nameLabel.text = user[@"facebookName"];
     self.messageLabel.text = message[@"message"];
     

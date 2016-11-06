@@ -104,10 +104,13 @@
 {
     if (section == 0)
     {
+        NSLog(@"convos: %d", conversations.count);
         return conversations.count;
     }
     else
     {
+        NSLog(@"recents: %d", recentUsersToDisplay.count);
+
         return recentUsersToDisplay.count;
     }
 }
@@ -125,6 +128,7 @@
                                andUser:conversation[@"mostRecentMessage"][@"recipient"]];
         cell.conversation = conversation;
         cell.user = user;
+        //cell.user = user;
         // this can get piped down eventually
         if ([recentUsersAll containsObject:user])
         {
@@ -148,30 +152,47 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DBRecentMessageCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    PFUser *user = cell.user;
-    PFObject *conversation = cell.conversation;
-    PFObject *message = conversation[@"mostRecentMessage"];
-    
-    if (message[@"recipient"] == [PFUser currentUser])
+    UITableViewCell *tableCell = [tableView cellForRowAtIndexPath:indexPath];
+    PFUser *user;
+    if ([tableCell isKindOfClass:[DBRecentMessageCell class]])
     {
-        // mark message as read
-        conversation[@"read"] = [NSNumber numberWithBool:YES];
-        [conversation saveInBackground];
+        DBRecentMessageCell *cell = (DBRecentMessageCell *) tableCell;
+        user = cell.user;
+        PFObject *conversation = cell.conversation;
+        PFObject *message = conversation[@"mostRecentMessage"];
+        
+        if (message[@"recipient"] == [PFUser currentUser])
+        {
+            // mark message as read
+            conversation[@"read"] = [NSNumber numberWithBool:YES];
+            [conversation saveInBackground];
+        }
+        
+           }
+    else if ([tableCell isKindOfClass:[DBOnlineMessageCell class]])
+    {
+        DBOnlineMessageCell *cell = (DBOnlineMessageCell *) tableCell;
+        user = cell.user;
+
+        NSLog(@"user: %@", user);
     }
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+    if (user != nil)
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBMessageViewController *messageVC = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+        
+        messageVC.userReciever = user;
+        messageVC.senderId = [PFUser currentUser].objectId;
+        messageVC.senderDisplayName = @"display name";
+        messageVC.automaticallyScrollsToMostRecentMessage = YES;
+        
+        DBNavigationController *navigationController = (DBNavigationController *) self.sideMenuController.rootViewController;
+        [navigationController setViewControllers:@[messageVC] animated:NO];
+        [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
+    }
     
-    messageVC.userReciever = user;
-    messageVC.senderId = [PFUser currentUser].objectId;
-    messageVC.senderDisplayName = @"display name";
-    messageVC.automaticallyScrollsToMostRecentMessage = YES;
-    
-    // somehow push this
-    DBNavigationController *navigationController = (DBNavigationController *) self.sideMenuController.rootViewController;
-    [navigationController setViewControllers:@[messageVC] animated:NO];
-    [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
+
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

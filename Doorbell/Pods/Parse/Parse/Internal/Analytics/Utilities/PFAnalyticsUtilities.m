@@ -17,15 +17,14 @@
     if (!payload || payload == [NSNull null]) {
         payload = @"";
     } else if ([payload isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *dictionary = payload;
-        NSArray *keys = [dictionary.allKeys sortedArrayUsingSelector:@selector(compare:)];
-
-        NSMutableArray *components = [NSMutableArray arrayWithCapacity:dictionary.count * 2];
+        NSDictionary *dict = payload;
+        NSArray *keys = [[dict allKeys] sortedArrayUsingSelector:@selector(compare:)];
+        NSMutableArray *components = [NSMutableArray arrayWithCapacity:[dict count] * 2];
         [keys enumerateObjectsUsingBlock:^(id key, NSUInteger idx, BOOL *stop) {
             [components addObject:key];
 
             // alert[@"loc-args"] can be an NSArray
-            id value = dictionary[key];
+            id value = [dict objectForKey:key];
             if ([value isKindOfClass:[NSArray class]]) {
                 value = [value componentsJoinedByString:@""];
             }

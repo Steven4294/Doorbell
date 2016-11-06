@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PFRESTQueryCommand : PFRESTCommand
 
 ///--------------------------------------
-#pragma mark - Find
+/// @name Find
 ///--------------------------------------
 
 + (instancetype)findCommandForQueryState:(PFQueryState *)queryState withSessionToken:(nullable NSString *)sessionToken;
@@ -33,13 +33,13 @@ NS_ASSUME_NONNULL_BEGIN
                                sessionToken:(nullable NSString *)sessionToken;
 
 ///--------------------------------------
-#pragma mark - Count
+/// @name Count
 ///--------------------------------------
 
 + (instancetype)countCommandFromFindCommand:(PFRESTQueryCommand *)findCommand;
 
 ///--------------------------------------
-#pragma mark - Parameters
+/// @name Parameters
 ///--------------------------------------
 
 + (NSDictionary *)findCommandParametersForQueryState:(PFQueryState *)queryState;

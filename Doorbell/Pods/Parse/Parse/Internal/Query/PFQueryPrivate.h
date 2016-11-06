@@ -39,12 +39,16 @@ extern NSString *const PFQueryOptionKeyMaxDistance;
 extern NSString *const PFQueryOptionKeyBox;
 extern NSString *const PFQueryOptionKeyRegexOptions;
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFObject;
 
-@interface PFQuery (Private)
+@interface PFQuery ()
 
 @property (nonatomic, strong, readonly) PFQueryState *state;
+
+@end
+
+@interface PFQuery (Private)
 
 - (instancetype)whereRelatedToObject:(PFObject *)parent fromKey:(NSString *)key;
 - (void)redirectClassNameForKey:(NSString *)key;

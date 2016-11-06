@@ -38,6 +38,16 @@
 }
 
 #pragma mark UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // only when adding on the end of textfield && it's a space
+    if (range.location == textField.text.length && [string isEqualToString:@" "]) {
+        // ignore replacement string and add your own
+        textField.text = [textField.text stringByAppendingString:@"\u00a0"];
+        return NO;
+    }
+    // for all other cases, proceed with replacement
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField endEditing:YES];

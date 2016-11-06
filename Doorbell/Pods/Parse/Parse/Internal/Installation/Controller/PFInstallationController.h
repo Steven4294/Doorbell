@@ -12,17 +12,14 @@
 #import "PFCoreDataProvider.h"
 #import "PFObjectControlling.h"
 
-PF_TV_UNAVAILABLE_WARNING
-PF_WATCH_UNAVAILABLE_WARNING
-
 NS_ASSUME_NONNULL_BEGIN
 
-PF_TV_UNAVAILABLE PF_WATCH_UNAVAILABLE @interface PFInstallationController : NSObject <PFObjectControlling>
+@interface PFInstallationController : NSObject <PFObjectControlling>
 
 @property (nonatomic, weak, readonly) id<PFObjectControllerProvider, PFCurrentInstallationControllerProvider> dataSource;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;

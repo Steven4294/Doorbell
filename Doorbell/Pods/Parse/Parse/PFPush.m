@@ -28,14 +28,13 @@
 #import "PFQueryPrivate.h"
 #import "PFUserPrivate.h"
 #import "Parse_Private.h"
-#import "PFApplication.h"
 
 static Class _pushInternalUtilClass = nil;
 
 @interface PFPush ()
 
 @property (nonatomic, strong) PFMutablePushState *state;
-@property (nonatomic, strong) PFQuery<PFInstallation *> *query;
+@property (nonatomic, strong) PFQuery *query;
 
 @end
 
@@ -115,19 +114,15 @@ static Class _pushInternalUtilClass = nil;
     self.state.expirationTimeInterval = nil;
 }
 
-- (void)setPushDate:(NSDate *)pushDate {
-    self.state.pushDate = pushDate;
-}
-
-- (NSDate *)pushDate {
-    return self.state.pushDate;
-}
-
 - (void)setData:(NSDictionary *)data {
     self.state.payload = data;
 }
 
 #pragma mark Sending
+
+- (BOOL)sendPush:(NSError **)error {
+    return [[[self sendPushInBackground] waitForResult:error] boolValue];
+}
 
 - (BFTask *)sendPushInBackground {
     if (self.query) {
@@ -142,6 +137,12 @@ static Class _pushInternalUtilClass = nil;
     return [[PFUser _getCurrentUserSessionTokenAsync] continueWithBlock:^id(BFTask *task) {
         NSString *sessionToken = task.result;
         return [pushController sendPushNotificationAsyncWithState:state sessionToken:sessionToken];
+    }];
+}
+
+- (void)sendPushInBackgroundWithTarget:(id)target selector:(SEL)selector {
+    [self sendPushInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
     }];
 }
 
@@ -175,7 +176,7 @@ static Class _pushInternalUtilClass = nil;
 ///--------------------------------------
 
 - (NSUInteger)hash {
-    return PFIntegerPairHash(self.query.hash, self.state.hash);
+    return PFIntegerPairHash([self.query hash], [self.state hash]);
 }
 
 - (BOOL)isEqual:(id)object {
@@ -199,13 +200,38 @@ static Class _pushInternalUtilClass = nil;
 
 #pragma mark To Channel
 
-+ (BFTask *)sendPushMessageToChannelInBackground:(NSString *)channel withMessage:(NSString *)message {
++ (BOOL)sendPushMessageToChannel:(NSString *)channel
+                     withMessage:(NSString *)message
+                           error:(NSError **)error  {
+    return [[[self sendPushMessageToChannelInBackground:channel withMessage:message] waitForResult:error] boolValue];
+}
+
++ (BFTask *)sendPushMessageToChannelInBackground:(NSString *)channel
+                                     withMessage:(NSString *)message {
     NSDictionary *data = @{ @"alert" : message };
     return [self sendPushDataToChannelInBackground:channel withData:data];
 }
 
-+ (void)sendPushMessageToChannelInBackground:(NSString *)channel withMessage:(NSString *)message block:(PFBooleanResultBlock)block {
-    [[self sendPushMessageToChannelInBackground:channel withMessage:message] thenCallBackOnMainThreadWithBoolValueAsync:block];
++ (void)sendPushMessageToChannelInBackground:(NSString *)channel
+                                 withMessage:(NSString *)message
+                                       block:(PFBooleanResultBlock)block {
+    [[self sendPushMessageToChannelInBackground:channel
+                                    withMessage:message] thenCallBackOnMainThreadWithBoolValueAsync:block];
+}
+
++ (void)sendPushMessageToChannelInBackground:(NSString *)channel
+                                 withMessage:(NSString *)message
+                                      target:(id)target
+                                    selector:(SEL)selector {
+    [self sendPushMessageToChannelInBackground:channel withMessage:message block:^(BOOL succeeded, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
+    }];
+}
+
++ (BOOL)sendPushDataToChannel:(NSString *)channel
+                     withData:(NSDictionary *)data
+                        error:(NSError **)error  {
+    return [[[PFPush sendPushDataToChannelInBackground:channel withData:data] waitForResult:error] boolValue];
 }
 
 + (BFTask *)sendPushDataToChannelInBackground:(NSString *)channel withData:(NSDictionary *)data {
@@ -215,34 +241,70 @@ static Class _pushInternalUtilClass = nil;
     return [push sendPushInBackground];
 }
 
-+ (void)sendPushDataToChannelInBackground:(NSString *)channel withData:(NSDictionary *)data block:(PFBooleanResultBlock)block {
++ (void)sendPushDataToChannelInBackground:(NSString *)channel
+                                 withData:(NSDictionary *)data
+                                    block:(PFBooleanResultBlock)block {
     [[self sendPushDataToChannelInBackground:channel withData:data] thenCallBackOnMainThreadWithBoolValueAsync:block];
+}
+
++ (void)sendPushDataToChannelInBackground:(NSString *)channel
+                                 withData:(NSDictionary *)data
+                                   target:(id)target
+                                 selector:(SEL)selector {
+    [self sendPushDataToChannelInBackground:channel withData:data block:^(BOOL succeeded, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
+    }];
 }
 
 #pragma mark To Query
 
-+ (BFTask *)sendPushMessageToQueryInBackground:(PFQuery *)query withMessage:(NSString *)message {
++ (BOOL)sendPushMessageToQuery:(PFQuery *)query
+                   withMessage:(NSString *)message
+                         error:(NSError **)error  {
     PFPush *push = [PFPush push];
     push.query = query;
     push.message = message;
-    return [push sendPushInBackground];
+    return [push sendPush:error];
 }
 
-+ (void)sendPushMessageToQueryInBackground:(PFQuery *)query withMessage:(NSString *)message block:(PFBooleanResultBlock)block {
++ (BFTask *)sendPushMessageToQueryInBackground:(PFQuery *)query
+                                   withMessage:(NSString *)message {
+    PFPush *push = [PFPush push];
+    push.query = query;
+    push.message = message;
+    return  [push sendPushInBackground];
+}
+
++ (void)sendPushMessageToQueryInBackground:(PFQuery *)query
+                               withMessage:(NSString *)message
+                                     block:(PFBooleanResultBlock)block {
     PFPush *push = [PFPush push];
     push.query = query;
     push.message = message;
     [push sendPushInBackgroundWithBlock:block];
 }
 
-+ (BFTask *)sendPushDataToQueryInBackground:(PFQuery *)query withData:(NSDictionary *)data {
+
++ (BOOL)sendPushDataToQuery:(PFQuery *)query
+                   withData:(NSDictionary *)data
+                      error:(NSError **)error  {
+    PFPush *push = [PFPush push];
+    push.query = query;
+    push.data = data;
+    return [push sendPush:error];
+}
+
++ (BFTask *)sendPushDataToQueryInBackground:(PFQuery *)query
+                                   withData:(NSDictionary *)data {
     PFPush *push = [PFPush push];
     push.query = query;
     push.data = data;
     return [push sendPushInBackground];
 }
 
-+ (void)sendPushDataToQueryInBackground:(PFQuery *)query withData:(NSDictionary *)data block:(PFBooleanResultBlock)block {
++ (void)sendPushDataToQueryInBackground:(PFQuery *)query
+                               withData:(NSDictionary *)data
+                                  block:(PFBooleanResultBlock)block {
     PFPush *push = [PFPush push];
     push.query = query;
     push.data = data;
@@ -255,7 +317,11 @@ static Class _pushInternalUtilClass = nil;
 
 #pragma mark Get
 
-+ (BFTask<NSSet<NSString *> *>*)getSubscribedChannelsInBackground {
++ (NSSet *)getSubscribedChannels:(NSError **)error {
+    return [[self getSubscribedChannelsInBackground] waitForResult:error];
+}
+
++ (BFTask *)getSubscribedChannelsInBackground {
     return [[self channelsController] getSubscribedChannelsAsync];
 }
 
@@ -263,7 +329,17 @@ static Class _pushInternalUtilClass = nil;
     [[self getSubscribedChannelsInBackground] thenCallBackOnMainThreadAsync:block];
 }
 
++ (void)getSubscribedChannelsInBackgroundWithTarget:(id)target selector:(SEL)selector {
+    [self getSubscribedChannelsInBackgroundWithBlock:^(NSSet *channels, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:channels object:error];
+    }];
+}
+
 #pragma mark Subscribe
+
++ (BOOL)subscribeToChannel:(NSString *)channel error:(NSError **)error {
+    return [[[self subscribeToChannelInBackground:channel] waitForResult:error] boolValue];
+}
 
 + (BFTask *)subscribeToChannelInBackground:(NSString *)channel {
     return [[self channelsController] subscribeToChannelAsyncWithName:channel];
@@ -273,7 +349,17 @@ static Class _pushInternalUtilClass = nil;
     [[self subscribeToChannelInBackground:channel] thenCallBackOnMainThreadWithBoolValueAsync:block];
 }
 
++ (void)subscribeToChannelInBackground:(NSString *)channel target:(id)target selector:(SEL)selector {
+    [self subscribeToChannelInBackground:channel block:^(BOOL succeeded, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
+    }];
+}
+
 #pragma mark Unsubscribe
+
++ (BOOL)unsubscribeFromChannel:(NSString *)channel error:(NSError **)error {
+    return [[[self unsubscribeFromChannelInBackground:channel] waitForResult:error] boolValue];
+}
 
 + (BFTask *)unsubscribeFromChannelInBackground:(NSString *)channel {
     return [[self channelsController] unsubscribeFromChannelAsyncWithName:channel];
@@ -283,14 +369,20 @@ static Class _pushInternalUtilClass = nil;
     [[self unsubscribeFromChannelInBackground:channel] thenCallBackOnMainThreadWithBoolValueAsync:block];
 }
 
++ (void)unsubscribeFromChannelInBackground:(NSString *)channel target:(id)target selector:(SEL)selector {
+    [self unsubscribeFromChannelInBackground:channel block:^(BOOL succeeded, NSError *error) {
+        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
+    }];
+}
+
 ///--------------------------------------
 #pragma mark - Handling Notifications
 ///--------------------------------------
 
-#if TARGET_OS_IOS
+#if PARSE_IOS_ONLY
 + (void)handlePush:(NSDictionary *)userInfo {
-    UIApplication *application = [PFApplication currentApplication].systemApplication;
-    if (application.applicationState != UIApplicationStateActive) {
+    UIApplication *application = [UIApplication sharedApplication];
+    if ([application applicationState] != UIApplicationStateActive) {
         return;
     }
 
@@ -318,7 +410,7 @@ static Class _pushInternalUtilClass = nil;
     NSNumber *badgeNumber = aps[@"badge"];
     if (badgeNumber) {
         NSInteger number = [aps[@"badge"] integerValue];
-        application.applicationIconBadgeNumber = number;
+        [application setApplicationIconBadgeNumber:number];
     }
 
     NSString *soundName = aps[@"sound"];
@@ -367,110 +459,6 @@ static Class _pushInternalUtilClass = nil;
 
 + (PFPushChannelsController *)channelsController {
     return [Parse _currentManager].pushManager.channelsController;
-}
-
-@end
-
-///--------------------------------------
-#pragma mark - Synchronous
-///--------------------------------------
-
-@implementation PFPush (Synchronous)
-
-#pragma mark Sending Push Notifications
-
-- (BOOL)sendPush:(NSError **)error {
-    return [[[self sendPushInBackground] waitForResult:error] boolValue];
-}
-
-+ (BOOL)sendPushMessageToChannel:(NSString *)channel withMessage:(NSString *)message error:(NSError **)error {
-    return [[[self sendPushMessageToChannelInBackground:channel withMessage:message] waitForResult:error] boolValue];
-}
-
-+ (BOOL)sendPushDataToChannel:(NSString *)channel withData:(NSDictionary *)data error:(NSError **)error {
-    return [[[PFPush sendPushDataToChannelInBackground:channel withData:data] waitForResult:error] boolValue];
-}
-
-+ (BOOL)sendPushMessageToQuery:(PFQuery *)query withMessage:(NSString *)message error:(NSError **)error {
-    PFPush *push = [PFPush push];
-    push.query = query;
-    push.message = message;
-    return [push sendPush:error];
-}
-
-+ (BOOL)sendPushDataToQuery:(PFQuery *)query withData:(NSDictionary *)data error:(NSError **)error {
-    PFPush *push = [PFPush push];
-    push.query = query;
-    push.data = data;
-    return [push sendPush:error];
-}
-
-#pragma mark Managing Channel Subscriptions
-
-+ (NSSet<NSString *> *)getSubscribedChannels:(NSError **)error {
-    return [[self getSubscribedChannelsInBackground] waitForResult:error];
-}
-
-+ (BOOL)subscribeToChannel:(NSString *)channel error:(NSError **)error {
-    return [[[self subscribeToChannelInBackground:channel] waitForResult:error] boolValue];
-}
-
-+ (BOOL)unsubscribeFromChannel:(NSString *)channel error:(NSError **)error {
-    return [[[self unsubscribeFromChannelInBackground:channel] waitForResult:error] boolValue];
-}
-
-@end
-
-///--------------------------------------
-#pragma mark - Deprecated
-///--------------------------------------
-
-@implementation PFPush (Deprecated)
-
-#pragma mark Sending Push Notifications
-
-- (void)sendPushInBackgroundWithTarget:(nullable id)target selector:(nullable SEL)selector {
-    [self sendPushInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
-    }];
-}
-
-+ (void)sendPushMessageToChannelInBackground:(NSString *)channel
-                                 withMessage:(NSString *)message
-                                      target:(nullable id)target
-                                    selector:(nullable SEL)selector {
-    [self sendPushMessageToChannelInBackground:channel withMessage:message block:^(BOOL succeeded, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
-    }];
-}
-
-+ (void)sendPushDataToChannelInBackground:(NSString *)channel
-                                 withData:(NSDictionary *)data
-                                   target:(nullable id)target
-                                 selector:(nullable SEL)selector {
-    [self sendPushDataToChannelInBackground:channel withData:data block:^(BOOL succeeded, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
-    }];
-}
-
-#pragma mark Managing Channel Subscriptions
-
-+ (void)getSubscribedChannelsInBackgroundWithTarget:(id)target selector:(SEL)selector {
-    [self getSubscribedChannelsInBackgroundWithBlock:^(NSSet *channels, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:channels object:error];
-    }];
-}
-
-+ (void)subscribeToChannelInBackground:(NSString *)channel target:(nullable id)target selector:(nullable SEL)selector {
-    [self subscribeToChannelInBackground:channel block:^(BOOL succeeded, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
-    }];
-}
-
-+ (void)unsubscribeFromChannelInBackground:(NSString *)channel target:(nullable id)target selector:(nullable SEL)selector {
-    [self unsubscribeFromChannelInBackground:channel block:^(BOOL succeeded, NSError *error) {
-        [PFInternalUtils safePerformSelector:selector withTarget:target object:@(succeeded) object:error];
-    }];
 }
 
 @end

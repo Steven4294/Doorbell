@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFObject;
 
 typedef NS_ENUM(NSUInteger, PFCurrentObjectStorageType) {
@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, PFCurrentObjectStorageType) {
 @property (nonatomic, assign, readonly) PFCurrentObjectStorageType storageType;
 
 ///--------------------------------------
-#pragma mark - Current
+/// @name Current
 ///--------------------------------------
 
 - (BFTask *)getCurrentObjectAsync;

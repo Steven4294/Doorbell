@@ -13,7 +13,7 @@
 - (void)setChannel:(PFObject *)channel
 {
     _channel = channel;
-    [self setSeparatorInset:UIEdgeInsetsMake(0, 150, 0, 0)];
+   // [self setSeparatorInset:UIEdgeInsetsMake(0, 150, 0, 0)];
     
 }
 
@@ -38,7 +38,6 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _updateDetailTextLabel];
-        self.backgroundColor = [UIColor yellowColor];
     }
     return self;
 }

@@ -11,41 +11,36 @@
 
 #import <Parse/PFConstants.h>
 
-PF_TV_UNAVAILABLE_WARNING
-PF_WATCH_UNAVAILABLE_WARNING
-
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFPushState;
 @protocol PFCommandRunning;
 
 NS_ASSUME_NONNULL_BEGIN
 
-PF_TV_UNAVAILABLE PF_WATCH_UNAVAILABLE @interface PFPushController : NSObject
+@interface PFPushController : NSObject
 
 @property (nonatomic, strong, readonly) id<PFCommandRunning> commandRunner;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithCommandRunner:(id<PFCommandRunning>)commandRunner NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)controllerWithCommandRunner:(id<PFCommandRunning>)commandRunner;
 
 ///--------------------------------------
-#pragma mark - Sending Push
+/// @name Sending Push
 ///--------------------------------------
 
-/**
+/*!
  Requests push notification to be sent for a given state.
 
  @param state        State to use to send notifications.
  @param sessionToken Current user session token.
 
- @return `BFTask` with result set to `NSNumber` with `BOOL` identifying whether the request succeeded.
+ @returns `BFTask` with result set to `NSNumber` with `BOOL` identifying whether the request succeeded.
  */
 - (BFTask *)sendPushNotificationAsyncWithState:(PFPushState *)state sessionToken:(nullable NSString *)sessionToken;
 

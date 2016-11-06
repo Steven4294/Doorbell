@@ -15,20 +15,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
+/*!
  Handles encoding/decoding of `PFObject`s into a /2 JSON format.
  /2 format is only used for persisting `currentUser`, `currentInstallation` to disk when LDS is not enabled.
  */
 @interface PFObjectFileCoder : NSObject
 
 ///--------------------------------------
-#pragma mark - Encode
+/// @name Encode
 ///--------------------------------------
 
 + (NSData *)dataFromObject:(PFObject *)object usingEncoder:(PFEncoder *)encoder;
 
 ///--------------------------------------
-#pragma mark - Decode
+/// @name Decode
 ///--------------------------------------
 
 + (PFObject *)objectFromData:(NSData *)data usingDecoder:(PFDecoder *)decoder;

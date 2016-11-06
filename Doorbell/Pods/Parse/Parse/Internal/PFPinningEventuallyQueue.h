@@ -14,9 +14,9 @@
 @interface PFPinningEventuallyQueue : PFEventuallyQueue
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
-+ (instancetype)newDefaultPinningEventuallyQueueWithDataSource:(id<PFCommandRunnerProvider>)dataSource;
++ (instancetype)newDefaultPinningEventuallyQueueWithCommandRunner:(id<PFCommandRunning>)commandRunner;
 
 @end

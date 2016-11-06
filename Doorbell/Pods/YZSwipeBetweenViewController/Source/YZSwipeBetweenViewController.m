@@ -52,6 +52,7 @@
     
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50, self.view.frame.size.width, 50)];
     [self.pageControl setCurrentPage:0];
+    self.pageControl.userInteractionEnabled = NO;
     [self.view addSubview:self.scrollView];
     [self.view addSubview:self.pageControl];
 
@@ -142,6 +143,7 @@
 
     for (UIViewController *vc in self.viewControllers) {
         vc.view.frame = CGRectMake(originX, 0.0, width, height);
+        NSLog(@"vc.view.frame %@", vc.view.frame);
         originX += width;
     }
 
@@ -162,7 +164,7 @@
 
 #pragma mark - Scroll view delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView` *)scrollView
 {
     CGFloat centerPos = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame) + 0.5;
     _currentIndex = (NSUInteger)centerPos;

@@ -31,7 +31,6 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"comment view controller did load");
     [super viewDidLoad];
     commentsArray = [[NSMutableArray alloc] init];
     objectManager = [[DBObjectManager alloc] init];
@@ -55,7 +54,6 @@
         if (error == nil)
         {
             self.likersArray = [objects mutableCopy];
-            NSLog(@"fetched likers");
             [self loadComments];
         }
     }];

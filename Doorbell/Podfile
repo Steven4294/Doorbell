@@ -1,9 +1,10 @@
 platform :ios, ‘9.0’
 
-xcodeproj ‘Doorbell’  
+xcodeproj ‘Doorbell’
+
+#use_frameworks!
 
 pod 'AFNetworking', '~> 2.0'
-
 pod 'EstimoteSDK'
 pod 'Parse', '~> 1.4'
 pod "FBSDKCoreKit"
@@ -26,7 +27,6 @@ pod 'MOOMaskedIconView', '~> 0.1'
 pod 'MMPopupView'
 pod 'JTSImageViewController', '~> 1.5'
 pod 'LGSideMenuController', '~> 1.0.0'
-pod 'Bohr'
 pod 'SESlideTableViewCell'
 pod 'UIColor+FlatColors'
 pod 'JTHamburgerButton', '~> 1.0'
@@ -44,5 +44,16 @@ pod 'M13ProgressSuite', '~> 1.2'
 pod 'YZSwipeBetweenViewController'
 pod 'RKNotificationHub'
 pod 'SLExpandableTableView'
+pod 'JVFloatLabeledTextField'
+pod 'SwipeView', '~> 1.3'
+pod 'IHKeyboardAvoiding'
+pod 'Bohr'
+pod 'CHTwitterCover', '~> 0.1'
+#pod 'UberRides'
+pod 'APAddressBook'
 
-
+post_install do |installer|
+    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
+        configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'NO'
+    end
+end

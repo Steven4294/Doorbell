@@ -17,7 +17,6 @@
 @dynamic queryState;
 @dynamic expirationDate;
 @dynamic expirationTimeInterval;
-@dynamic pushDate;
 @dynamic payload;
 
 ///--------------------------------------

@@ -12,6 +12,7 @@
 #import "DBGenericProfileViewController.h"
 #import "DBObjectManager.h"
 #import "Parse.h"
+#import "UIViewController+Utils.h"
 
 @implementation DBNotificationCenterViewController
 {
@@ -37,9 +38,15 @@
         {
             notificationsArray = [notifications mutableCopy];
             [self.tableView reloadData];
+            
+            if (notificationsArray.count == 0)
+            {
+                [self displayEmptyView:YES withText:@"No notifications" andSubText:@"You can find things that require your attention here."];
+            }
         }
     }];
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

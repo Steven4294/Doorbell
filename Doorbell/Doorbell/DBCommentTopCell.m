@@ -10,6 +10,7 @@
 #import "TTTTimeIntervalFormatter.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Parse.h"
+#import "DBLocationManager.h"
 #import "UIImageView+Profile.h"
 #import "KILabel.h"
 
@@ -32,9 +33,35 @@
     
     self.nameLabel.text = user[@"facebookName"];
     
-    NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
+    PFGeoPoint *location = requestObject[@"location"];
+    PFGeoPoint *currentLocation =  [PFGeoPoint geoPointWithLocation:[[DBLocationManager sharedInstance] currentLocation]];
+    double distance = [location distanceInMilesTo:currentLocation];
     
-    
+    if ([[PFUser currentUser][@"building"] isEqualToString:@""])
+    {
+        if (distance < 1) {
+            self.distanceLabel.text = [NSString stringWithFormat:@"less than a mile away"];
+
+        }
+        else if (distance > 10)
+        {
+            self.distanceLabel.text = [NSString stringWithFormat:@"10+ miles away"];
+
+        }
+        else
+        {
+            self.distanceLabel.text = [NSString stringWithFormat:@"%d miles away", (int) distance];
+
+            
+        }
+
+    }
+    else
+    {
+        self.distanceLabel.text = @"";
+
+    }
+
     
     [self.profileImageView setProfileImageViewForUser:user isCircular:YES];
     self.messageLabel.text = [requestObject objectForKey:@"message"];

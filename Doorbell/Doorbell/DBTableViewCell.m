@@ -197,7 +197,7 @@ DBObjectManager *objectManager;
         NSString *fullName = self.user[@"facebookName"];
         if (fullName == nil)
         {
-            fullName = @"RRRRRRRRRRRR";
+            fullName = @"";
             NSLog(@"crash potentiallly");
         }
         NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:fullName options:0 error:nil];

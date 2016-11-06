@@ -23,14 +23,12 @@
 ///--------------------------------------
 
 - (instancetype)init {
-    self = [super init];
-    if (!self) return nil;
-
-    blocks = [[NSMutableDictionary alloc] init];
-    runOnceBlocks = [[NSMutableDictionary alloc] init];
-    lockObj = [[NSObject alloc] init];
-    runOnceLockObj = [[NSObject alloc] init];
-
+    if (self = [super init]) {
+        blocks = [[NSMutableDictionary alloc] init];
+        runOnceBlocks = [[NSMutableDictionary alloc] init];
+        lockObj = [[NSObject alloc] init];
+        runOnceLockObj = [[NSObject alloc] init];
+    }
     return self;
 }
 
@@ -46,8 +44,7 @@
             case SKPaymentTransactionStateRestored:
                 [self completeTransaction:transaction fromPaymentQueue:queue];
                 break;
-            case SKPaymentTransactionStatePurchasing:
-            case SKPaymentTransactionStateDeferred:
+            default:
                 break;
         }
     }
@@ -68,7 +65,7 @@
     }
 
     @synchronized(runOnceLockObj) {
-        void(^runOnceBlock)(NSError *) = (void(^)(NSError *))self.runOnceBlocks[productIdentifier];
+        void(^runOnceBlock)(NSError *) = (void(^)(NSError *))[self.runOnceBlocks objectForKey:productIdentifier];
         if (runOnceBlock) {
             runOnceBlock(transaction.error);
             [self.runOnceBlocks removeObjectForKey:productIdentifier];

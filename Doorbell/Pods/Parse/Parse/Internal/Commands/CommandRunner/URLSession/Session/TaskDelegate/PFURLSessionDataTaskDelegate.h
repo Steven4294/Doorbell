@@ -13,7 +13,7 @@
 
 @class BFCancellationToken;
 
-@class BFTask <__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readonly) NSString *responseString;
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initForDataTask:(NSURLSessionDataTask *)dataTask
           withCancellationToken:(nullable BFCancellationToken *)cancellationToken NS_DESIGNATED_INITIALIZER;
 

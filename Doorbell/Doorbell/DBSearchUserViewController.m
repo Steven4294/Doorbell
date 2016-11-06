@@ -33,6 +33,7 @@
     self.acTextField.applyBoldEffectToAutoCompleteSuggestions = NO;
     self.acTextField.maximumNumberOfAutoCompleteRows = 6;
     self.acTextField.autoCompleteTableCellTextColor = [UIColor darkGrayColor];
+    [self.acTextField becomeFirstResponder];
     
     [self configureCustomBackButton];
 }
@@ -69,24 +70,20 @@
     {
         // present the message view controller when user taps the name from drop down menu
         DBCustomAcObject *customObject = (DBCustomAcObject *) selectedObject;
-        NSString *userId = customObject.objectId;
         
-        PFQuery *query = [PFQuery queryWithClassName:@"_User"];
-        [query whereKey:@"objectId" equalTo:userId];
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-            
-            PFUser *user = [objects firstObject];
-            PFUser *currentUser = [PFUser currentUser];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            DBMessageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
-            
-            vc.userReciever = user;
-            vc.senderId = currentUser.objectId;
-            vc.senderDisplayName = currentUser[@"facebookName"];
-            vc.automaticallyScrollsToMostRecentMessage = YES;
-            
-            [self.navigationController pushViewController:vc animated:YES];
-        }];
+        NSLog(@"selected: %@", customObject.user);
+        PFUser *user = customObject.user;
+        PFUser *currentUser = [PFUser currentUser];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DBMessageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBMessageViewController"];
+        
+        vc.userReciever = user;
+        vc.senderId = currentUser.objectId;
+        vc.senderDisplayName = currentUser[@"facebookName"];
+        vc.automaticallyScrollsToMostRecentMessage = YES;
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }
     else
     {
@@ -112,7 +109,6 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
- 
     return YES;
 }
 

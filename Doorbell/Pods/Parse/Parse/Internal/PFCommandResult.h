@@ -22,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithResult:(NSDictionary *)result
                   resultString:(nullable NSString *)resultString
                   httpResponse:(nullable NSHTTPURLResponse *)response NS_DESIGNATED_INITIALIZER;

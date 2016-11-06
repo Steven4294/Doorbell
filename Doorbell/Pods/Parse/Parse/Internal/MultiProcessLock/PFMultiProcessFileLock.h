@@ -16,12 +16,10 @@
 @property (nonatomic, copy, readonly) NSString *lockFilePath;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initForFileWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 + (instancetype)lockForFileWithPath:(NSString *)path;
 

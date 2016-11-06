@@ -21,7 +21,7 @@ typedef void (^PFACLStateMutationBlock)(PFMutableACLState *);
 @property (nonatomic, assign, readonly, getter=isShared) BOOL shared;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
@@ -32,10 +32,10 @@ typedef void (^PFACLStateMutationBlock)(PFMutableACLState *);
 + (instancetype)stateWithState:(PFACLState *)otherState mutatingBlock:(PFACLStateMutationBlock)mutatingBlock;
 
 ///--------------------------------------
-#pragma mark - Mutating
+/// @name Mutating
 ///--------------------------------------
 
-- (PFACLState *)copyByMutatingWithBlock:(PFACLStateMutationBlock)mutatingBlock;
+- (instancetype)copyByMutatingWithBlock:(PFACLStateMutationBlock)mutatingBlock NS_RETURNS_RETAINED;
 
 @end
 

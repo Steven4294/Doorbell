@@ -16,8 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PFPropertyInfo : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithClass:(Class)kls
                          name:(NSString *)propertyName;
 
@@ -35,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, readonly) PFPropertyInfoAssociationType associationType;
 
-/**
+/*!
  Returns the value of this property,
  properly wrapped from the target object.
  When possible, just invokes the property.

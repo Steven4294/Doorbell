@@ -21,6 +21,10 @@
 #pragma mark - Init
 ///--------------------------------------
 
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
 - (instancetype)initWithCommandRunner:(id<PFCommandRunning>)commandRunner {
     self = [super init];
     if (!self) return nil;

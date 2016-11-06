@@ -30,9 +30,9 @@
 
     NSString *newSessionToken = dictionary[@"session_token"] ?: dictionary[PFUserSessionTokenRESTKey];
     if (newSessionToken) {
-        user._state = [(PFUserState *)user._state copyByMutatingWithBlock:^(PFMutableUserState *state) {
-            state.sessionToken = newSessionToken;
-        }];
+        PFMutableUserState *state = [user._state mutableCopy];
+        state.sessionToken = newSessionToken;
+        user._state = state;
     }
 
     // Merge the linked service metadata

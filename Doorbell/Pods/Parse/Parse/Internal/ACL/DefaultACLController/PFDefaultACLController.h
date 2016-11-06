@@ -11,38 +11,33 @@
 
 #import <Parse/PFConstants.h>
 
-#import "PFCoreDataProvider.h"
-
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFACL;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PFDefaultACLController : NSObject
 
-@property (nonatomic, weak, readonly) id<PFCurrentUserControllerProvider> dataSource;
-
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
-+ (instancetype)controllerWithDataSource:(id<PFCurrentUserControllerProvider>)dataSource;
+// TODO: (nlutsenko, richardross) Make it not terrible aka don't have singletons
++ (instancetype)defaultController;
++ (void)clearDefaultController;
 
 ///--------------------------------------
-#pragma mark - Default ACL
+/// @name Default ACL
 ///--------------------------------------
 
-/**
+/*!
  Get the default ACL managed by this controller.
 
  @return A task that returns the ACL encapsulated by this controller.
  */
 - (BFTask *)getDefaultACLAsync;
 
-/**
+/*!
  Set the new default default ACL to be encapsulated in this controller.
 
  @param acl                  The new ACL. Will be copied.

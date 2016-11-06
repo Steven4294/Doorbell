@@ -15,6 +15,7 @@
 
 - (void)setUser:(PFUser *)user
 {
+    NSLog(@"user: %@", user);
     _user = user;
     
     [self setSelectionStyle: UITableViewCellSelectionStyleNone];

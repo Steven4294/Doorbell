@@ -42,9 +42,23 @@
             
             NSArray *addressLines = [addressDictionary objectForKey:@"FormattedAddressLines"];
             NSString *name = event[@"locationString"];
-            NSString *street = [addressLines objectAtIndex:0];
-            NSString *zipcode = [addressLines objectAtIndex:1];
-            NSString *country = [addressLines objectAtIndex:2];
+            
+            NSString *street= @"";
+            NSString *zipcode = @"";
+            NSString *country = @"";
+            
+            if (addressDictionary.count > 0)
+            {
+                street = [addressLines objectAtIndex:0];
+            }
+            if (addressDictionary.count > 1)
+            {
+                zipcode = [addressLines objectAtIndex:1];
+            }
+            if (addressDictionary.count > 2)
+            {
+                country = [addressLines objectAtIndex:2];
+            }
             
             NSString *addressString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", name, street, zipcode, country];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:addressString];

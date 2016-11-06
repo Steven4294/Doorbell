@@ -27,6 +27,10 @@
 #pragma mark - Init
 ///--------------------------------------
 
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
 - (instancetype)initWithDataSource:(id<PFEventuallyQueueProvider>)dataSource {
     self = [super init];
     if (!self) return nil;
@@ -44,8 +48,8 @@
 #pragma mark - Track Event
 ///--------------------------------------
 
-- (BFTask<PFVoid> *)trackAppOpenedEventAsyncWithRemoteNotificationPayload:(nullable NSDictionary *)payload
-                                                             sessionToken:(nullable NSString *)sessionToken {
+- (BFTask *)trackAppOpenedEventAsyncWithRemoteNotificationPayload:(NSDictionary *)payload
+                                                     sessionToken:(NSString *)sessionToken {
     @weakify(self);
     return [[BFTask taskFromExecutor:[BFExecutor defaultPriorityBackgroundExecutor] withBlock:^id{
         @strongify(self);
@@ -58,12 +62,12 @@
         PFRESTCommand *command = [PFRESTAnalyticsCommand trackAppOpenedEventCommandWithPushHash:pushDigest
                                                                                    sessionToken:sessionToken];
         return [self.eventuallyQueue enqueueCommandInBackground:command];
-    }] continueWithSuccessResult:nil];
+    }] continueWithSuccessResult:@YES];
 }
 
-- (BFTask<PFVoid> *)trackEventAsyncWithName:(NSString *)name
-                                 dimensions:(nullable NSDictionary<NSString *, NSString *> *)dimensions
-                               sessionToken:(nullable NSString *)sessionToken {
+- (BFTask *)trackEventAsyncWithName:(NSString *)name
+                         dimensions:(NSDictionary *)dimensions
+                       sessionToken:(NSString *)sessionToken {
     PFParameterAssert([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length],
                       @"A name for the custom event must be provided.");
 
@@ -82,7 +86,7 @@
                                                                              dimensions:encodedDimensions
                                                                            sessionToken:sessionToken];
         return [self.eventuallyQueue enqueueCommandInBackground:command];
-    }] continueWithSuccessResult:nil];
+    }] continueWithSuccessResult:@YES];
 }
 
 ///--------------------------------------

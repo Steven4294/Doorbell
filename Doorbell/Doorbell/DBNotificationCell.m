@@ -24,7 +24,10 @@
     self.postClassifier = nil;
     
     PFObject *comment = notificationObject[@"comment"];
+    
     user = comment[@"poster"];
+    NSLog(@"poster: %@", comment[@"poster"][@"facebookName"]);
+
     NSString *commentString = comment[@"commentString"];
     NSString *name = user[@"facebookName"];
     NSDate *date = [notificationObject createdAt];

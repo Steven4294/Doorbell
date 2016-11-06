@@ -13,7 +13,9 @@
 
 #import "PFACLPrivate.h"
 #import "PFAsyncTaskQueue.h"
+#import "PFCoreManager.h"
 #import "PFCurrentUserController.h"
+#import "Parse_Private.h"
 
 @implementation PFDefaultACLController {
     PFAsyncTaskQueue *_taskQueue;
@@ -25,35 +27,43 @@
     PFACL *_defaultACLWithCurrentUser;
 }
 
+static PFDefaultACLController *defaultController_;
+
 ///--------------------------------------
 #pragma mark - Init
 ///--------------------------------------
 
-- (instancetype)initWithDataSource:(id<PFCurrentUserControllerProvider>)dataSource {
++ (instancetype)defaultController {
+    if (!defaultController_) {
+        defaultController_ = [[self alloc] init];
+    }
+    return defaultController_;
+}
+
++ (void)clearDefaultController {
+    defaultController_ = nil;
+}
+
+- (instancetype)init {
     self = [super init];
     if (!self) return nil;
 
     _taskQueue = [[PFAsyncTaskQueue alloc] init];
-    _dataSource = dataSource;
 
     return self;
-}
-
-+ (instancetype)controllerWithDataSource:(id<PFCurrentUserControllerProvider>)dataSource {
-    return [[self alloc] initWithDataSource:dataSource];
 }
 
 ///--------------------------------------
 #pragma mark - ACL
 ///--------------------------------------
 
-- (BFTask<PFACL *> *)getDefaultACLAsync {
+- (BFTask PF_GENERIC(PFACL *)*)getDefaultACLAsync {
     return [_taskQueue enqueue:^id(BFTask *task) {
         if (!_defaultACL || !_useCurrentUser) {
             return _defaultACL;
         }
 
-        PFCurrentUserController *currentUserController = self.dataSource.currentUserController;
+        PFCurrentUserController *currentUserController = [Parse _currentManager].coreManager.currentUserController;
         return [[currentUserController getCurrentObjectAsync] continueWithBlock:^id(BFTask *task) {
             PFUser *currentUser = task.result;
             if (!currentUser) {
@@ -72,7 +82,7 @@
     }];
 }
 
-- (BFTask<PFACL *> *)setDefaultACLAsync:(PFACL *)acl withCurrentUserAccess:(BOOL)accessForCurrentUser {
+- (BFTask PF_GENERIC(PFACL *)*)setDefaultACLAsync:(PFACL *)acl withCurrentUserAccess:(BOOL)accessForCurrentUser {
     return [_taskQueue enqueue:^id(BFTask *task) {
         _defaultACLWithCurrentUser = nil;
         _lastCurrentUser = nil;

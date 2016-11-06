@@ -47,7 +47,7 @@
                  };
 
     } else if ([object isKindOfClass:[PFFile class]]) {
-        if (((PFFile *)object).dirty) {
+        if (((PFFile *)object).isDirty) {
             // TODO: (nlutsenko) Figure out what to do with things like an unsaved file
             // in a mutable container, where we don't normally want to allow serializing
             // such a thing inside an object.
@@ -188,8 +188,8 @@
 
 @interface PFOfflineObjectEncoder ()
 
-@property (nonatomic, weak) PFOfflineStore *store;
-@property (nonatomic, weak) PFSQLiteDatabase *database;
+@property (nonatomic, assign) PFOfflineStore *store;
+@property (nonatomic, assign) PFSQLiteDatabase *database;
 @property (nonatomic, strong) NSMutableArray *tasks;
 @property (nonatomic, strong) NSObject *tasksLock; // TODO: (nlutsenko) Avoid using @synchronized
 
@@ -202,40 +202,34 @@
     return nil;
 }
 
-- (instancetype)initWithOfflineStore:(PFOfflineStore *)store database:(PFSQLiteDatabase *)database {
-    self = [self init];
-    if (!self) return nil;
-
-    _tasks = [NSMutableArray array];
-    _tasksLock = [[NSObject alloc] init];
-
-    _store = store;
-    _database = database;
-
-    return self;
-}
-
 + (instancetype)objectEncoderWithOfflineStore:(PFOfflineStore *)store database:(PFSQLiteDatabase *)database {
-    return [[self alloc] initWithOfflineStore:store database:database];
+    PFOfflineObjectEncoder *encoder = [[self alloc] init];
+    encoder.store = store;
+    encoder.database = database;
+    encoder.tasks = [NSMutableArray array];
+    encoder.tasksLock = [[NSObject alloc] init];
+    return encoder;
 }
 
 - (id)encodeParseObject:(PFObject *)object {
     if (object.objectId) {
-        return @{ @"__type" : @"Pointer",
-                  @"objectId" : object.objectId,
-                  @"className" : object.parseClassName };
+        return @{
+                 @"__type" : @"Pointer",
+                 @"objectId" : object.objectId,
+                 @"className" : object.parseClassName
+                 };
+    } else {
+        NSMutableDictionary *result = [@{ @"__type" : @"OfflineObject" } mutableCopy];
+        @synchronized(self.tasksLock) {
+            BFTask *uuidTask = [self.store getOrCreateUUIDAsyncForObject:object database:self.database];
+            [uuidTask continueWithSuccessBlock:^id(BFTask *task) {
+                result[@"uuid"] = task.result;
+                return nil;
+            }];
+            [self.tasks addObject:uuidTask];
+        }
+        return result;
     }
-
-    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithObject:@"OfflineObject" forKey:@"__type"];
-    @synchronized(self.tasksLock) {
-        BFTask *uuidTask = [self.store getOrCreateUUIDAsyncForObject:object database:self.database];
-        [uuidTask continueWithSuccessBlock:^id(BFTask *task) {
-            result[@"uuid"] = task.result;
-            return nil;
-        }];
-        [self.tasks addObject:uuidTask];
-    }
-    return result;
 }
 
 - (BFTask *)encodeFinished {
@@ -248,8 +242,8 @@
                 }
             }
             [self.tasks removeAllObjects];
+            return [BFTask taskWithResult:nil];
         }
-        return nil;
     }];
 }
 

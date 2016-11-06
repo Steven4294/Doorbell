@@ -58,6 +58,14 @@
     
     self.eventDescription.edgeInsets = UIEdgeInsetsMake(10.0, 10.0+3.0, 10.0, 10.0+3.0);
     
+    if ([startTime compare:[NSDate date]] == NSOrderedAscending)
+    {
+        self.occurredView.hidden = NO;
+    }
+    else
+    {
+        self.occurredView.hidden = YES;
+    }
 }
 
 @end

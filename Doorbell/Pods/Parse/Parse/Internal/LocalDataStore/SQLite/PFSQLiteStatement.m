@@ -11,16 +11,13 @@
 
 #import <sqlite3.h>
 
-#import "PFThreadsafety.h"
-
 @implementation PFSQLiteStatement
 
-- (instancetype)initWithStatement:(sqlite3_stmt *)stmt queue:(dispatch_queue_t)databaseQueue {
+- (instancetype)initWithStatement:(sqlite3_stmt *)stmt {
     self = [super init];
     if (!stmt || !self) return nil;
 
     _sqliteStatement = stmt;
-    _databaseQueue = databaseQueue;
 
     return self;
 }
@@ -30,27 +27,23 @@
 }
 
 - (BOOL)close {
-    return PFThreadSafetyPerform(_databaseQueue, ^BOOL{
-        if (!_sqliteStatement) {
-            return YES;
-        }
+    if (!_sqliteStatement) {
+        return YES;
+    }
 
-        int resultCode = sqlite3_finalize(_sqliteStatement);
-        _sqliteStatement = nil;
+    int resultCode = sqlite3_finalize(_sqliteStatement);
+    _sqliteStatement = nil;
 
-        return (resultCode == SQLITE_OK || resultCode == SQLITE_DONE);
-    });
+    return (resultCode == SQLITE_OK || resultCode == SQLITE_DONE);
 }
 
 - (BOOL)reset {
-    return PFThreadSafetyPerform(_databaseQueue, ^BOOL{
-        if (!_sqliteStatement) {
-            return YES;
-        }
+    if (!_sqliteStatement) {
+        return YES;
+    }
 
-        int resultCode = sqlite3_reset(_sqliteStatement);
-        return (resultCode == SQLITE_OK || resultCode == SQLITE_DONE);
-    });
+    int resultCode = sqlite3_reset(_sqliteStatement);
+    return (resultCode == SQLITE_OK || resultCode == SQLITE_DONE);
 }
 
 @end

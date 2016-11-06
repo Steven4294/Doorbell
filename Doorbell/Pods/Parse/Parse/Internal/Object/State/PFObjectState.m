@@ -66,15 +66,6 @@
     return self;
 }
 
-- (instancetype)initWithState:(PFObjectState *)state mutatingBlock:(PFObjectStateMutationBlock)block {
-    self = [self initWithState:state];
-    if (!self) return nil;
-
-    block((PFMutableObjectState *)self);
-
-    return self;
-}
-
 + (instancetype)stateWithState:(PFObjectState *)state {
     return [[self alloc] initWithState:state];
 }
@@ -167,14 +158,6 @@
 
 - (void)applyOperationSet:(PFOperationSet *)operationSet {
     [PFObjectUtilities applyOperationSet:operationSet toDictionary:_serverData];
-}
-
-///--------------------------------------
-#pragma mark - Mutating
-///--------------------------------------
-
-- (PFObjectState *)copyByMutatingWithBlock:(PFObjectStateMutationBlock)block {
-    return [[PFObjectState alloc] initWithState:self mutatingBlock:block];
 }
 
 ///--------------------------------------

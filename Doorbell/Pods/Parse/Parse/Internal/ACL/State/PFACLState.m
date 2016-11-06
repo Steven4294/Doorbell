@@ -32,7 +32,7 @@
     self = [super init];
     if (!self) return nil;
 
-    _permissions = @{};
+    _permissions = [NSDictionary dictionary];
     _shared = NO;
 
     return self;
@@ -80,7 +80,7 @@
 #pragma mark - Mutating
 ///--------------------------------------
 
-- (PFACLState *)copyByMutatingWithBlock:(PFACLStateMutationBlock)mutationsBlock {
+- (instancetype)copyByMutatingWithBlock:(PFACLStateMutationBlock)mutationsBlock {
     return [[PFACLState alloc] initWithState:self mutatingBlock:mutationsBlock];
 }
 

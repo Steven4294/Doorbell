@@ -17,11 +17,10 @@
 
 @interface ParseModuleCollection : NSObject <ParseModule>
 
-@property (nonatomic, assign, readonly) NSUInteger modulesCount;
-
 - (void)addParseModule:(id<ParseModule>)module;
 - (void)removeParseModule:(id<ParseModule>)module;
 
 - (BOOL)containsModule:(id<ParseModule>)module;
+- (NSUInteger)modulesCount;
 
 @end

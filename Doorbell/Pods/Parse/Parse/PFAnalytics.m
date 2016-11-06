@@ -10,10 +10,6 @@
 #import "PFAnalytics.h"
 #import "PFAnalytics_Private.h"
 
-#if PF_TARGET_OS_OSX
-#import <AppKit/AppKit.h>
-#endif
-
 #import "BFTask+Private.h"
 #import "PFAnalyticsController.h"
 #import "PFAssert.h"
@@ -28,24 +24,21 @@
 #pragma mark - App-Open / Push Analytics
 ///--------------------------------------
 
-+ (BFTask<NSNumber *> *)trackAppOpenedWithLaunchOptions:(nullable NSDictionary *)launchOptions {
-#if TARGET_OS_WATCH || TARGET_OS_TV
-    NSDictionary *userInfo = nil;
-#elif TARGET_OS_IOS
++ (BFTask *)trackAppOpenedWithLaunchOptions:(NSDictionary *)launchOptions {
+#if TARGET_OS_IPHONE
     NSDictionary *userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-#elif PF_TARGET_OS_OSX
+#else
     NSDictionary *userInfo = launchOptions[NSApplicationLaunchUserNotificationKey];
 #endif
 
     return [self trackAppOpenedWithRemoteNotificationPayload:userInfo];
 }
 
-+ (void)trackAppOpenedWithLaunchOptionsInBackground:(nullable NSDictionary *)launchOptions
-                                              block:(nullable PFBooleanResultBlock)block {
++ (void)trackAppOpenedWithLaunchOptionsInBackground:(NSDictionary *)launchOptions block:(PFBooleanResultBlock)block {
     [[self trackAppOpenedWithLaunchOptions:launchOptions] thenCallBackOnMainThreadWithBoolValueAsync:block];
 }
 
-+ (BFTask<NSNumber *> *)trackAppOpenedWithRemoteNotificationPayload:(nullable NSDictionary *)userInfo {
++ (BFTask *)trackAppOpenedWithRemoteNotificationPayload:(NSDictionary *)userInfo {
     return [[[PFUser _getCurrentUserSessionTokenAsync] continueWithBlock:^id(BFTask *task) {
         NSString *sessionToken = task.result;
         PFAnalyticsController *controller = [Parse _currentManager].analyticsController;
@@ -53,8 +46,8 @@
     }] continueWithSuccessResult:@YES];
 }
 
-+ (void)trackAppOpenedWithRemoteNotificationPayloadInBackground:(nullable NSDictionary *)userInfo
-                                                          block:(nullable PFBooleanResultBlock)block {
++ (void)trackAppOpenedWithRemoteNotificationPayloadInBackground:(NSDictionary *)userInfo
+                                                          block:(PFBooleanResultBlock)block {
     [[self trackAppOpenedWithRemoteNotificationPayload:userInfo] thenCallBackOnMainThreadWithBoolValueAsync:block];
 }
 
@@ -62,16 +55,15 @@
 #pragma mark - Custom Analytics
 ///--------------------------------------
 
-+ (BFTask<NSNumber *> *)trackEvent:(NSString *)name {
++ (BFTask *)trackEvent:(NSString *)name {
     return [self trackEvent:name dimensions:nil];
 }
 
-+ (void)trackEventInBackground:(NSString *)name block:(nullable PFBooleanResultBlock)block {
++ (void)trackEventInBackground:(NSString *)name block:(PFBooleanResultBlock)block {
     [self trackEventInBackground:name dimensions:nil block:block];
 }
 
-+ (BFTask<NSNumber *> *)trackEvent:(NSString *)name
-                        dimensions:(nullable NSDictionary<NSString *, NSString *> *)dimensions {
++ (BFTask *)trackEvent:(NSString *)name dimensions:(NSDictionary *)dimensions {
     PFParameterAssert([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length],
                       @"A name for the custom event must be provided.");
     [dimensions enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -87,8 +79,8 @@
 }
 
 + (void)trackEventInBackground:(NSString *)name
-                    dimensions:(nullable NSDictionary<NSString *, NSString *> *)dimensions
-                         block:(nullable PFBooleanResultBlock)block {
+                    dimensions:(NSDictionary *)dimensions
+                         block:(PFBooleanResultBlock)block {
     [[self trackEvent:name dimensions:dimensions] thenCallBackOnMainThreadWithBoolValueAsync:block];
 }
 

@@ -54,7 +54,15 @@
 - (void)configureNavigationBar
 {
     NSArray *components = [self.userReciever[@"facebookName"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *string = [NSString stringWithFormat:@"%@ %@.", [components objectAtIndex:0], [[components objectAtIndex:1] substringToIndex:1]];
+    NSString *string;
+    if (components.count > 2)
+    {
+        string = [NSString stringWithFormat:@"%@ %@.", [components objectAtIndex:0], [[components objectAtIndex:1] substringToIndex:1]];
+    }
+    else
+    {
+        string = self.userReciever[@"facebookName"];
+    }
     
     UIView *view= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 140, 40)];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];

@@ -9,9 +9,9 @@
 
 #import "PFApplication.h"
 
-#if TARGET_OS_IOS || TARGET_OS_TV
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#elif PF_TARGET_OS_OSX
+#else
 #import <AppKit/AppKit.h>
 #endif
 
@@ -35,7 +35,7 @@
 ///--------------------------------------
 
 - (BOOL)isAppStoreEnvironment {
-#if TARGET_OS_IOS && !TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
     return ([[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"] == nil);
 #endif
 
@@ -43,15 +43,13 @@
 }
 
 - (BOOL)isExtensionEnvironment {
-    return [[NSBundle mainBundle].bundlePath hasSuffix:@".appex"];
+    return [[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"];
 }
 
 - (NSInteger)iconBadgeNumber {
-#if TARGET_OS_WATCH || TARGET_OS_TV
-    return 0;
-#elif TARGET_OS_IOS
+#if TARGET_OS_IPHONE
     return self.systemApplication.applicationIconBadgeNumber;
-#elif PF_TARGET_OS_OSX
+#else
     // Make sure not to use `NSApp` here, because it doesn't work sometimes,
     // `NSApplication +sharedApplication` does though.
     NSString *badgeLabel = [[NSApplication sharedApplication] dockTile].badgeLabel;
@@ -73,21 +71,17 @@
 
 - (void)setIconBadgeNumber:(NSInteger)iconBadgeNumber {
     if (self.iconBadgeNumber != iconBadgeNumber) {
-#if TARGET_OS_IOS
+#if TARGET_OS_IPHONE
         self.systemApplication.applicationIconBadgeNumber = iconBadgeNumber;
-#elif PF_TARGET_OS_OSX
+#else
         [[NSApplication sharedApplication] dockTile].badgeLabel = [@(iconBadgeNumber) stringValue];
 #endif
     }
 }
 
 - (UIApplication *)systemApplication {
-#if TARGET_OS_WATCH
-    return nil;
-#else
     // Workaround to make `sharedApplication` still be called even if compiling for App Extensions or WatchKit apps.
     return [UIApplication performSelector:@selector(sharedApplication)];
-#endif
 }
 
 @end

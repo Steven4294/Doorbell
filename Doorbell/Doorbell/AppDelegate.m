@@ -6,6 +6,8 @@
 //  Copyright © 2016 Doorbell LLC. All rights reserved.
 //
 
+// last updated Nov 6. 2016
+
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -14,6 +16,11 @@
 
 #import "DBNavigationController.h"
 #import "DBLoginViewController.h"
+#import "DBLoginNavigationController.h"
+#import "DBLocationManager.h"
+#import "DBObjectManager.h"
+
+
 #import "DBFeedTableViewController.h"
 #import "LGSideMenuController.h"
 #import "DBSideMenuController.h"
@@ -29,6 +36,10 @@
     // Override point for customization after application launch.
     // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios/guide#local-datastore
+    
+    [DBLocationManager sharedInstance];
+    
+    
     [Parse enableLocalDatastore];
     
     // Initialize Parse.
@@ -44,14 +55,14 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 
-    if ([PFUser currentUser] != nil)
+    if ([PFUser currentUser] != nil && [PFUser currentUser][@"building"] != nil)
     {
         DBSideMenuController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DBSideMenuController"];
         self.window.rootViewController = viewController;
     }
     else
     {
-        DBLoginViewController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
+        DBLoginNavigationController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginNavigationController"];
         self.window.rootViewController = loginController;
     }
         
@@ -63,13 +74,20 @@
     [application registerForRemoteNotifications];
     
 
-    
+    [self registerActivity];
+    [self registerLocation];
     [NSTimer scheduledTimerWithTimeInterval:90.0f
                                      target:self
                                    selector:@selector(registerActivity)
                                    userInfo:nil
                                     repeats:YES];
     
+    [NSTimer scheduledTimerWithTimeInterval:90.0f
+                                     target:self
+                                   selector:@selector(registerLocation)
+                                   userInfo:nil
+                                    repeats:YES];
+
     return YES;
 }
 
@@ -80,6 +98,11 @@
     [PFCloud callFunctionInBackground:@"registerActivity"
                        withParameters:nil
                                 block:nil];
+}
+
+- (void)registerLocation
+{
+    [[DBObjectManager sharedInstance] updateUsersCurrentLocation];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -115,6 +138,28 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    if ([PFUser currentUser] != nil)
+    {
+        UIBackgroundTaskIdentifier task;
+        task = [application beginBackgroundTaskWithExpirationHandler:^
+                {
+                    NSLog(@"beginning task");
+                    
+                    
+                    
+                    [application endBackgroundTask:task];
+                }];
+        // Start the long-running task and return immediately.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            // Do the work associated with the task.
+            NSLog(@"Started background task timeremaining = %f", [application backgroundTimeRemaining]);
+            
+            [self registerLocation];
+            
+            [application endBackgroundTask:task];
+        });
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

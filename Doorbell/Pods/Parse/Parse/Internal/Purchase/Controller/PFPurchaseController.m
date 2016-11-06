@@ -42,20 +42,27 @@
 #pragma mark - Init
 ///--------------------------------------
 
-- (instancetype)initWithDataSource:(id<PFCommandRunnerProvider, PFFileManagerProvider>)dataSource
-                            bundle:(NSBundle *)bundle {
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
+- (instancetype)initWithCommandRunner:(id<PFCommandRunning>)commandRunner
+                          fileManager:(PFFileManager *)fileManager
+                               bundle:(NSBundle *)bundle {
     self = [super init];
     if (!self) return nil;
 
-    _dataSource = dataSource;
+    _commandRunner = commandRunner;
+    _fileManager = fileManager;
     _bundle = bundle;
 
     return self;
 }
 
-+ (instancetype)controllerWithDataSource:(id<PFCommandRunnerProvider, PFFileManagerProvider>)dataSource
-                                  bundle:(NSBundle *)bundle {
-    return [[self alloc] initWithDataSource:dataSource bundle:bundle];
++ (instancetype)controllerWithCommandRunner:(id<PFCommandRunning>)commandRunner
+                                fileManager:(PFFileManager *)fileManager
+                                     bundle:(NSBundle *)bundle {
+    return [[self alloc] initWithCommandRunner:commandRunner fileManager:fileManager bundle:bundle];
 }
 
 ///--------------------------------------
@@ -135,7 +142,7 @@
                            withProgressBlock:(PFProgressBlock)progressBlock
                                 sessionToken:(NSString *)sessionToken {
     NSString *productIdentifier = transaction.payment.productIdentifier;
-    NSURL *appStoreReceiptURL = self.bundle.appStoreReceiptURL;
+    NSURL *appStoreReceiptURL = [self.bundle appStoreReceiptURL];
     if (!productIdentifier || !appStoreReceiptURL) {
         return [BFTask taskWithError:[NSError errorWithDomain:PFParseErrorDomain
                                                          code:kPFErrorReceiptMissing
@@ -162,7 +169,7 @@
                                                      httpMethod:PFHTTPRequestMethodPOST
                                                      parameters:params
                                                    sessionToken:sessionToken];
-    BFTask *task = [self.dataSource.commandRunner runCommandAsync:command withOptions:PFCommandRunningOptionRetryIfFailed];
+    BFTask *task = [self.commandRunner runCommandAsync:command withOptions:PFCommandRunningOptionRetryIfFailed];
     @weakify(self);
     return [task continueWithSuccessBlock:^id(BFTask *task) {
         @strongify(self);
@@ -177,7 +184,7 @@
 
         NSString *finalFilePath = [self assetContentPathForProductWithIdentifier:transaction.payment.productIdentifier
                                                                         fileName:file.name];
-        NSString *directoryPath = finalFilePath.stringByDeletingLastPathComponent;
+        NSString *directoryPath = [finalFilePath stringByDeletingLastPathComponent];
         return [[[[[PFFileManager createDirectoryIfNeededAsyncAtPath:directoryPath] continueWithBlock:^id(BFTask *task) {
             if (task.faulted) {
                 return [BFTask taskWithError:[NSError errorWithDomain:PFParseErrorDomain
@@ -203,7 +210,7 @@
 
 - (NSString *)assetContentPathForProductWithIdentifier:(NSString *)identifier fileName:(NSString *)fileName {
     // We store files locally at (ParsePrivateDir)/(ProductIdentifier)/filename
-    NSString *filePath = [self.dataSource.fileManager parseDataItemPathForPathComponent:identifier];
+    NSString *filePath = [self.fileManager parseDataItemPathForPathComponent:identifier];
     filePath = [filePath stringByAppendingPathComponent:fileName];
     return filePath;
 }

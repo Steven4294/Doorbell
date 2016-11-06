@@ -8,6 +8,7 @@
 
 #import "UIImageView+Profile.h"
 #import "Parse.h"
+#import "DBObjectManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation UIImageView (Profile)
@@ -22,22 +23,10 @@
         self.layer.cornerRadius =  self.frame.size.width/2;
     }
     
-    if (user[@"profileImage"] != nil)
+    [[DBObjectManager sharedInstance] fetchImageForUser:user withBlock:^(BOOL success, UIImage *image)
     {
-        // use custom profile image
-        [user[@"profileImage"] getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error)
-         {
-             [self setImage:[UIImage imageWithData:data]];
-          
-         }];
-    }
-    else
-    {
-        // use FB provided profile picture
-        NSString *URLString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user[@"facebookId"]];
-        [self sd_setImageWithURL:[NSURL URLWithString:URLString]
-                placeholderImage:[UIImage imageNamed:@"http://graph.facebook.com/67563683055/picture?type=square"]];
-    }
+        [self setImage:image];
+    }];
 }
 
 @end

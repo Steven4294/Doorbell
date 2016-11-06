@@ -11,7 +11,6 @@
 #import "Parse.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DBMessageViewController.h"
-#import "DBLoginViewController.h"
 #import "DBChatNavigationController.h"
 #import "TTTTimeIntervalFormatter.h"
 #import "DBSearchUserViewController.h"
@@ -114,6 +113,15 @@
             
             [self.tableView reloadData];
         }
+         
+         if (conversations.count == 0)
+         {
+             [self displayEmptyView:YES withText:@"No messages" andSubText:@"You can find your messages here."];
+         }
+         else
+         {
+             [self displayEmptyView:NO withText:@"" andSubText:@""];
+         }
     }];
 }
 

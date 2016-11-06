@@ -9,41 +9,31 @@
 
 #import <Foundation/Foundation.h>
 
-#import "PFDataProvider.h"
-
-#import <Parse/PFConstants.h>
-
-@class BFTask<__covariant BFGenericType>;
+@class PFFileManager;
 
 @interface PFInstallationIdentifierStore : NSObject
 
-@property (nonatomic, weak, readonly) id<PFPersistenceControllerProvider> dataSource;
+/*!
+ Returns a cached installationId or creates a new one, saves it to disk and returns it.
+
+ @returns `NSString` representation of current installationId.
+ */
+@property (nonatomic, copy, readonly) NSString *installationIdentifier;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
-- (instancetype)initWithDataSource:(id<PFPersistenceControllerProvider>)dataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFileManager:(PFFileManager *)fileManager NS_DESIGNATED_INITIALIZER;
 
 ///--------------------------------------
-#pragma mark - Accessors
+/// @name Clear
 ///--------------------------------------
 
-/**
- Returns a cached installationId or creates a new one, saves it to disk and returns it.
- */
-- (BFTask<NSString *> *)getInstallationIdentifierAsync;
-
-///--------------------------------------
-#pragma mark - Clear
-///--------------------------------------
-
-/**
+/*!
  Clears installation identifier on disk and in-memory.
  */
-- (BFTask *)clearInstallationIdentifierAsync;
+- (void)clearInstallationIdentifier;
 
 @end

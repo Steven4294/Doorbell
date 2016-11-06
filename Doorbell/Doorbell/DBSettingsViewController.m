@@ -10,7 +10,7 @@
 #import "Parse.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import "DBLoginViewController.h"
+#import "DBLoginNavigationController.h"
 #import "DBBlockedUsersViewController.h"
 #import "DBNotificationSettingsViewController.h"
 #import "DBFeedbackViewController.h"
@@ -28,6 +28,14 @@
     
     [self addSection:[BOTableViewSection sectionWithHeaderTitle:@"Account" handler:^(BOTableViewSection *section) {
         // blocked users
+
+        [section addCell:[BOChoiceTableViewCell cellWithTitle:@"Notifications" key:@"key" handler:^(BOChoiceTableViewCell *cell) {
+            
+            DBNotificationSettingsViewController *vc = [[DBNotificationSettingsViewController alloc] init];
+            cell.destinationViewController = vc;
+            
+        }]];
+        
         [section addCell:[BOChoiceTableViewCell cellWithTitle:@"Blocked Users" key:@"key" handler:^(BOChoiceTableViewCell *cell) {
             
             DBBlockedUsersViewController *vc = [[DBBlockedUsersViewController alloc] init];
@@ -35,12 +43,6 @@
             
         }]];
         
-        [section addCell:[BOChoiceTableViewCell cellWithTitle:@"Notifications" key:@"key" handler:^(BOChoiceTableViewCell *cell) {
-            
-            DBNotificationSettingsViewController *vc = [[DBNotificationSettingsViewController alloc] init];
-            cell.destinationViewController = vc;
-            
-        }]];
     }]];
     
     __unsafe_unretained typeof(self) weakSelf = self;
@@ -77,20 +79,18 @@
 
 - (void)logout
 {
-    {
-        [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error)
-        {
-            if (error == nil)
-            {
-                [FBSDKAccessToken setCurrentAccessToken:nil];
-                
-                NSLog(@"logged out!");
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                DBLoginViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginViewController"];
-                [self presentViewController:vc animated:NO completion:nil];
-            }
-        }];
-    }
+    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error)
+     {
+         if (error == nil)
+         {
+             [FBSDKAccessToken setCurrentAccessToken:nil];
+             
+             NSLog(@"logged out!");
+             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+             DBLoginNavigationController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DBLoginNavigationController"];
+             [self presentViewController:vc animated:NO completion:nil];
+         }
+     }];
 }
 
 #pragma mark - mail compose delegate

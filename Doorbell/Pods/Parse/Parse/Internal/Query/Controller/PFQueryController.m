@@ -33,6 +33,10 @@
 #pragma mark - Init
 ///--------------------------------------
 
+- (instancetype)init {
+    PFNotDesignatedInitializer();
+}
+
 - (instancetype)initWithCommonDataSource:(id<PFCommandRunnerProvider>)dataSource {
     self = [super init];
     if (!self) return nil;
@@ -87,11 +91,11 @@
             }
         }
 
-        NSString *traceLog = result.result[@"trace"];
+        NSString *traceLog = [result.result objectForKey:@"trace"];
         if (traceLog != nil) {
             NSLog(@"Pre-processing took %f seconds\n%@Client side parsing took %f seconds",
                   [querySent timeIntervalSinceDate:queryStart], traceLog,
-                  queryReceived.timeIntervalSinceNow);
+                  [queryReceived timeIntervalSinceNow]);
         }
 
         return foundObjects;

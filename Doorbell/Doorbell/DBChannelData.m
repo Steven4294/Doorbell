@@ -52,7 +52,6 @@
     PFUser *currentUser = [PFUser currentUser];
     objectManager = [DBObjectManager sharedInstance];
     self.avatars = [[NSMutableDictionary alloc] init];
- 
     
     [objectManager fetchMessagesForChannel:channel withCompletion:^(BOOL success, NSArray *messages) {
         for (PFObject *message in messages)
@@ -75,8 +74,11 @@
                                                                                                diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
                 NSDictionary *avatarDict = @{user.objectId: avatar};
                 [self.avatars addEntriesFromDictionary:avatarDict];
-                [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
-
+                
+                if (self.avatars.count == users.count)
+                {   // you went through all the avatars
+                    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"messagesLoaded" object:self]];
+                }
             }];
         }
         

@@ -15,7 +15,7 @@
 @interface PFObjectEstimatedData : NSObject
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)initWithServerData:(NSDictionary *)serverData
@@ -24,7 +24,7 @@
                           operationSetQueue:(NSArray *)operationSetQueue;
 
 ///--------------------------------------
-#pragma mark - Read
+/// @name Read
 ///--------------------------------------
 
 - (id)objectForKey:(NSString *)key;
@@ -36,7 +36,7 @@
 @property (nonatomic, copy, readonly) NSDictionary *dictionaryRepresentation;
 
 ///--------------------------------------
-#pragma mark - Write
+/// @name Write
 ///--------------------------------------
 
 - (id)applyFieldOperation:(PFFieldOperation *)operation forKey:(NSString *)key;

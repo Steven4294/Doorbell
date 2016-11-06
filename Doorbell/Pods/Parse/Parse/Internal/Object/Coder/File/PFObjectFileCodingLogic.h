@@ -17,13 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PFObjectFileCodingLogic : NSObject
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 + (instancetype)codingLogic;
 
 ///--------------------------------------
-#pragma mark - Logic
+/// @name Logic
 ///--------------------------------------
 
 - (void)updateObject:(PFObject *)object fromDictionary:(NSDictionary *)dictionary usingDecoder:(PFDecoder *)decoder;

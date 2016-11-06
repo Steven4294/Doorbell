@@ -12,7 +12,7 @@
 @protocol PFNetworkCommand <NSObject>
 
 ///--------------------------------------
-#pragma mark - Properties
+/// @name Properties
 ///--------------------------------------
 
 @property (nonatomic, copy, readonly) NSString *sessionToken;
@@ -23,7 +23,7 @@
 @property (nonatomic, copy) NSString *localId;
 
 ///--------------------------------------
-#pragma mark - Encoding/Decoding
+/// @name Encoding/Decoding
 ///--------------------------------------
 
 + (instancetype)commandFromDictionaryRepresentation:(NSDictionary *)dictionary;
@@ -32,10 +32,10 @@
 + (BOOL)isValidDictionaryRepresentation:(NSDictionary *)dictionary;
 
 ///--------------------------------------
-#pragma mark - Local Identifiers
+/// @name Local Identifiers
 ///--------------------------------------
 
-/**
+/*!
  Replaces all local ids in this command with the correct objectId for that object.
  This should be called before sending the command over the network, so that there
  are no local ids sent to the Parse Cloud. If any local id refers to an object that

@@ -26,5 +26,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *eventImage;
 
+@property (nonatomic, strong) IBOutlet UIView *occurredView;
+
 
 @end

@@ -11,37 +11,37 @@
 
 #import <Parse/PFConstants.h>
 
-#import "PFDataProvider.h"
-
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFConfig;
 @class PFCurrentConfigController;
+@class PFFileManager;
+@protocol PFCommandRunning;
 
 @interface PFConfigController : NSObject
 
-@property (nonatomic, weak, readonly) id<PFPersistenceControllerProvider, PFCommandRunnerProvider> dataSource;
+@property (nonatomic, strong, readonly) PFFileManager *fileManager;
+@property (nonatomic, strong, readonly) id<PFCommandRunning> commandRunner;
 
 @property (nonatomic, strong, readonly) PFCurrentConfigController *currentConfigController;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
-- (instancetype)initWithDataSource:(id<PFPersistenceControllerProvider, PFCommandRunnerProvider>)dataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFileManager:(PFFileManager *)fileManager
+                      commandRunner:(id<PFCommandRunning>)commandRunner NS_DESIGNATED_INITIALIZER;
 
 ///--------------------------------------
-#pragma mark - Fetch
+/// @name Fetch
 ///--------------------------------------
 
-/**
+/*!
  Fetches current config from network async.
 
  @param sessionToken Current user session token.
 
- @return `BFTask` with result set to `PFConfig`.
+ @returns `BFTask` with result set to `PFConfig`.
  */
 - (BFTask *)fetchConfigAsyncWithSessionToken:(NSString *)sessionToken;
 

@@ -16,6 +16,7 @@
 #import "DBNavigationController.h"
 #import "DBChannelCell.h"
 #import "DBObjectManager.h"
+#import "Doorbell-Swift.h"
 
 // menu view controllers
 #import "DBProfileViewController.h"
@@ -26,6 +27,8 @@
 #import "DBNotificationCenterViewController.h"
 #import "DBBuildingViewController.h"
 #import "DBChannelMessageViewController.h"
+#import "DBPerkViewController.h"
+#import "DBInviteViewController.h"
 
 @interface DBLeftMenuViewController ()
 
@@ -45,20 +48,24 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        _titlesArray = @[@"Channels",
+        _titlesArray = @[//@"Channels",
                          @"Home",
+                         @"Invite Friends",
                          @"Notifications",
                          @"Messages",
                          @"Events",
+                         @"Deals",
                          @"Building",
                          @"Settings"];
         
         
-        _imagesArray = @[@"message_bubble",
+        _imagesArray = @[//@"message_bubble",
                          @"home1",
+                         @"invite3",
                          @"notification1",
                          @"message_bubble",
                          @"event1",
+                         @"sale",
                          @"building1",
                          @"settings1"];
     }
@@ -67,6 +74,8 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"loading menu list");
+    
     [super viewDidLoad];
     self.objectManager = [DBObjectManager sharedInstance];
 
@@ -76,6 +85,7 @@
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+ 
     [self.tableView reloadData];
     
     [self updateProfileImage];
@@ -98,10 +108,9 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0]; // set to whatever you want to be selected first
     [self.tableView selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionNone];
     
-    [self.objectManager fetchAllChannelsWithCompletion:^(BOOL success, NSArray *channels) {
-        
+    [self.objectManager fetchAllChannelsWithCompletion:^(BOOL success, NSArray *channels)
+     {
         self.channelArray = [channels copy];
-        NSLog(@"found %d", channels.count);
         [self.tableView reloadData];
     }];
     
@@ -114,7 +123,8 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^
                    {
                      //  [self.sideMenuController hideLeftViewAnimated:YES completionHandler:nil];
-                   });}
+                   });
+}
 
 - (void)headerViewTapped:(UILongPressGestureRecognizer *)gesture
 {
@@ -144,7 +154,6 @@
 - (void)updateProfileImage
 {
     PFUser *currentUser = [PFUser currentUser];
-    
     [self.profileImage setProfileImageViewForUser:currentUser isCircular:YES];
 }
 
@@ -165,25 +174,18 @@
 
 - (BOOL)tableView:(SLExpandableTableView *)tableView canExpandSection:(NSInteger)section
 {
-    if (section == 0)
-    {
+    
+    if ([_titlesArray[section] isEqualToString:@"Channels"]) {
         return YES;
+
     }
+    
     return NO;
 }
 
  - (BOOL)tableView:(SLExpandableTableView *)tableView needsToDownloadDataForExpandableSection:(NSInteger)section
 {
-    if (section == 0)
-    {
-    //   return YES;
-    }
     return NO;
-}
-
-- (void)tableView:(SLExpandableTableView *)tableView downloadDataForExpandableSection:(NSInteger)section
-{
-
 }
 
 - (UITableViewCell<UIExpandingTableViewCell> *)tableView:(SLExpandableTableView *)tableView expandingCellForSection:(NSInteger)section
@@ -210,18 +212,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1; //return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if ([_titlesArray[section] isEqualToString:@"Channels"]) 
     {
         return self.channelArray.count+1;
     }
-    else if (section == 1)
+    else
     {
-    return [self.titlesArray count] - 1;
+        return [self.titlesArray count];
     }
     return 0;
 }
@@ -230,7 +232,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0)
+    if ([_titlesArray[indexPath.section] isEqualToString:@"Channels"])
     {
         DBChannelCell *cell  = [tableView dequeueReusableCellWithIdentifier:@"channelCell" forIndexPath:indexPath];
         ///cell.isLoading = YES;
@@ -241,43 +243,38 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
     }
-    
-    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DBLeftMenuCell" owner:self options:nil];
-    DBLeftMenuCell *cell = [topLevelObjects objectAtIndex:0];
-    cell.itemLabel.text = [self.titlesArray objectAtIndex:indexPath.row+1];
-    
-    FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row +1] withExtension:@"png"];
-    renderer1.targetColor = [UIColor whiteColor];
-    UIImage *image_unhighlighted = [renderer1 imageWithCacheIdentifier:@"white"];
-    
-    FTImageAssetRenderer *renderer2 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row+1] withExtension:@"png"];
-    renderer2.targetColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
-    UIImage *image_highlighted = [renderer2 imageWithCacheIdentifier:@"render2"];
-    
-    [cell.iconImageView setImage:image_unhighlighted];
-    [cell.iconImageView setHighlightedImage:image_highlighted];
-    
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [cell setSelected:YES animated:YES];
-    
-   
-    
-    return cell;
+    else
+    {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DBLeftMenuCell" owner:self options:nil];
+        DBLeftMenuCell *cell = [topLevelObjects objectAtIndex:0];
+        cell.itemLabel.text = [self.titlesArray objectAtIndex:indexPath.row];
+        
+        FTImageAssetRenderer *renderer1 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
+        renderer1.targetColor = [UIColor whiteColor];
+        UIImage *image_unhighlighted = [renderer1 imageWithCacheIdentifier:@"white"];
+        
+        FTImageAssetRenderer *renderer2 = [FTAssetRenderer rendererForImageNamed:[self.imagesArray objectAtIndex:indexPath.row] withExtension:@"png"];
+        renderer2.targetColor = [UIColor colorWithRed:100/255.0f green:184.0/255.0 blue:250/255.0 alpha:1.0f];
+        UIImage *image_highlighted = [renderer2 imageWithCacheIdentifier:@"render2"];
+        
+        [cell.iconImageView setImage:image_unhighlighted];
+        [cell.iconImageView setHighlightedImage:image_highlighted];
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell setSelected:YES animated:YES];
+        return cell;
+
+    }
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Row/Section:  %d/%d", indexPath.row, indexPath.section);
-
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
     if ([cell isKindOfClass:[DBChannelCell class]])
     {
-        NSLog(@"transition to channel");
         DBChannelCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [self transitionToChannel:cell.channel];
-        
-        
     }
     else if ([cell isKindOfClass:[DBLeftMenuCell class]])
     {
@@ -294,7 +291,7 @@
 {
     if (indexPath.row > 0 && indexPath.section == 0)
     {
-        return 40;
+       // return 40;
     }
     return 60;
 }
@@ -314,6 +311,7 @@
 
 - (void)transitionToMenuItem:(NSString *)menuItem
 {
+    NSLog(@"transition to menu item %@", menuItem);
     NSUInteger number = [self.titlesArray indexOfObject:menuItem];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:number inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath
@@ -343,7 +341,7 @@
             [navigationController setViewControllers:@[viewController] animated:NO];
         }
     }
-    if (indexPath.row != 0)
+    if (![_titlesArray[indexPath.section] isEqualToString:@"Channels"])
     {
         // delay just for a nice animation
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^
@@ -388,6 +386,14 @@
     else if ([menuItem isEqualToString:@"#general"])
     {
         return @"DBChannelMessageViewController";
+    }
+    else if ([menuItem isEqualToString:@"Deals"])
+    {
+        return @"DBPerkViewController";
+    }
+    else if ([menuItem isEqualToString:@"Invite Friends"])
+    {
+        return @"DBInviteViewController";
     }
     else
     {

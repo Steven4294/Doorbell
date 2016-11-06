@@ -16,7 +16,7 @@
 #import "PFDataProvider.h"
 #import "PFMacros.h"
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFUser;
 
 typedef NS_OPTIONS(NSUInteger, PFCurrentUserLoadingOptions) {
@@ -25,27 +25,25 @@ typedef NS_OPTIONS(NSUInteger, PFCurrentUserLoadingOptions) {
 
 @interface PFCurrentUserController : NSObject <PFCurrentObjectControlling>
 
-@property (nonatomic, weak, readonly) id<PFKeychainStoreProvider> commonDataSource;
+@property (nonatomic, weak, readonly) id<PFKeychainStoreProvider, PFFileManagerProvider> commonDataSource;
 @property (nonatomic, weak, readonly) id<PFObjectFilePersistenceControllerProvider> coreDataSource;
 
 @property (atomic, assign) BOOL automaticUsersEnabled;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithStorageType:(PFCurrentObjectStorageType)storageType
-                   commonDataSource:(id<PFKeychainStoreProvider>)commonDataSource
+                   commonDataSource:(id<PFKeychainStoreProvider, PFFileManagerProvider>)commonDataSource
                      coreDataSource:(id<PFObjectFilePersistenceControllerProvider>)coreDataSource NS_DESIGNATED_INITIALIZER;
 + (instancetype)controllerWithStorageType:(PFCurrentObjectStorageType)storageType
-                         commonDataSource:(id<PFKeychainStoreProvider>)commonDataSource
+                         commonDataSource:(id<PFKeychainStoreProvider, PFFileManagerProvider>)commonDataSource
                            coreDataSource:(id<PFObjectFilePersistenceControllerProvider>)coreDataSource;
 
 ///--------------------------------------
-#pragma mark - User
+/// @name User
 ///--------------------------------------
 
 - (BFTask *)getCurrentUserAsyncWithOptions:(PFCurrentUserLoadingOptions)options;
@@ -53,7 +51,7 @@ typedef NS_OPTIONS(NSUInteger, PFCurrentUserLoadingOptions) {
 - (BFTask *)logOutCurrentUserAsync;
 
 ///--------------------------------------
-#pragma mark - Session Token
+/// @name Session Token
 ///--------------------------------------
 
 - (BFTask *)getCurrentUserSessionTokenAsync;

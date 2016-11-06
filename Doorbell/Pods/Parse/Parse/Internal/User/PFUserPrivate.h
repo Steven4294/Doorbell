@@ -17,14 +17,14 @@ extern NSString *const PFUserCurrentUserFileName;
 extern NSString *const PFUserCurrentUserPinName;
 extern NSString *const PFUserCurrentUserKeychainItemName;
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFCommandResult;
 @class PFUserController;
 
 @interface PFUser (Private)
 
 ///--------------------------------------
-#pragma mark - Current User
+/// @name Current User
 ///--------------------------------------
 + (BFTask *)_getCurrentUserSessionTokenAsync;
 + (NSString *)currentSessionToken;
@@ -41,7 +41,7 @@ extern NSString *const PFUserCurrentUserKeychainItemName;
 - (void)restoreAnonymity:(id)data;
 
 ///--------------------------------------
-#pragma mark - Revocable Session
+/// @name Revocable Session
 ///--------------------------------------
 + (BOOL)_isRevocableSessionEnabled;
 + (void)_setRevocableSessionEnabled:(BOOL)enabled;
@@ -51,24 +51,27 @@ extern NSString *const PFUserCurrentUserKeychainItemName;
 @end
 
 // Private Properties
-@interface PFUser ()
+@interface PFUser () {
+    BOOL isCurrentUser;
+    NSMutableDictionary *authData;
+    NSMutableSet *linkedServiceNames;
+    BOOL isLazy;
+}
 
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, id> *authData;
-@property (nonatomic, strong, readonly) NSMutableSet<NSString *> *linkedServiceNames;
+// This earmarks the user as being an "identity" user. This will make saves write through
+// to the currentUser singleton and disk object
+@property (nonatomic, assign) BOOL isCurrentUser;
 
-/**
- This earmarks the user as being an "identity" user.
- This will make saves write through to the currentUser singleton and disk object
- */
-@property (nonatomic, assign) BOOL _current;
-@property (nonatomic, assign) BOOL _lazy;
+@property (nonatomic, strong, readonly) NSMutableDictionary *authData;
+@property (nonatomic, strong, readonly) NSMutableSet *linkedServiceNames;
+@property (nonatomic, assign) BOOL isLazy;
 
 - (BOOL)_isAuthenticatedWithCurrentUser:(PFUser *)currentUser;
 
 - (BFTask *)_logOutAsync;
 
 ///--------------------------------------
-#pragma mark - Third-party Authentication (Private)
+/// @name Third-party Authentication (Private)
 ///--------------------------------------
 
 + (void)_unregisterAuthenticationDelegateForAuthType:(NSString *)authType;

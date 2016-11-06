@@ -13,28 +13,26 @@
 
 #import "PFMacros.h"
 
-@class BFTask<__covariant BFGenericType>;
+@class BFTask PF_GENERIC(__covariant BFGenericType);
 @class PFFileManager;
 @class PFSQLiteDatabaseResult;
 
-typedef id _Nullable(^PFSQLiteDatabaseQueryBlock)(PFSQLiteDatabaseResult *_Nonnull result);
-
-/**
+/*!
  Argument count given in executeSQLAsync or executeQueryAsync is invalid.
  */
 extern int const PFSQLiteDatabaseInvalidArgumenCountErrorCode;
 
-/**
+/*!
  Method `executeSQL` cannot execute SELECT. Use `executeQuery` instead.
  */
 extern int const PFSQLiteDatabaseInvalidSQL;
 
-/**
+/*!
  Database is opened already.
  */
 extern int const PFSQLiteDatabaseDatabaseAlreadyOpened;
 
-/**
+/*!
  Database is closed already.
  */
 extern int const PFSQLiteDatabaseDatabaseAlreadyClosed;
@@ -44,70 +42,70 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PFSQLiteDatabase : NSObject
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)initWithPath:(NSString *)path;
 
 ///--------------------------------------
-#pragma mark - Database Creation
+/// @name Database Creation
 ///--------------------------------------
 
 + (instancetype)databaseWithPath:(NSString *)path;
 
 ///--------------------------------------
-#pragma mark - Connection
+/// @name Connection
 ///--------------------------------------
 
-/**
- @return A `BFTask` that resolves to `YES` if the database is open.
+/*!
+ @returns A `BFTask` that resolves to `YES` if the database is open.
  */
 - (BFTask *)isOpenAsync;
 
-/**
+/*!
  Opens database. Database is one time use. Open > Close > Open is forbidden.
  */
 - (BFTask *)openAsync;
 
-/**
+/*!
  Closes the database connection.
  */
 - (BFTask *)closeAsync;
 
 ///--------------------------------------
-#pragma mark - Transaction
+/// @name Transaction
 ///--------------------------------------
 
-/**
+/*!
  Begins a database transaction in EXCLUSIVE mode.
  */
 - (BFTask *)beginTransactionAsync;
 
-/**
+/*!
  Commits running transaction.
  */
 - (BFTask *)commitAsync;
 
-/**
+/*!
  Rollbacks running transaction.
  */
 - (BFTask *)rollbackAsync;
 
 ///--------------------------------------
-#pragma mark - Query Methods
+/// @name Query Methods
 ///--------------------------------------
 
-/**
+/*!
  Runs a single SQL statement which return result (SELECT).
  */
-- (BFTask *)executeQueryAsync:(NSString *)query withArgumentsInArray:(nullable NSArray *)args block:(PFSQLiteDatabaseQueryBlock)block;
+- (BFTask *)executeQueryAsync:(NSString *)sql withArgumentsInArray:(nullable NSArray *)args;
 
-/**
+/*!
  Runs a single SQL statement, while caching the resulting statement for future use.
  */
 - (BFTask *)executeCachedQueryAsync:(NSString *)sql withArgumentsInArray:(nullable NSArray *)args;
 
-/**
+/*!
  Runs a single SQL statement which doesn't return result (UPDATE/INSERT/DELETE).
  */
 - (BFTask *)executeSQLAsync:(NSString *)sql withArgumentsInArray:(nullable NSArray *)args;

@@ -16,29 +16,27 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *cacheDirectoryPath;
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 - (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
 - (instancetype)initWithCacheDirectoryPath:(NSString *)path;
 
 ///--------------------------------------
-#pragma mark - Setting
+/// @name Setting
 ///--------------------------------------
 
 - (void)setObject:(NSString *)object forKey:(NSString *)key;
 - (void)setObject:(NSString *)object forKeyedSubscript:(NSString *)key;
 
 ///--------------------------------------
-#pragma mark - Getting
+/// @name Getting
 ///--------------------------------------
 
 - (NSString *)objectForKey:(NSString *)key maxAge:(NSTimeInterval)age;
 
 ///--------------------------------------
-#pragma mark - Removing
+/// @name Removing
 ///--------------------------------------
 
 - (void)removeObjectForKey:(NSString *)key;

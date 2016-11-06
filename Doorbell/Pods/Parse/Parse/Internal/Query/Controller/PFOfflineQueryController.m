@@ -34,6 +34,10 @@
 #pragma mark - Init
 ///--------------------------------------
 
+- (instancetype)initWithCommonDataSource:(id<PFCommandRunnerProvider, PFOfflineStoreProvider>)dataSource {
+    PFNotDesignatedInitializer();
+}
+
 - (instancetype)initWithCommonDataSource:(id<PFCommandRunnerProvider, PFOfflineStoreProvider>)dataSource
                           coreDataSource:(id<PFPinningObjectStoreProvider>)coreDataSource {
     self = [super initWithCommonDataSource:dataSource];

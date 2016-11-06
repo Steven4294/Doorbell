@@ -15,7 +15,7 @@
 @interface PFObjectSubclassingController : NSObject
 
 ///--------------------------------------
-#pragma mark - Init
+/// @name Init
 ///--------------------------------------
 
 //TODO: (nlutsenko, richardross) Make it not terrible aka don't have singletons.
@@ -23,7 +23,7 @@
 + (void)clearDefaultController;
 
 ///--------------------------------------
-#pragma mark - Registration
+/// @name Registration
 ///--------------------------------------
 
 - (Class<PFSubclassing>)subclassForParseClassName:(NSString *)parseClassName;
@@ -31,7 +31,7 @@
 - (void)unregisterSubclass:(Class<PFSubclassing>)kls;
 
 ///--------------------------------------
-#pragma mark - Forwarding
+/// @name Forwarding
 ///--------------------------------------
 
 - (NSMethodSignature *)forwardingMethodSignatureForSelector:(SEL)cmd ofClass:(Class)kls;

@@ -51,7 +51,6 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _updateDetailTextLabel];
-        self.backgroundColor = [UIColor yellowColor];
     }
     return self;
 }

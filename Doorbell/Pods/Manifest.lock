@@ -20,24 +20,28 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - APAddressBook (0.2.3):
+    - APAddressBook/Core (= 0.2.3)
+  - APAddressBook/Core (0.2.3)
   - Bohr (3.0.0)
-  - Bolts (1.6.0):
-    - Bolts/AppLinks (= 1.6.0)
-    - Bolts/Tasks (= 1.6.0)
-  - Bolts/AppLinks (1.6.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.6.0)
+  - Bolts/Tasks (1.8.4)
+  - CHTwitterCover (0.1)
   - CNPPopupController (0.3.1)
   - CSNotificationView (0.5.4)
   - DateTools (1.7.0)
   - DRCellSlideGestureRecognizer (1.0.0)
-  - EstimoteSDK (3.8.2)
-  - FBSDKCoreKit (4.9.1):
-    - Bolts (~> 1.5)
-  - FBSDKLoginKit (4.9.1):
+  - EstimoteSDK (4.7.2)
+  - FBSDKCoreKit (4.14.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.14.0):
     - FBSDKCoreKit
   - FBSDKMessengerShareKit (1.3.2)
-  - FBSDKShareKit (4.9.1):
+  - FBSDKShareKit (4.14.0):
     - FBSDKCoreKit
   - FormatterKit (1.8.0):
     - FormatterKit/AddressFormatter (= 1.8.0)
@@ -60,12 +64,14 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.0)
   - FRHyperLabel (1.0.2)
   - FTAssetRenderer (0.1.1)
+  - IHKeyboardAvoiding (2.6)
   - JElasticPullToRefresh (1.0.3)
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - JTHamburgerButton (1.0.5)
   - JTSImageViewController (1.5.1)
+  - JVFloatLabeledTextField (1.1.0)
   - LGSideMenuController (1.0.10)
   - LMPullToBounce (1.1.1)
   - LRTextField (1.1.3)
@@ -76,14 +82,13 @@ PODS:
     - Masonry
   - MobileDeepLinking-iOS (0.2.0)
   - MOOMaskedIconView (0.1.0)
-  - Parse (1.12.0):
-    - Bolts/Tasks (~> 1.5)
-  - ParseFacebookUtilsV4 (1.11.0):
-    - Bolts/Tasks (>= 1.5)
-    - FBSDKCoreKit (~> 4.9.0-beta)
-    - FBSDKLoginKit (~> 4.9.0-beta)
-    - FBSDKTVOSKit (~> 4.9.0-beta)
-    - Parse (~> 1.11)
+  - Parse (1.8.5):
+    - Bolts/Tasks (>= 1.2.2)
+  - ParseFacebookUtilsV4 (1.8.5):
+    - Bolts/Tasks (>= 1.2.2)
+    - FBSDKCoreKit (~> 4.0)
+    - FBSDKLoginKit (~> 4.0)
+    - Parse (~> 1.8.4)
   - RKNotificationHub (2.0.1)
   - RKSwipeBetweenViewControllers (0.1.4)
   - SDWebImage (3.7.5):
@@ -92,6 +97,7 @@ PODS:
   - SESlideTableViewCell (0.7.0)
   - SLExpandableTableView (1.3.1)
   - SVPullToRefresh (0.4.1)
+  - SwipeView (1.3.2)
   - TLYShyNavBar (1.0.0)
   - TTTAttributedLabel (2.0.0)
   - UIColor+FlatColors (0.0.2)
@@ -102,7 +108,9 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
+  - APAddressBook
   - Bohr
+  - CHTwitterCover (~> 0.1)
   - CNPPopupController
   - CSNotificationView (~> 0.5)
   - DateTools
@@ -115,10 +123,12 @@ DEPENDENCIES:
   - FormatterKit
   - FRHyperLabel
   - FTAssetRenderer
+  - IHKeyboardAvoiding
   - JElasticPullToRefresh
   - JSQMessagesViewController
   - JTHamburgerButton (~> 1.0)
   - JTSImageViewController (~> 1.5)
+  - JVFloatLabeledTextField
   - LGSideMenuController (~> 1.0.0)
   - LMPullToBounce (~> 1.1)
   - LRTextField
@@ -135,6 +145,7 @@ DEPENDENCIES:
   - SESlideTableViewCell
   - SLExpandableTableView
   - SVPullToRefresh
+  - SwipeView (~> 1.3)
   - TLYShyNavBar
   - TTTAttributedLabel (~> 2.0)
   - UIColor+FlatColors
@@ -145,25 +156,29 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
   Bohr: 17b150766e54e1fb8ff417d85b830c7caafa8b4a
-  Bolts: f52a250053bb517ca874523c3913776359ab3def
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  CHTwitterCover: 5cc99cb4535ec79bf614507e4eaa8616a30b015a
   CNPPopupController: 67dc2ca5a3f88cd49a27bb1b0aeb78a24d423d79
   CSNotificationView: 0792f5220163c2befaf1a9716aa3d5a7d6bd4fb1
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   DRCellSlideGestureRecognizer: c7213100aa8b1a54b3388c2e73894039058c7795
-  EstimoteSDK: 5e36b596f9f28161bff35b086d9f70282be5f513
-  FBSDKCoreKit: aee20b6d9855f15b618d4fddd1a5ad45f5a4a59d
-  FBSDKLoginKit: ec22dc49bd372b064e93d6773df4ffefb3a552a2
+  EstimoteSDK: d57900b6b6f3a205cba0a17420e658eded62b105
+  FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
+  FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
   FBSDKMessengerShareKit: 41c0b1a667d685c9433f993eb9611b3d5074e1cb
-  FBSDKShareKit: b8c8ef0ed173f9fc1b3c8df384a0202ce53008d4
+  FBSDKShareKit: e8e5d4ccef69b41132fe33acda26db1e33143e33
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   FRHyperLabel: 967b8b7ffdd86b9f2d44f2981a5688c4d3faa9ac
   FTAssetRenderer: 034cc3dff8e0f9f10176179b6ccf8934841d2370
+  IHKeyboardAvoiding: d2541ee56dad83e160cd9aed0468c52247af6f49
   JElasticPullToRefresh: 63b15bfbb96ea476dce3df9460509d59473b1e94
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   JTHamburgerButton: 9a41c7d051c72590a9d2c18416d84d1b912f12e3
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
+  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
   LGSideMenuController: 8682bdbd0008c1acfbce95eaf96cc3657bca5f95
   LMPullToBounce: c4cb391c5e8cde501fae1c3614e8bce29698f989
   LRTextField: 340e3ad5dad7e9dc058252fc1257836b98517248
@@ -173,14 +188,15 @@ SPEC CHECKSUMS:
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   MobileDeepLinking-iOS: a30631723cc6b5b7fdca52909e2681d69e0f744a
   MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
-  Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
-  ParseFacebookUtilsV4: 216e03bd560404eed09a4875c75f0c1cdf758070
+  Parse: 17ad8e0677ed682f7f00503860fcda0f4eb74168
+  ParseFacebookUtilsV4: cc51857cf984c6fc743e7f17c2ddebdb6f02f963
   RKNotificationHub: d80905a948c79c11673345f807133a0bfd17e320
   RKSwipeBetweenViewControllers: 2236038119d6f7eb64ff589eb423fcda80cbe962
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SESlideTableViewCell: 1487a6aedc84b480a888fc33b8d1c58fa5026f99
   SLExpandableTableView: ff63a4bb4b71c6c3ae2b7cb1cde6a36c1645f23c
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  SwipeView: bd67cfaf7760c036438446b3ccb28a3b84fce009
   TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIColor+FlatColors: 6c699df7a575281794c688c64cee6c44fd1f93b4

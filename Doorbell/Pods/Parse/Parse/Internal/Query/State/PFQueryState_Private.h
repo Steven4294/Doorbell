@@ -41,7 +41,7 @@
 @property (nonatomic, assign, readwrite) NSInteger skip;
 
 ///--------------------------------------
-#pragma mark - Remote + Caching Options
+/// @name Remote + Caching Options
 ///--------------------------------------
 
 @property (nonatomic, assign, readwrite) PFCachePolicy cachePolicy;
@@ -50,7 +50,7 @@
 @property (nonatomic, assign, readwrite) BOOL trace;
 
 ///--------------------------------------
-#pragma mark - Local Datastore Options
+/// @name Local Datastore Options
 ///--------------------------------------
 
 @property (nonatomic, assign, readwrite) BOOL shouldIgnoreACLs;
