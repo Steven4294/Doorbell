@@ -54,6 +54,7 @@
 
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
+    NSLog(@"buildings arraY: %@", buildingsArray   );
     PFObject *building = [buildingsArray objectAtIndex:row];
     NSString *title = building[@"buildingLongName"];
     NSAttributedString *attString = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];

@@ -10,7 +10,7 @@
 #import <Parse/Parse.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <ParseFacebookUtilsV4.h>
+//#import <ParseFacebookUtilsV4.h>
 
 #import "DBProfileViewController.h"
 #import "DBSideMenuController.h"
@@ -88,7 +88,7 @@
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     
     // Login PFUser using Facebook
-    [PFFacebookUtils logInInBackgroundWithReadPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
+    /*[PFFacebookUtils logInInBackgroundWithReadPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user)
         {
             NSLog(@"Uh oh. The user cancelled the Facebook login: %@", [PFUser currentUser].username);
@@ -128,8 +128,9 @@
             }
         }
         
-    }];
+    }];*/
     
+    NSLog(@"log in user");
 }
 
 - (void)presentFeed

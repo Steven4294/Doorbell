@@ -56,6 +56,7 @@
 
 - (void)updateUsersCurrentLocation
 {
+    NSLog(@"updating users current location");
     if (self.currentUser != nil)
     {
         CLLocation *currentLocation = [[DBLocationManager sharedInstance] currentLocation];
@@ -72,18 +73,22 @@
         }
         else
         {
-            
-            PFQuery *query = [PFQuery queryWithClassName:@"Building"];
-            [query whereKey:@"buildingName" equalTo:self.currentUser[@"building"]];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                
-                PFObject *building = [objects firstObject];
-                self.currentUser[@"location"] = building[@"location"];
-                NSLog(@"should set current locaiton to building: %@", building[@"location"]);
-                
-                [self.currentUser saveInBackground];
-                
-            }];
+            NSLog(@"here!");
+            if (self.currentUser[@"building"] != nil)
+            {
+                PFQuery *query = [PFQuery queryWithClassName:@"Building"];
+                [query whereKey:@"buildingName" equalTo:self.currentUser[@"building"]];
+                [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+                    
+                    PFObject *building = [objects firstObject];
+                    self.currentUser[@"location"] = building[@"location"];
+                    NSLog(@"should set current locaiton to building: %@", building[@"location"]);
+                    
+                    [self.currentUser saveInBackground];
+                    
+                }];
+            }
+         
             
         }
         /*else

@@ -49,13 +49,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.delegate = self;
     self.scrollView.translatesAutoresizingMaskIntoConstraints = false;
-    
-    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50, self.view.frame.size.width, 50)];
-    [self.pageControl setCurrentPage:0];
-    self.pageControl.userInteractionEnabled = NO;
     [self.view addSubview:self.scrollView];
-    [self.view addSubview:self.pageControl];
-
 }
 
 - (void)viewDidLayoutSubviews
@@ -76,7 +70,6 @@
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     _viewControllers = viewControllers;
-    [self.pageControl setNumberOfPages:self.viewControllers.count];
 
     // __visibleViewControllers exist, means that self has appeared
     if (__visibleViewControllers) {
@@ -143,13 +136,10 @@
 
     for (UIViewController *vc in self.viewControllers) {
         vc.view.frame = CGRectMake(originX, 0.0, width, height);
-        NSLog(@"vc.view.frame %@", vc.view.frame);
         originX += width;
     }
 
     self.scrollView.contentSize = CGSizeMake(originX, height);
-    
-
 }
 
 - (void)__scrollToCurrentIndexAnimated:(BOOL)animated
@@ -157,18 +147,17 @@
     if (!__visibleViewControllers) {
         return;
     }
-    
+
     [self.scrollView scrollRectToVisible:[__visibleViewControllers[self.currentIndex] view].frame
                                 animated:animated];
 }
 
 #pragma mark - Scroll view delegate
 
-- (void)scrollViewDidScroll:(UIScrollView` *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat centerPos = scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame) + 0.5;
     _currentIndex = (NSUInteger)centerPos;
-    [self.pageControl setCurrentPage:_currentIndex];
 }
 
 @end

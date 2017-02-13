@@ -1343,6 +1343,7 @@
         !(kLGSideMenuIsRightViewAlwaysVisible && _leftViewPresentationStyle != LGSideMenuPresentationStyleSlideAbove))
     {
         [self showLeftViewPrepare];
+
         [self showLeftViewAnimated:animated fromPercentage:0.f completionHandler:completionHandler];
     }
 }

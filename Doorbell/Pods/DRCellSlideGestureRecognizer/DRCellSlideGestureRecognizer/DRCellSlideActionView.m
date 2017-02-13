@@ -29,7 +29,6 @@
 
 - (void)updateIconImageViewFrame {
 	self.iconImageView.frame = CGRectMake(0, 0, self.frame.size.width-self.action.iconMargin*2, self.frame.size.height);
-    self.iconImageView.frame = CGRectMake(0, 0, 40, 40);
 	self.iconImageView.center = CGPointMake(self.center.x, self.iconImageView.frame.size.height/2);
 }
 
@@ -47,8 +46,6 @@
 - (void)setAction:(DRCellSlideAction *)action {
 	_action = action;
 	
-    self.iconImageView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.iconImageView.layer.borderWidth = 1.0f;
 	self.iconImageView.image = [action.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	self.iconImageView.contentMode = action.fraction >= 0 ? UIViewContentModeLeft : UIViewContentModeRight;
 	

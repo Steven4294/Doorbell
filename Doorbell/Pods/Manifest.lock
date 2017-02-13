@@ -82,13 +82,8 @@ PODS:
     - Masonry
   - MobileDeepLinking-iOS (0.2.0)
   - MOOMaskedIconView (0.1.0)
-  - Parse (1.8.5):
-    - Bolts/Tasks (>= 1.2.2)
-  - ParseFacebookUtilsV4 (1.8.5):
-    - Bolts/Tasks (>= 1.2.2)
-    - FBSDKCoreKit (~> 4.0)
-    - FBSDKLoginKit (~> 4.0)
-    - Parse (~> 1.8.4)
+  - Parse (1.14.2):
+    - Bolts/Tasks (~> 1.8)
   - RKNotificationHub (2.0.1)
   - RKSwipeBetweenViewControllers (0.1.4)
   - SDWebImage (3.7.5):
@@ -138,7 +133,6 @@ DEPENDENCIES:
   - MobileDeepLinking-iOS (~> 0.2)
   - MOOMaskedIconView (~> 0.1)
   - Parse (~> 1.4)
-  - ParseFacebookUtilsV4
   - RKNotificationHub
   - RKSwipeBetweenViewControllers
   - SDWebImage (~> 3.7)
@@ -188,8 +182,7 @@ SPEC CHECKSUMS:
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   MobileDeepLinking-iOS: a30631723cc6b5b7fdca52909e2681d69e0f744a
   MOOMaskedIconView: 42f22374cd15e81e65a1d67963374a961d94b909
-  Parse: 17ad8e0677ed682f7f00503860fcda0f4eb74168
-  ParseFacebookUtilsV4: cc51857cf984c6fc743e7f17c2ddebdb6f02f963
+  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   RKNotificationHub: d80905a948c79c11673345f807133a0bfd17e320
   RKSwipeBetweenViewControllers: 2236038119d6f7eb64ff589eb423fcda80cbe962
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
@@ -205,4 +198,6 @@ SPEC CHECKSUMS:
   VCTransitionsLibrary: d61fd9b7b6721942f0d583bcc0e7f8c31ec9271b
   YZSwipeBetweenViewController: 24e76101303b1b1db19983261e7c90e9fd067c14
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: c86dd99dce4787b1431718bd0880c12c55b0bfbf
+
+COCOAPODS: 1.2.0

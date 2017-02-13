@@ -12,7 +12,7 @@
 		433AFB5E1C9CBEFD007A9C3D /* black-rose.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 433AFB5D1C9CBEFD007A9C3D /* black-rose.ttf */; };
 		433AFB631C9CC6A0007A9C3D /* DBAcDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */; };
 		433AFB661C9CC726007A9C3D /* DBCustomAcObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */; };
-		D085485961AD712319E931E0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 741705647526562344AB37DD /* libPods.a */; };
+		5FAEC2E447E7085A4E0E71C4 /* libPods-Doorbell.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BA555135A3F12B54BAFB2CD /* libPods-Doorbell.a */; };
 		D4053F9D1CB4CE0300EDBA02 /* DBMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */; };
 		D40B53D31D3EB4050037E974 /* DBEventCreateController.m in Sources */ = {isa = PBXBuildFile; fileRef = D40B53D21D3EB4050037E974 /* DBEventCreateController.m */; };
 		D40B53D61D3EB95F0037E974 /* DBDateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D40B53D51D3EB95F0037E974 /* DBDateTableViewCell.m */; };
@@ -179,7 +179,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22A6800498CE19204F21989A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		0601063E73694EC9FA4AF96E /* Pods-Doorbell.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doorbell.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Doorbell/Pods-Doorbell.debug.xcconfig"; sourceTree = "<group>"; };
 		433AFB531C98B799007A9C3D /* DBTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBTableViewCell.h; sourceTree = "<group>"; };
 		433AFB541C98B799007A9C3D /* DBTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBTableViewCell.m; sourceTree = "<group>"; };
 		433AFB5A1C9A07CC007A9C3D /* DBRequestFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBRequestFormViewController.h; sourceTree = "<group>"; };
@@ -189,8 +189,7 @@
 		433AFB621C9CC6A0007A9C3D /* DBAcDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBAcDataSource.m; sourceTree = "<group>"; };
 		433AFB641C9CC726007A9C3D /* DBCustomAcObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCustomAcObject.h; sourceTree = "<group>"; };
 		433AFB651C9CC726007A9C3D /* DBCustomAcObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCustomAcObject.m; sourceTree = "<group>"; };
-		741705647526562344AB37DD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		7BA555135A3F12B54BAFB2CD /* libPods-Doorbell.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Doorbell.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4053F9B1CB4CE0300EDBA02 /* DBMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessageViewController.h; sourceTree = "<group>"; };
 		D4053F9C1CB4CE0300EDBA02 /* DBMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageViewController.m; sourceTree = "<group>"; };
 		D40B53D11D3EB4050037E974 /* DBEventCreateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBEventCreateController.h; sourceTree = "<group>"; };
@@ -411,6 +410,7 @@
 		D4FE04BB1D1C9B0600E1C52D /* location-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-pin.png"; sourceTree = "<group>"; };
 		D4FE04BE1D1C9BC000E1C52D /* location-pin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-pin2.png"; sourceTree = "<group>"; };
 		D4FE04C01D1D92F200E1C52D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		F2A3BFEA4A862F9C67D5B778 /* Pods-Doorbell.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doorbell.release.xcconfig"; path = "Pods/Target Support Files/Pods-Doorbell/Pods-Doorbell.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,7 +420,7 @@
 			files = (
 				D431510B1D396C1000F8961D /* CoreLocation.framework in Frameworks */,
 				D46261971D1D94E7002A9131 /* MapKit.framework in Frameworks */,
-				D085485961AD712319E931E0 /* libPods.a in Frameworks */,
+				5FAEC2E447E7085A4E0E71C4 /* libPods-Doorbell.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,12 +441,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		274B17FCE9073E551E8993B3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0601063E73694EC9FA4AF96E /* Pods-Doorbell.debug.xcconfig */,
+				F2A3BFEA4A862F9C67D5B778 /* Pods-Doorbell.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		6122F4C16C4AA719038B9B35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D431510A1D396C1000F8961D /* CoreLocation.framework */,
 				D4FE04C01D1D92F200E1C52D /* MapKit.framework */,
-				741705647526562344AB37DD /* libPods.a */,
+				7BA555135A3F12B54BAFB2CD /* libPods-Doorbell.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -689,8 +698,8 @@
 				D458A8031C5C36B200F47581 /* DoorbellTests */,
 				D458A80E1C5C36B200F47581 /* DoorbellUITests */,
 				D458A7E81C5C36B200F47581 /* Products */,
-				F384E352FA55E3424BB2293C /* Pods */,
 				6122F4C16C4AA719038B9B35 /* Frameworks */,
+				274B17FCE9073E551E8993B3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -958,15 +967,6 @@
 			name = "event detail cells";
 			sourceTree = "<group>";
 		};
-		F384E352FA55E3424BB2293C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				22A6800498CE19204F21989A /* Pods.debug.xcconfig */,
-				804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -974,12 +974,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D458A8141C5C36B200F47581 /* Build configuration list for PBXNativeTarget "Doorbell" */;
 			buildPhases = (
-				251A8863CF82A2776768B7D7 /* Check Pods Manifest.lock */,
+				0FA90DBC199B946EC280A4A2 /* [CP] Check Pods Manifest.lock */,
 				D458A7E31C5C36B200F47581 /* Sources */,
 				D458A7E41C5C36B200F47581 /* Frameworks */,
 				D458A7E51C5C36B200F47581 /* Resources */,
-				E03BAFFCB9A05B9405CFED58 /* Embed Pods Frameworks */,
-				B235911C05D0AF2A4BD08EFF /* Copy Pods Resources */,
+				AA6C56F59447F803A21FB1B7 /* [CP] Embed Pods Frameworks */,
+				4F4B9B22D0A944470E8C239E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1039,6 +1039,7 @@
 					D458A7E61C5C36B200F47581 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 6DLJPUUN3Y;
+						LastSwiftMigration = 0820;
 					};
 					D458A7FF1C5C36B200F47581 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1159,49 +1160,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		251A8863CF82A2776768B7D7 /* Check Pods Manifest.lock */ = {
+		0FA90DBC199B946EC280A4A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		B235911C05D0AF2A4BD08EFF /* Copy Pods Resources */ = {
+		4F4B9B22D0A944470E8C239E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Doorbell/Pods-Doorbell-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E03BAFFCB9A05B9405CFED58 /* Embed Pods Frameworks */ = {
+		AA6C56F59447F803A21FB1B7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Doorbell/Pods-Doorbell-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1430,7 +1431,7 @@
 		};
 		D458A8151C5C36B200F47581 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22A6800498CE19204F21989A /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 0601063E73694EC9FA4AF96E /* Pods-Doorbell.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1450,12 +1451,13 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Doorbell/Doorbell-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		D458A8161C5C36B200F47581 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 804D32184CDDE3BFB037E9A5 /* Pods.release.xcconfig */;
+			baseConfigurationReference = F2A3BFEA4A862F9C67D5B778 /* Pods-Doorbell.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1474,6 +1476,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Doorbell/Doorbell-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

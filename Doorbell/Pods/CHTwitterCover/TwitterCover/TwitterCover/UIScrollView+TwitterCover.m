@@ -33,7 +33,6 @@ static char UIScrollViewTwitterCover;
 
 @implementation UIScrollView (TwitterCover)
 
-/*
 - (void)setTwitterCoverView:(CHTwitterCoverView *)twitterCoverView {
     [self willChangeValueForKey:@"twitterCoverView"];
     objc_setAssociatedObject(self, &UIScrollViewTwitterCover,
@@ -45,11 +44,10 @@ static char UIScrollViewTwitterCover;
 - (CHTwitterCoverView *)twitterCoverView {
     return objc_getAssociatedObject(self, &UIScrollViewTwitterCover);
 }
-*/
 
 - (void)addTwitterCoverWithImage:(UIImage*)image
 {
-    CHTwitterCoverView *view = [[CHTwitterCoverView alloc] initWithFrame:CGRectMake(0,0, self.frame.size.width, CHTwitterCoverViewHeight)];
+    CHTwitterCoverView *view = [[CHTwitterCoverView alloc] initWithFrame:CGRectMake(0,0, 320, CHTwitterCoverViewHeight)];
 
     view.backgroundColor = [UIColor clearColor];
     view.image = image;
@@ -66,8 +64,6 @@ static char UIScrollViewTwitterCover;
 @implementation CHTwitterCoverView
 {
     NSMutableArray *blurImages_;
-    CGFloat CHTwitterCoverViewWidth;
-    NSUInteger numberOfBlurImages;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -76,11 +72,7 @@ static char UIScrollViewTwitterCover;
     if (self) {
         self.contentMode = UIViewContentModeScaleAspectFill;
         self.clipsToBounds = YES;
-        self.layer.zPosition = -100.0;
-
-        numberOfBlurImages = 0;
-        blurImages_ = [[NSMutableArray alloc] initWithCapacity:numberOfBlurImages];
-        CHTwitterCoverViewWidth = self.frame.size.width;
+        blurImages_ = [[NSMutableArray alloc] initWithCapacity:20];
 
     }
     return self;
@@ -98,7 +90,7 @@ static char UIScrollViewTwitterCover;
 {
     CGFloat factor = 0.1;
     [blurImages_ addObject:self.image];
-    for (NSUInteger i = 0; i < numberOfBlurImages; i++) {
+    for (NSUInteger i = 0; i < 20; i++) {
         [blurImages_ addObject:[self.image boxblurImageWithBlur:factor]];
         factor+=0.04;
     }
@@ -124,7 +116,7 @@ static char UIScrollViewTwitterCover;
         CGFloat offset = -self.scrollView.contentOffset.y;
         
         
-        self.frame = CGRectMake(-offset,-offset, CHTwitterCoverViewWidth + offset * 2, CHTwitterCoverViewHeight + offset);
+        self.frame = CGRectMake(-offset,-offset, 320+ offset * 2, CHTwitterCoverViewHeight + offset);
         NSInteger index = offset / 10;
         if (index < 0) {
             index = 0;
@@ -139,7 +131,7 @@ static char UIScrollViewTwitterCover;
         
     }
     else {
-        self.frame = CGRectMake(0,0, CHTwitterCoverViewWidth, CHTwitterCoverViewHeight);
+        self.frame = CGRectMake(0,0, 320, CHTwitterCoverViewHeight);
         UIImage *image = blurImages_[0];
 
         if (self.image != image) {

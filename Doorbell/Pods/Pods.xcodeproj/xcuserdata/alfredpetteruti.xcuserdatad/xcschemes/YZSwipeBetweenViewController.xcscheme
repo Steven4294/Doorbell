@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '746B90ADB4D05F9B31855DC1'
+               BlueprintIdentifier = '2D47E07A7F372EC7423412EC0ED481ED'
                BlueprintName = 'YZSwipeBetweenViewController'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libYZSwipeBetweenViewController.a'>

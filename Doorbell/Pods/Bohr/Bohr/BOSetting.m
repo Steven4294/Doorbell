@@ -13,7 +13,6 @@
 - (instancetype)initWithKey:(NSString *)key {
 	if (key) {
 		if (self = [super init]) {
-            NSLog(@"alloced %@", key);
 			_key = key;
 			[[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:self.key options:NSKeyValueObservingOptionNew context:nil];
 		}
@@ -47,7 +46,6 @@
 }
 
 - (void)dealloc {
-    NSLog(@"dealloced: %@", self.key);
 	if (self.key) [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:self.key];
 }
 

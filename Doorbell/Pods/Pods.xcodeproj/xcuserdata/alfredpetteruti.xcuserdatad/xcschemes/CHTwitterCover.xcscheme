@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6263D54E74DB4F573A044F63'
+               BlueprintIdentifier = '03FC8F47163EA07D37EE14BE434BB90A'
                BlueprintName = 'CHTwitterCover'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libCHTwitterCover.a'>

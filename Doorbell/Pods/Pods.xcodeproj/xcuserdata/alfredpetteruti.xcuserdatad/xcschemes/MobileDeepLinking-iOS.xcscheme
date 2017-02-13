@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'CADCA934B79F3E3F540FC307'
+               BlueprintIdentifier = '3B8333B7B379DC96099936BC493C9BFC'
                BlueprintName = 'MobileDeepLinking-iOS'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libMobileDeepLinking-iOS.a'>

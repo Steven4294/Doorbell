@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
+//#import <ParseFacebookUtilsV4/ParseFacebookUtilsV4.h>
 #import "RKSwipeBetweenViewControllers.h"
 
 #import "DBNavigationController.h"
@@ -39,17 +39,26 @@
     
     [DBLocationManager sharedInstance];
     
+    [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+        configuration.applicationId = @"blahblah"; //D9gioUkezsLno8QYzueqF3SXQehuVsfi0xm6yoIJ
+        configuration.clientKey = @"";
+        configuration.server = @"http://doorbell-dev-api.herokuapp.com/parse";
+       // configuration.server = @"http://localhost:1337/parse";
+    }]];
     
+    /*
     [Parse enableLocalDatastore];
     
     // Initialize Parse.
     [Parse setApplicationId:@"D9gioUkezsLno8QYzueqF3SXQehuVsfi0xm6yoIJ"
                   clientKey:@"hBwjIInpGUF8bz3bzmPT6iX4d7XVhR9QhOhaGS1L"];
     
+
+    
     // [Optional] Track statistics around application opens.
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-    [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
+    //[PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
@@ -87,7 +96,14 @@
                                    selector:@selector(registerLocation)
                                    userInfo:nil
                                     repeats:YES];
-
+*/
+    
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        NSLog(@"saved object test class: %d", succeeded);
+        if (error != nil) {
+            NSLog(@"error: %@", error);
+        }
+    }];
     return YES;
 }
 

@@ -4,6 +4,8 @@ xcodeproj ‘Doorbell’
 
 #use_frameworks!
 
+target “Doorbell” do
+
 pod 'AFNetworking', '~> 2.0'
 pod 'EstimoteSDK'
 pod 'Parse', '~> 1.4'
@@ -11,7 +13,7 @@ pod "FBSDKCoreKit"
 pod "FBSDKLoginKit"
 pod "FBSDKShareKit"
 pod "FBSDKMessengerShareKit"
-pod 'ParseFacebookUtilsV4'
+###pod 'ParseFacebookUtilsV4'
 pod 'RKSwipeBetweenViewControllers'
 pod 'DRCellSlideGestureRecognizer'
 pod 'SVPullToRefresh'
@@ -51,6 +53,8 @@ pod 'Bohr'
 pod 'CHTwitterCover', '~> 0.1'
 #pod 'UberRides'
 pod 'APAddressBook'
+
+end
 
 post_install do |installer|
     installer.pods_project.build_configuration_list.build_configurations.each do |configuration|

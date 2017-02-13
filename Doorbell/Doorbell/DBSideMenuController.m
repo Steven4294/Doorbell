@@ -47,8 +47,8 @@
     
     self.leftViewController = [storyboard instantiateViewControllerWithIdentifier:@"DBLeftMenuViewController"];
 
-   // self.swipeViewController.viewControllers = @[self.leftViewController, recentMessagesVC];
-    self.swipeViewController.viewControllers = @[recentMessagesVC, self.leftViewController];
+    self.swipeViewController.viewControllers = @[self.leftViewController, recentMessagesVC];
+    //self.swipeViewController.viewControllers = @[recentMessagesVC, self.leftViewController];
 
     [self.leftView addSubview:self.swipeViewController.view];
     
